@@ -1,0 +1,32 @@
+<form [formGroup]="feedbackForm" class="row" (ngSubmit)="addFeedback()">
+    <div class="col-md-6 col-12 mb-3">
+        <label for="name" class="form-label">Name<sup class="text-danger">*</sup></label>
+        <input type="text" class="form-control" formControlName="name" placeholder="Enter Name">
+    </div>
+    <div class="col-md-6 col-12 mb-3">
+        <label for="phone_number" class="form-label">Phone No.<sup class="text-danger">*</sup></label>
+        <input type="text" class="form-control" formControlName="phone_number" placeholder="Enter Phone No.">
+    </div>
+    <div class="col-md-6 col-12 mb-3">
+        <label for="email" class="form-label">Email<sup class="text-danger">*</sup></label>
+        <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
+    </div>
+    <div class="col-md-6 col-12 d-grid mb-3">
+        <label for="rating" class="form-label">Rating<sup class="text-danger">*</sup></label>
+        <div id="basic-rater" dir="ltr" class="d-flex">
+            @for (star of stars; let j = $index; track $index) {
+            <i [ngClass]="j < selectedRating ? 'ri-star-fill text-warning' : 'ri-star-line text-muted'"
+                style="font-size: 22px; cursor: pointer;" (click)="selectStar(j)">
+            </i>
+            }
+        </div>
+    </div>
+    <div class="col-12 mb-3">
+        <label for="feedback" class="form-label">Feedback<sup class="text-danger">*</sup></label>
+        <textarea class="form-control" formControlName="feedback" placeholder="Enter Feedback"></textarea>
+    </div>
+    <div class="col-12 text-end">
+        <button type="submit" class="btn btn-dark" [disabled]="submitted || feedbackForm.invalid"><i
+                class='ri-save-3-line me-2'></i>Save Changes</button>
+    </div>
+</form>

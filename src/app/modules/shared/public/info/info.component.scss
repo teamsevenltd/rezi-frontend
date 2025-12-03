@@ -1,0 +1,11 @@
+.btn-danger,
+.btn-dark {
+    font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    .btn-danger,
+    .btn-dark {
+        font-size: 0.75rem;
+    }
+}

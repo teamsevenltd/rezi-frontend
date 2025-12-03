@@ -1,0 +1,112 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.steps' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line'></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.services' | translate}} <i
+                                class='ri-arrow-right-double-line'></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page"> {{'app.steps' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row" cdkDropList (cdkDropListDropped)="drop($event)">
+        @for (details of steps_arr; track details; let i = $index) {
+        <div class="col-12 col-lg-10 col-xxl-8 mx-auto">
+            <div class="timeline-2">
+                <div class="timeline-continue">
+                    <div class="row timeline-right">
+                        <div class="col-12">
+                            <div class="timeline-date">
+                                <div class="card">
+                                    <div class="card-body">
+                                        @if(details?.step_type != 'custom'){
+                                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                                            <div class="accordion-item material-shadow">
+                                                <h2 class="accordion-header" [attr.id]="'flush-heading' + i">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        [attr.data-bs-target]="'#flush-collapse' + i"
+                                                        aria-expanded="false"
+                                                        [attr.aria-controls]="'flush-collapse' + i">
+                                                        <div class="text-nowrap">{{'app.step' | translate}} {{i+1}}
+                                                        </div>
+                                                        <i class="ri-arrow-right-double-fill fs-5 mx-2 text-muted"></i>
+                                                        <span class="text-muted me-3">
+                                                            {{ getTranslatedText(details?.step_description) }}
+                                                        </span>
+                                                    </button>
+                                                </h2>
+                                                <div [attr.id]="'flush-collapse' + i"
+                                                    class="accordion-collapse collapse"
+                                                    [attr.aria-labelledby]="'flush-heading' + i"
+                                                    data-bs-parent="#accordionFlushExample">
+                                                    <div class="accordion-body text-dark">
+                                                        @if (details?.step_type == 'click') {
+                                                        <app-clicktype-step [step_details]="steps_arr[i]"
+                                                            *ngIf="details?.step_meta"></app-clicktype-step>
+                                                        }
+                                                        @if (details?.step_type == 'patient') {
+                                                        <app-patienttype-step [step_details]="steps_arr[i]"
+                                                            *ngIf="details?.step_meta"></app-patienttype-step>
+                                                        }
+                                                        @if (details?.step_type == 'insurance') {
+                                                        <app-insurancetype-step [step_details]="steps_arr[i]"
+                                                            *ngIf="details?.step_meta"></app-insurancetype-step>
+                                                        }
+                                                        @if (details?.step_type == 'treatments') {
+                                                        <app-treatmenttype-step
+                                                            [step_details]="steps_arr[i]"></app-treatmenttype-step>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        @if(details?.step_type == 'custom' ){
+                                        <app-customtype-step #childRef [step_details]="details" [step_arr]="steps_arr"
+                                            (updateSteps)="onUpdateSteps($event)" (deleteStep)="onDeleteStep($event)"
+                                            *ngIf="details?.step_meta" cdkDrag></app-customtype-step>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @if (details?.step_type == 'custom' && i >= 0 && steps_arr[i+1]?.step_type != 'custom') { -->
+        @if (((details?.step_type == 'custom' && i >= 0) || i==2) && steps_arr[i+1]?.step_type != 'custom') {
+        <div class="col-12 col-lg-10 col-xxl-8 mx-auto step-button">
+            <button type="button" class="btn btn-dark w-100 d-flex justify-content-center align-items-center gap-2 mt-4"
+                (click)="addCustomStep()">
+                @if (step_loading) {
+                <div class="spinner-border text-white" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                }@else {
+                <i class="ri-add-line"></i>{{'app.add_step' | translate}}
+                }
+            </button>
+            <!-- <button type="button" (click)="shared.deleteStep()">Delete</button> -->
+        </div>
+        }
+        }
+        @empty {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+</div>

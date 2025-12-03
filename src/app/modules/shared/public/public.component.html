@@ -1,0 +1,535 @@
+<div class="container" style="margin-bottom: 2.5rem;">
+    @if (tab_name == 'menu') {
+    @if (isMenuLocation) {
+    <div class="row">
+        @if (getLoader) {
+        @for (item of skeleton_arr; track $index) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body d-flex align-items-center gap-2">
+                    <i class="ri-map-pin-2-line rounded-pill icon-round me-2 fs-18 bg-success-subtle"></i>
+                    <div class="skeleton-card">Lorem, ipsum dolor.</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if(!getLoader){
+        @for (location of location_arr; track location) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card" role="button" (click)="getDepartmentbyLocationId(location?._id)">
+                <div class="card-body d-flex align-items-center gap-4">
+                    <i class="ri-map-pin-2-line rounded-pill icon-round fs-18 bg-success-subtle"></i>
+                    <span class="fw-bold">{{location?.location_name | titlecase}}</span>
+                </div>
+            </div>
+        </div>
+        }
+        }
+    </div>
+    }
+
+    @if (!isMenuLocation && isMenuDepartment) {
+    <div class="row">
+        @if (getLoader) {
+        @for (item of skeleton_arr; track $index) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body d-flex align-items-center gap-2">
+                    <i class="ri-calendar-2-line rounded-pill icon-round me-2 fs-18 bg-success-subtle"></i>
+                    <div class="skeleton-card">Lorem, ipsum dolor.</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (!getLoader) {
+        @for (department of department_arr; track department) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card" role="button" (click)="getDepartmentId(department?._id)">
+                <div class="card-body d-flex align-items-center gap-4">
+                    <i class="ri-building-4-line rounded-pill icon-round fs-18 bg-success-subtle"></i>
+                    <span class="fw-bold">{{department?.name | titlecase}}</span>
+                </div>
+            </div>
+        </div>
+        }
+        }
+    </div>
+    }
+
+    @if (!isMenuLocation && !isMenuDepartment && isMenuService) {
+    <div class="row">
+        @if (getLoader) {
+        @for (item of skeleton_arr; track $index) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body d-flex align-items-center gap-2">
+                    <i class="ri-calendar-2-line rounded-pill icon-round me-2 fs-18 bg-success-subtle"></i>
+                    <div class="skeleton-card">Lorem, ipsum dolor.</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (!getLoader) {
+        <h4 class="text-center mb-4">{{'public.service_title' | translate}}</h4>
+        @for (service of service_arr; track service) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card" role="button" (click)="getStepsbyServiceId(service?._id, service?.service_name)">
+                <div class="card-body d-flex align-items-center gap-4">
+                    <i class="rounded-pill icon-round fs-18 bg-success-subtle"
+                        [ngClass]="service?.icon_class ? service?.icon_class : 'ri-first-aid-kit-line'"
+                        [style.color]="service?.icon_color ? service?.icon_color : '#000'"></i>
+                    <span class="fw-bold">{{getServiceName(service) | titlecase}}</span>
+                </div>
+            </div>
+        </div>
+        }
+        }
+    </div>
+    }
+
+    @if (!isMenuService && isMenuSteps) {
+    <div class="row">
+        <!-- position-relative -->
+        <div class="col-md-10 mx-auto col-12 mb-3">
+            <div class="d-grid gap-4">
+                <div class="progress-wizard" *ngIf="counter < steps_arr.length">
+                    <div class="d-flex justify-content-between align-items-center position-relative">
+                        <div class="progress-line"></div>
+                        <div class="progress-active-line" [style.width.%]="(counter / (steps_arr.length - 1)) * 100">
+                        </div>
+
+                        <div *ngFor="let circle of steps_arr; let i = index" class="step-container">
+                            <div class="circle" [class.previous]="i < counter" [class.current]="i === counter">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="d-flex align-items-center gap-3">
+                    @if(counter>1){
+                    <i class="ri-arrow-left-s-line fs-3" role="button" (click)="toPrevious()"></i>
+                    }
+                    <h4 class="mb-0">Step {{counter}}</h4>
+                </div> -->
+                @if (steps_arr[counter - 1]?.step_type == 'patient') {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-2 text-center fw-bold fs-4">{{'public.have_you_used_our_services' | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card" role="button" (click)="clientInformation('existing','','')">
+                            <div class="card-body p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.yes' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card" role="button" (click)="clientInformation('new','','')">
+                            <div class="card-body p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.no' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                @else if (steps_arr[counter - 1]?.step_type == 'insurance' && steps_arr[counter -
+                1]?.step_meta.show_insurance) {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-2 text-center fw-bold fs-4">{{'public.what_way_insured' | translate}}</div>
+                    </div>
+                </div>
+                @if(client_type == 'new'){
+                <div class="row justify-content-center align-items-stretch">
+                    <div class="col-lg-4">
+                        <div class="card h-100" role="button" (click)="clientInformation('new','public','')"
+                            [ngClass]="{'selected': selectedInsuranceType === 'public'}">
+                            <div class="card-body d-flex justify-content-center align-items-center p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.public' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card h-100" role="button" (click)="clientInformation('new','private','')"
+                            [ngClass]="{'selected': selectedInsuranceType === 'private'}">
+                            <div class="card-body d-flex justify-content-center align-items-center p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.private' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card h-100" role="button" (click)="clientInformation('new','self-payer','')"
+                            [ngClass]="{'selected': selectedInsuranceType === 'self-payer'}">
+                            <div class="card-body d-flex justify-content-center align-items-center p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.self_payer' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                @else{
+                <div class="row justify-content-center align-items-stretch">
+                    <div class="col-lg-4">
+                        <div class="card h-100" role="button" (click)="clientInformation('existing','public','')"
+                            [ngClass]="{'selected': selectedInsuranceType === 'public'}">
+                            <div class="card-body d-flex justify-content-center align-items-center p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.public' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card h-100" role="button" (click)="clientInformation('existing','private','')"
+                            [ngClass]="{'selected': selectedInsuranceType === 'private'}">
+                            <div class="card-body d-flex justify-content-center align-items-center p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.private' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card h-100" role="button" (click)="clientInformation('existing','self-payer','')"
+                            [ngClass]="{'selected': selectedInsuranceType === 'self-payer'}">
+                            <div class="card-body d-flex justify-content-center align-items-center p-5">
+                                <div class="fw-bold text-center fs-3">{{'public.self_payer' | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="button"
+                        class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                        (click)="toPrevious()"><i class="ri-arrow-left-line"></i>{{'public.previous' |
+                        translate}}</button>
+                    <button type="button"
+                        class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                        (click)="toNext()">{{'public.next' | translate}}<i class="ri-arrow-right-line"></i></button>
+                </div>
+                }
+                @else if (steps_arr[counter - 1]?.step_type == 'custom') {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-2 text-center fw-bold fs-4">{{steps_arr[counter - 1]?.step_description}}</div>
+                    </div>
+                </div>
+                <form [formGroup]="appointmentForm">
+                    <div formArrayName="custom">
+                        <div *ngFor="let customGroup of customArray.controls; let i = index">
+                            @if(customStepCounter == i) {
+                            <div class="row" [formGroupName]="i">
+                                @if (steps_arr[counter - 1]?.step_meta?.junction_type === 'text') {
+                                <textarea class="form-control" rows="5" placeholder="Enter your response"
+                                    (input)="handleAnswer($any($event.target).value, 'text', i)"></textarea>
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'answers') {
+                                @for (answer of steps_arr[counter - 1]?.step_meta?.predefine_answers; track answer) {
+                                <div class="col-xl-4 col-md-6 col-12 mb-2">
+                                    <div class="card-checkbox">
+                                        <div class="card"
+                                            [ngClass]="{'selected': isAnswerSelected(answer?.answer_text, i)}"
+                                            (click)="handleAnswer(answer, 'answers', i)">
+                                            <div class="card-body text-center">
+                                                <h5>{{ answer?.answer_text }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'multi_answers') {
+                                @for (answer of steps_arr[counter - 1]?.step_meta?.predefine_answers; track answer) {
+                                <div class="col-xl-4 col-md-6 col-12 mb-2">
+                                    <div class="card-checkbox">
+                                        <div class="card"
+                                            [ngClass]="{'selected': isAnswerSelected(answer?.answer_text, i)}"
+                                            (click)="handleAnswer(answer, 'multi_answers', i)">
+                                            <div class="card-body text-center">
+                                                <h5>{{ answer?.answer_text }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'slider_small') {
+                                <div class="slider-wrapper">
+                                    <input type="range" class="form-control form-range" min="1" max="3" step="1"
+                                        value="1" (click)="handleAnswer($event, 'slider_small', i)">
+                                    <div class="slider-labels fs-5 fw-medium">
+                                        @for (num of [1, 2, 3]; track $index) {
+                                        <span>{{ num }}</span>
+                                        }
+                                    </div>
+                                </div>
+
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'slider_large') {
+                                <div class="slider-wrapper">
+                                    <input type="range" class="form-control form-range" min="1" max="10" step="1"
+                                        value="1" (click)="handleAnswer($event, 'slider_large', i)">
+                                    <div class="slider-labels fs-5 fw-medium">
+                                        @for (num of [].constructor(10); let index = $index; track index) {
+                                        <span>{{ index + 1 }}</span>
+                                        }
+                                    </div>
+                                </div>
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'slider_emotion') {
+                                <div class="smiley-rating">
+                                    <span *ngFor="let smiley of smileys"
+                                        (click)="handleAnswer(smiley, 'slider_emotion', i)"
+                                        [class.chosen]="selectedSmileyLabel === smiley.label" [title]="smiley.label">
+                                        {{ smiley.icon }}
+                                    </span>
+                                </div>
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'slider_consent') {
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    @for (scale of approval; track scale) {
+                                    <div class="form-check">
+                                        <input class="form-check-input border-dark" type="radio" [id]="scale.value"
+                                            name="approval" (click)="handleAnswer(scale, 'slider_consent', i)">
+                                        <label class="form-check-label" [for]="scale.value">
+                                            {{scale.label}}
+                                        </label>
+                                    </div>
+                                    }
+                                </div>
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'upload') {
+                                <div class="dropzone text-center card-body">
+                                    <input type="file" #fileDropRef class="drop-input" id="fileDropRef" accept="image/*"
+                                        (change)="handleAnswer($event, 'upload', i)">
+                                    <i class='ri-arrow-down-line drop-img mb-2 fs-1'></i>
+                                    <h5>Drag and Drop file here</h5>
+                                    <small class="d-block fw-bold text-muted mb-2">OR</small>
+                                    <button for="fileDropRef" class="btn btn-sm btn-dark rounded">Browse For File
+                                    </button>
+                                </div>
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
+                                'download_no_confirmation' || steps_arr[counter - 1]?.step_meta?.junction_type ===
+                                'download_confirmation') {
+                                @if (steps_arr[counter - 1]?.step_meta?.junction_type ===
+                                'download_confirmation') {
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input border-dark" type="checkbox" id="fileDownload"
+                                        [(ngModel)]="consent_for_file" [ngModelOptions]="{standalone: true}">
+                                    <label class="form-check-label" for="fileDownload">
+                                        I give consent to download the file
+                                    </label>
+                                </div>
+                                }
+                                @if (steps_arr[counter - 1]?.step_meta?.junction_type === 'download_no_confirmation' ||
+                                consent_for_file) {
+                                <div>
+                                    <button type="button" class="btn btn-dark d-flex align-items-center gap-3 mx-auto"
+                                        (click)="openLink(steps_arr[counter - 1]?.step_meta?.media)"><i
+                                            class="ri-download-2-line"></i>Download</button>
+                                </div>
+                                }
+
+
+                                <!-- <div class="d-flex align-items-center gap-3">
+                                    <div class="flex-grow-1">
+                                        <a class="link-secondary"
+                                            [ngClass]="{'ms-2': steps_arr[counter - 1]?.step_meta?.junction_type === 'download_confirmation'}"
+                                            role="button" (click)="openLink(steps_arr[counter - 1]?.step_meta?.media)">
+                                            {{steps_arr[counter - 1]?.step_meta?.media}}</a>
+                                    </div>
+                                </div> -->
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
+                                'external_link') {
+                                <div class="text-center mb-3">
+                                    <a class="btn btn-dark no-underline" [href]="steps_arr[counter - 1]?.step_meta?.media"
+                                        target="_blank">
+                                        {{ steps_arr[counter - 1]?.step_description }}
+                                    </a>
+                                </div>
+
+                                <!-- <div class="d-flex flex-wrap align-items-center mb-2">
+                                    <h5 class="me-2 mb-0">External Link:</h5>
+                                    <a [href]="steps_arr[counter - 1]?.step_meta?.media" target="_blank"
+                                        class="text-break text-dark" style="word-break: break-all;">
+                                        {{ steps_arr[counter - 1]?.step_meta?.media }}
+                                    </a>
+                                </div> -->
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
+                                'content_no_confirmation'
+                                || steps_arr[counter - 1]?.step_meta?.junction_type === 'content_confirmation')
+                                {
+                                <div class="col-12">
+                                    <div
+                                        [ngClass]="{'ms-2': steps_arr[counter - 1]?.step_meta?.junction_type === 'content_confirmation'}">
+                                        {{steps_arr[counter - 1]?.step_meta?.media}}</div>
+                                </div>
+                                @if (steps_arr[counter - 1]?.step_meta?.junction_type ===
+                                'content_confirmation') {
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input border-dark" type="checkbox" id="text_consent">
+                                    <label class="form-check-label" for="text_consent">
+                                        I give consent to the text
+                                    </label>
+                                </div>
+                                }
+                                }
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'video') {
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-center"
+                                        [innerHTML]="getSanitizedMedia(steps_arr[counter - 1]?.step_meta?.media)">
+                                    </div>
+                                </div>
+                                }
+                                @else {
+                                <div class="d-flex justify-content-end pe-0">
+                                    <button type="button"
+                                        class="btn btn-dark btn-sm d-flex align-items-center gap-2 mb-2"
+                                        (click)="clearClientSignature()"><i
+                                            class="ri-eraser-line"></i>Signature</button>
+                                </div>
+                                <signature-pad #customer_signature [options]="signaturePadOptions"
+                                    (drawEnd)="drawSignature($event)" class="bg-white"
+                                    (click)="handleAnswer($event, 'signature', i)"></signature-pad>
+                                }
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            @if (counter > 1) {
+                            <button type="button"
+                                class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                                (click)="toPrevious()">
+                                <i class="ri-arrow-left-line"></i>{{'public.previous' | translate}}
+                            </button>
+                            }@else {
+                            <div></div>
+                            }
+
+                            <button type="button"
+                                class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                                (click)="isLastStep() ? saveAppointment() : toNext()">
+                                <i [ngClass]="isLastStep() ? 'ri-save-3-line' : ''"></i>
+                                {{ isLastStep() ? ('public.submit' | translate) : ('public.next' | translate) }}
+                                <i *ngIf="!isLastStep()" class="ri-arrow-right-double-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                }
+                @else if (steps_arr[counter - 1]?.step_type == 'treatments') {
+                <div class="row">
+                    <div class="col-12">
+                        <label for="" class="form-label">{{'public.select_appointment_date' | translate}}</label>
+                        <input type="date" class="form-control" [(ngModel)]="selected_date" (change)="selectDate()">
+                    </div>
+                </div>
+                @if (availability_arr.length > 0) {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-4 text-center fw-bold fs-5">{{'public.available_slots' | translate}}</div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-4">
+                        @for (availability of availability_arr; track availability) {
+                        <button type="button" class="btn btn-outline-dark"
+                            [ngClass]="{'active': availability?.startTime == selected_slot}"
+                            (click)="selectSlot(availability?.startTime)">{{availability?.startTime | date:
+                            'HH:mm':'UTC'}} - {{availability?.endTime | date: 'HH:mm':'UTC'}}</button>
+                        }
+                    </div>
+                </div>
+                }
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-2 text-center fw-bold fs-4">{{'public.treatment_required' | translate}}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    @if (getLoader) {
+                    @for (loader of skeleton_arr; track $index) {
+                    <div class="col-xl-4 col-md-6 col-12 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="skeleton-card">Lorem, ipsum.</div>
+                                <div class="skeleton-card">Lorem, ipsum.</div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }@else {
+                    @for (treatment of treatment_arr; track treatment) {
+                    <div class="col-xl-4 col-md-6 col-12 mb-4">
+                        <!-- <div class="card-checkbox" (click)="treatmentsCheckbox(treatment?._id, treatment)">
+                            <div class="card" [id]="treatment?._id"
+                                [ngClass]="{'selected': isSelected(treatment?._id)}">
+                                <div class="card-body text-center">
+                                    <h5>{{ treatment?.name }}</h5>
+                                    @if (treatment?.duration) {
+                                    {{treatment?.duration}} minutes
+                                    }
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="card h-100" [id]="treatment?._id"
+                            (click)="treatmentsCheckbox(treatment?._id, treatment)"
+                            [ngClass]="{'selected': isSelected(treatment?._id)}">
+                            <div class="card-body d-grid justify-content-center align-items-center text-center">
+                                <h5 class="mb-0">{{ treatment?.name }}</h5>
+                                @if (treatment?.duration) {
+                                <div class="mt-2">
+                                    {{treatment?.duration}} minutes
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+                    <div class="col-12 d-flex justify-content-between align-items-center mb-sm-0 mb-md-4">
+                        <button type="button"
+                            class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                            (click)="toPrevious()">
+                            <i class="ri-arrow-left-line"></i>{{'public.previous' | translate}}
+                        </button>
+                        <button type="button"
+                            class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                            (click)="clientInformation('','','treatment')"><i
+                                class="ri-save-3-line"></i>{{'public.submit' | translate}}</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+    }
+
+    @else if (tab_name == 'chat') {
+    <app-chat></app-chat>
+    }
+    @else if (tab_name == 'info') {
+    <app-info (updateTab)="onUpdateTab($event)"></app-info>
+    }
+    @else if (tab_name == 'news') {
+    <app-news></app-news>
+    }
+    @else if (tab_name == 'feedback') {
+    <app-feedback></app-feedback>
+    }
+
+</div>

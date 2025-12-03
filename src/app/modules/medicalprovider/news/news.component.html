@@ -1,0 +1,216 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.news' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'app.news' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="search" [placeholder]="'app.search' | translate"
+                                [(ngModel)]="search" (input)="resetsearch()" aria-label="Search">
+                        </div>
+                        <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                            data-bs-toggle="modal" data-bs-target="#addNews">
+                            <i class="ri-add-line"></i>
+                            {{'app.add' | translate}} {{'app.news' | translate}}</button>
+                        <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                            data-bs-target="#addNews">
+                            <i class="ri-add-line"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (getLoader) {
+        @for (data of skeleton_arr; track $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="skeleton-card">Test</div>
+                            <br>
+                            <div class="skeleton-card">Test</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @else {
+        @for (news of news_arr; let i = $index; track news) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="card-title m-0 d-flex align-items-center gap-2 flex-grow-1">
+                        <h4 class="mb-0">
+                            {{news?.title}}
+                        </h4>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="dropdown card-header-dropdown">
+                            <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#editNews" (click)="editNews(i)"><i
+                                        class="ri-edit-line text-secondary"></i>{{'app.edit' | translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="deleteNews(news?._id)"><i
+                                        class="ri-delete-bin-line text-danger"></i>{{'app.delete' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="d-flex gap-2 mb-2">
+                                <i class="ri-article-line fs-16"></i>
+                                <div [innerHTML]="news?.news" class="text-length"></div>
+                            </div>
+                            <div class="mb-0 d-flex align-items-baseline gap-2">
+                                <i class="ri-calendar-fill fs-16"></i>
+                                {{news?.createdAt | date: 'dd.MM.yy':'UTC'}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        }@empty {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">{{'app.no' | translate}} {{'app.news' | translate}} {{'app.found' |
+                        translate}}</div>
+                </div>
+            </div>
+        </div>
+        }
+        @if (loadmore) {
+        <div class="col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-dark d-flex align-items-center gap-2" (click)="getNews()">
+                <i class="ri-add-line"></i>
+                <span>{{'app.load_more' | translate}}</span>
+            </button>
+        </div>
+        }
+        }
+
+    </div>
+
+</div>
+
+<!-- add news modal -->
+<div id="addNews" class="modal fade" tabindex="-1" aria-labelledby="addNewsLabel" aria-hidden="true"
+    data-bs-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewsLabel">{{'app.new' | translate}} {{'app.news' | translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addNewsForm" class="row" (ngSubmit)="submitNews()">
+                    <div class="col-12 mb-3">
+                        <label for="title" class="form-label">{{'app.title' | translate}}<sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" formControlName="title">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="news" class="form-label">{{'app.news' | translate}}</label>
+                        <angular-editor [config]="editorConfig" formControlName="news"></angular-editor>
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || addNewsForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit news modal -->
+<div id="editNews" class="modal fade" tabindex="-1" aria-labelledby="editNewsLabel" aria-hidden="true"
+    data-bs-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNewsLabel">{{'app.edit' | translate}} {{'app.news' | translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editNewsForm" (ngSubmit)="updateNews()">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check form-switch form-switch-dark form-check-right">
+                                <input class="form-check-input" type="checkbox" role="switch" id="news_visibility"
+                                    [checked]="editNewsForm.value.visibility" formControlName="visibility">
+                                <label class="form-check-label" for="news_visibility">{{'app.visibility' |
+                                    translate}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">{{'app.title' | translate}}<sup class="text-danger">*</sup></label>
+                            <input type="text" class="form-control" formControlName="title">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="news" class="form-label">{{'app.news' | translate}}</label>
+                            <angular-editor [config]="editorConfig" formControlName="news"></angular-editor>
+                        </div>
+                        <div class="col-12 modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                                translate}}</button>
+                            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                                [disabled]="submitted || editNewsForm.invalid">
+                                <span *ngIf="!loading" class="d-flex align-items-center">
+                                    <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+                                <span *ngIf="loading">
+                                    <div class="spinner-border spinner-border-sm text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

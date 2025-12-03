@@ -1,0 +1,104 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-flex align-items-center justify-content-between my-4">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.avatar' | translate}} {{'app.gallery' | translate}}</h1>
+        <button type="button" class="btn btn-dark d-flex align-items-center gap-2" data-bs-toggle="modal"
+            data-bs-target="#imageUploader">
+            <i class="ri-upload-2-line"></i>
+            <div>{{'app.avatar' | translate}}</div>
+        </button>
+        <!-- <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard <i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Locations</li>
+                </ol>
+            </nav>
+        </div> -->
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row">
+        @if (getLoader) {
+        @for (loader of skeleton_arr; track $index) {
+        <div class="col-xxl-2 col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="skeleton-card">Lorem, ipsum.</div>
+                    <div class="skeleton-card">Lorem, ipsum.</div>
+                    <div class="skeleton-card">Lorem, ipsum.</div>
+                    <div class="skeleton-card">Lorem, ipsum.</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @else {
+        @for (image of gallery_arr; track gallery_arr; let i = $index) {
+        <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
+            <div class="card" role="button" (click)="deleteAvatar(image?._id)">
+                <div class="card-body text-center">
+                    <img [src]="image?.avatar ? auth.getapi() + image?.avatar : ''" alt=""
+                        class="rounded avatar-xl material-shadow">
+                </div>
+            </div>
+        </div>
+        }
+        @empty {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">{{'app.no' | translate}} {{'app.service' | translate}} {{'app.found' |
+                        translate}}</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+    </div>
+
+</div>
+
+
+<!-- upload image -->
+<div id="imageUploader" class="modal fade" tabindex="-1" aria-labelledby="imageUploaderLabel" aria-hidden="true"
+    data-bs-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageUploaderLabel">{{'app.upload_file' | translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeUpload aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 card border-0 px-0 mb-0">
+                        <div class="dropzone text-center card-body">
+                            <input type="file" #fileDropRef class="drop-input" id="fileDropRef" accept="image/*"
+                                (change)="uploadAvatar($event)">
+                            <i class='ri-arrow-down-line drop-img mb-2 fs-1'></i>
+                            <h5>{{'app.drag_and_drop' | translate}}</h5>
+                            <small class="d-block fw-bold text-muted mb-2">{{'app.or' | translate}}</small>
+                            <button for="fileDropRef" class="btn btn-sm btn-dark rounded"
+                                [disabled]="submitted">{{'app.browse_for_file' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

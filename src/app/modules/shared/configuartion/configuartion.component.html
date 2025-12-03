@@ -1,0 +1,211 @@
+<div class="container-fluid px-0 mt-5 py-1"> <!-- Page Header -->
+  <div class="col-xxl-12  col-xl-12  col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row ">
+          <div class="nav flex-column  nav-pills px-0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <!-- tabs -->
+            <div class="rounded-2 bg-white" style="margin-top: 5px;margin-bottom: 24px;">
+              <button class="nav-link active d-flex align-items-center" id="v-pills-home-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+                aria-selected="true"> <i class="ri-equalizer-line mx-3 fs-20"></i>
+                {{'app.customisation' | translate}}</button>
+              <button class="nav-link d-flex align-items-center" id="v-pills-profile-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+                aria-selected="false"> <i class="ri-image-line mx-3 fs-20"></i>{{'app.logo' |
+                translate}}</button>
+              <button class="nav-link d-flex align-items-center" id="v-pills-department-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-department" type="button" role="tab"
+                aria-controls="v-pills-department" aria-selected="true">
+                <i class="ri-building-4-line mx-3 fs-20"></i> {{'app.departments' | translate}}
+              </button>
+            </div>
+          </div>
+
+          <div class="tab-content bg-white mb-5 rounded-2" id="v-pills-tabContent">
+            <!-- site customisation -->
+            <div class="tab-pane fade show active p-3" id="v-pills-home" role="tabpanel"
+              aria-labelledby="v-pills-home-tab">
+              <div class="profile-head ">
+                <h5 class="fs-20">{{'app.customisation' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+              <div class="profile-form">
+                <form [formGroup]="configurationForm" class="row" (ngSubmit)="submitForm()">
+                  <div class="col-12 mb-3">
+                    <label class="form-label" for="title">{{'app.title' | translate}} {{'app.eg' | translate}}</label>
+                    <input type="text" class="form-control" formControlName="title" placeholder="enter your title">
+                  </div>
+                  <div class="col-12 mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <label class="form-label" for="domain">{{'app.domain' | translate}} (z.B. direkten verlinkung auf die Online Rezeption)</label>
+                      <button type="button" class="btn btn-dark btn-sm p-1 px-2" data-bs-toggle="modal"
+                        data-bs-target="#codePreview"><i class="ri-information-line ri-lg me-2"></i>{{'app.source_info'
+                        |
+                        translate}}</button>
+                    </div>
+                    <input type="email" formControlName="domain" class="form-control" placeholder="doktor-mustermann.de"
+                      readonly>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <div class="form-check form-switch form-check-right form-switch-dark mb-2">
+                      <input class="form-check-input border-dark" type="checkbox" role="switch" id="restrict"
+                        [value]="false" formControlName="restrict_appointments">
+                      <label class="form-check-label" for="restrict">{{'app.multiple_appointments' | translate}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12 mb-3">
+                    <label class="form-label" for="background_color">{{'app.bg_color' | translate}}</label>
+                    <input type="color" class="form-control" formControlName="background_color" role="button"
+                      (change)="getColor($event, 'bg')">
+                  </div>
+                  <div class="col-md-6 col-12 mb-3">
+                    <label class="form-label" for="text_color">{{'app.text_color' | translate}}</label>
+                    <input type="color" class="form-control" formControlName="text_color" role="button"
+                      (change)="getColor($event, 'text')">
+                  </div>
+                  <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center">
+                      <span *ngIf="!loading" class="d-flex align-items-center"><i
+                          class='ri-save-3-line me-2 fs-5'></i>{{'app.update' | translate}}</span>
+                      <span *ngIf="loading">
+                        <div class="spinner-border spinner-border-sm text-light" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- site logo -->
+            <div class="tab-pane fade p-3" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              <div class="profile-head">
+                <h5 class="fs-20">{{'app.logo' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+              <div class="profile-form">
+                <form [formGroup]="configurationForm" class="row">
+                  <div class="col-12 mb-3">
+                    <label class="form-label" for="file">{{'app.logo_header' | translate}}</label>
+                    <input type="file" class="form-control" (change)="updateLogo($event)" accept="image/*">
+                  </div>
+                  @if (logo_img) {
+                  <div class="col-12 text-center">
+                    <img [src]="logo_img ? auth.getapi() + logo_img : ''" class=" company-logo" alt="">
+                  </div>
+                  }
+                </form>
+              </div>
+            </div>
+
+            <!-- department -->
+            <div class="tab-pane fade show p-3" id="v-pills-department" role="tabpanel"
+              aria-labelledby="v-pills-department-tab">
+              <div class="profile-head ">
+                <h5 class="fs-20">{{'app.departments' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+              <div class="profile-form">
+                <app-department></app-department>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- company styling  modal-->
+<div id="codePreview" class="modal fade" tabindex="-1" aria-labelledby="codePreviewLabel" aria-hidden="true"
+  style="display: none;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="codePreviewLabel">URL</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+      </div>
+      <!-- <div class="modal-body">
+        
+      </div> -->
+
+      <!DOCTYPE html>
+      <html lang="en">
+
+      <head>
+        <meta charset="UTF-8" />
+        <title></title>
+        <link rel="stylesheet" href="/assets/css/popup.css">
+      </head>
+
+      <body>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <label class="form-label mb-0">{{'app.click_copy_stylesheet' | translate}}</label>
+                <button type="button" class="btn btn-sm btn-dark rounded-3" (click)="copyToClipboard(styleTextarea)"><i
+                    class="ri-file-copy-line lh-0"></i></button>
+              </div>
+
+              <textarea #styleTextarea class="form-control overflow-hidden" rows="1"
+                readonly><link rel="stylesheet" href="{{url?.origin}}/assets/css/popup.css"></textarea>
+              <!-- <pre><code> &lt;&gt;</code></pre> -->
+            </div>
+
+            <div class="col-12 mt-3">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <label class="form-label mb-0">{{'app.click_copy_javascript' | translate}}</label>
+                <button type="button" class="btn btn-sm btn-dark rounded-3" (click)="copyToClipboard(scriptTextarea)"><i
+                    class="ri-file-copy-line lh-0"></i></button>
+              </div>
+
+              <textarea #scriptTextarea class="form-control" rows="25" style="white-space: pre-line;" readonly><script type="text/JavaScript">
+                  document.addEventListener("DOMContentLoaded", function () {
+                    let src = "{{url?.origin}}/public/{{user_data?.facility_id?._id}}";
+                    // Create button element
+                    const button = document.createElement("button");
+                    button.className = "rezi-popup-btn";
+                    button.onclick = openForm;
+                    button.innerHTML = `<img class="rezi-icon" src="{{url?.origin}}/assets/images/rez-icon.png"> Online-Reservierung`;
+
+                    // Create popup container
+                    const popupDiv = document.createElement("div");
+                    popupDiv.className = "rezi-form-popup";
+                    popupDiv.id = "rezi-form";
+                    popupDiv.innerHTML = `<iframe class="rezi-form-container" src="${src}" frameborder="0"></iframe><div class="cancel" onclick="closeForm()">&times;</div>`;
+
+                    // Append elements to the body (or another desired parent element)
+                    document.body.appendChild(button);
+                    document.body.appendChild(popupDiv);
+                  });
+
+                  // Optional: Define the openForm and closeForm functions if not already present
+                  function openForm() {
+                    document.getElementById("rezi-form").style.display = "block";
+                  }
+
+                  function closeForm() {
+                    document.getElementById("rezi-form").style.display = "none";
+                  }
+                </script></textarea>
+            </div>
+
+          </div>
+        </div>
+      </body>
+
+      </html>
+
+
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary ">Save Changes</button>
+      </div> -->
+
+    </div>
+  </div>
+</div>

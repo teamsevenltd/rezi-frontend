@@ -1,0 +1,42 @@
+<form [formGroup]="patientForm">
+    <div class="small mb-2">
+        {{'app.for_new_patient' | translate}}
+    </div>
+    <div class="d-grid gap-2 mb-4">
+        <select class="form-select" role="button" formControlName="new_patient_action_type">
+            <!-- @for (action of action_list; track action) {
+            <option [value]="action.value" selected="">{{action.label}}</option>
+            } -->
+            <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+            <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' | translate}}
+            </option>
+            <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                translate}}</option>
+            <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' | translate}}
+            </option>
+        </select>
+        @if (patientForm.value.new_patient_action_type != '') {
+        <textarea class="form-control" rows="2" formControlName="new_patient_action_value"></textarea>
+        }
+    </div>
+    <div class="small mb-2">
+        {{'app.for_existing_patient' | translate}}
+    </div>
+    <div class="d-grid gap-2">
+        <select class="form-select" role="button" formControlName="old_patient_action_type">
+            <!-- @for (action of action_list; track action) {
+            <option [value]="action.value" selected="">{{action.label}}</option>
+            } -->
+            <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+            <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' | translate}}
+            </option>
+            <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                translate}}</option>
+            <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' | translate}}
+            </option>
+        </select>
+        @if (patientForm.value.old_patient_action_type != '') {
+        <textarea class="form-control" rows="2" formControlName="old_patient_action_value"></textarea>
+        }
+    </div>
+</form>

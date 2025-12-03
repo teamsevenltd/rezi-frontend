@@ -1,0 +1,493 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 50px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.patient' | translate}} {{'app.history' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);"> {{'app.patient' | translate}}<i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'app.patient' | translate}} {{'app.history'
+                        | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-justified nav-dark mb-3" role="tablist">
+                        <li class="nav-item waves-effect waves-light" role="presentation">
+                            <a class="nav-link" [class.active]="selectedTab === 'request'"
+                                (click)="setActiveTab('request')" data-bs-toggle="tab" href="#request-1" role="tab"
+                                aria-selected="selectedTab === 'request'">{{'app.requests' | translate}}</a>
+                        </li>
+                        <li class="nav-item waves-effect waves-light" role="presentation">
+                            <a class="nav-link" [class.active]="selectedTab === 'appointment'"
+                                (click)="setActiveTab('appointment')" data-bs-toggle="tab" href="#appointment-1"
+                                role="tab" aria-selected="selectedTab === 'appointment'">{{'app.appointments' |
+                                translate}}</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content text-muted">
+                        <div class="tab-pane" [class.active]="selectedTab === 'request'" id="request-1" role="tabpanel">
+
+                            <div class="chat-wrapper d-lg-flex gap-1">
+                                <div class="chat-leftsidebar minimal-border">
+                                    <div class="px-4 pt-4 mb-3">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-2">{{'app.chat' | translate}}</h5>
+                                        </div>
+                                        <div class="search-box">
+                                            <input type="text" class="form-control bg-light border-light"
+                                                [(ngModel)]="requestSearch" (input)="resetsearch()"
+                                                [placeholder]="'app.search' | translate">
+                                            <i class="ri-search-2-line search-icon"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="chat-room-list" data-simplebar>
+                                        <div class="d-flex align-items-center px-4 mb-2">
+                                            <div class="flex-grow-1">
+                                                <h4 class="mb-0 fs-11 text-muted text-uppercase">{{'app.direct_messages'
+                                                    | translate}}
+                                                </h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="chat-message-list" style="max-height: calc(100vh - 260px)">
+                                            @if (requestLoader) {
+                                            <ul class="list-unstyled chat-list chat-user-list" id="userList">
+                                                @for (test of skeleton_arr; track $index) {
+                                                <li data-name="direct-message" class="">
+                                                    <a href="javascript: void(0);" class="unread-msg-user">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-grow-1 overflow-hidden">
+                                                                <div class="skeleton-card">Test</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                }
+                                            </ul>
+                                            }
+
+                                            @else {
+                                            <ul class="list-unstyled chat-list chat-user-list"
+                                                style="max-height: calc(100vh - 260px); overflow-y: auto;"
+                                                id="userList">
+                                                @for (chat of request_arr; track chat) {
+                                                <li [id]="'contact-id'+chat._id" data-name="direct-message"
+                                                    (click)="getChatbyId(chat?._id, chat)">
+                                                    <!-- make id dynamic -->
+                                                    <a href="javascript: void(0);" class="unread-msg-user">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-grow-1 chat-user-box overflow-hidden">
+                                                                <h5 class="fs-13 text-truncate mb-0 chatlist-user-name">
+                                                                    {{chat?.patient_data?.first_name | titlecase}}
+                                                                    {{chat?.patient_data?.last_name | titlecase}}
+                                                                </h5>
+                                                                <small class="text-muted text-truncate mb-0">
+                                                                    @if (chat?.chat?.message_type == 'text') {
+                                                                    <div>{{chat?.chat?.message}}</div>
+                                                                    }
+                                                                    @else if (chat?.chat?.message_type == 'requestData')
+                                                                    {
+                                                                    <div>{{'app.sent_request' | translate}}</div>
+                                                                    }
+                                                                    @else {
+                                                                    <div>{{'app.appointment_sent' | translate}}</div>
+                                                                    }
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                }@empty {
+                                                <div class="text-center text-danger">{{'app.no' | translate}}
+                                                    {{'app.chat' | translate}}
+                                                    {{'app.found' | translate}}</div>
+                                                }
+                                                @if(requestloadmore){
+                                                <div class="d-flex justify-content-center mt-2">
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-dark d-flex align-items-center gap-2"
+                                                        (click)="getRequests()">
+                                                        <i class="ri-loader-2-line"></i>
+                                                        <span>{{'app.more' | translate}}</span>
+                                                    </button>
+                                                </div>
+                                                }
+                                            </ul>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end chat leftsidebar -->
+
+                                @if (showChat) {
+                                    <div class="user-chat w-100 overflow-hidden minimal-border">
+                                        <div class="chat-content d-lg-flex">
+                                            <div class="w-100 overflow-hidden position-relative">
+                                                <div class="position-relative">
+                                                    <div class="position-relative" id="users-chat">
+                                                        <div class="p-3 user-chat-topbar">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-sm-4 col-8">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="flex-shrink-0 d-block d-lg-none me-3">
+                                                                            <a href="javascript: void(0);"
+                                                                                class="user-chat-remove fs-18 p-1"><i
+                                                                                    class="ri-arrow-left-s-line align-bottom"></i></a>
+                                                                        </div>
+                                                                        <div class="flex-grow-1 overflow-hidden">
+                                                                            <h5 class="text-truncate mb-0 fs-16">
+                                                                                <a class="text-reset username">
+                                                                                    {{user_details?.patient_data?.first_name | titlecase}}
+                                                                                    {{user_details?.patient_data?.last_name | titlecase}}
+                                                                                </a>
+                                                                            </h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-8 col-4">
+                                                                    <ul class="list-inline user-chat-nav text-end mb-0">
+                                                                        <li class="list-inline-item m-0 text-info fs-3" role="button"
+                                                                            data-bs-toggle="offcanvas"
+                                                                            [attr.data-bs-target]="'#offcanvas-' + user_details?._id"
+                                                                            [attr.aria-controls]="'offcanvas-' + user_details?._id">
+                                                                            <i class="ri-information-line"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                    
+                                                        </div>
+                                                        <!-- end chat user head -->
+                                                        <div class="chat-conversation p-3 p-lg-4 overflow-y-auto" id="chat-conversation"
+                                                            data-simplebar>
+                                                            <!-- simplebar-scrollable-y -->
+                                                            <ul class="list-unstyled chat-conversation-list" id="users-conversation">
+                                                                @for (conversation of chat_details; track conversation) {
+                                                                <li class="chat-list "
+                                                                    [ngClass]="conversation?.facility_id == conversation.from ? 'right' : 'left'"
+                                                                    [id]="conversation?._id">
+                                                                    <div class="conversation-list">
+                                                                        <div class="user-chat-content">
+                                                                            @if (conversation.message_type == 'text') {
+                                                                            <div class="ctext-wrap">
+                                                                                <div class="ctext-wrap-content" [id]="conversation?._id">
+                                                                                    <p class="mb-0 ctext-content">{{conversation?.message}}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                            }
+                    
+                                                                            @if(conversation.message_type == 'requestData'){
+                                                                            <div class="card mb-2">
+                                                                                <div class="card-body">
+                                                                                    <div class="fw-bold mb-2">
+                                                                                        
+                                                                                        {{getServiceName(conversation?.message_data?.service_data)
+                                                                                    | titlecase}}
+                                                                                    </div>
+                                                                                    <div class="d-grid gap-1 small mb-2">
+                                                                                        <small>
+                                                                                            {{conversation?.message_data?.service_data?.meta?.is_new
+                                                                                            ? 'New Patient' : 'Existing Patient'}}
+                                                                                        </small>
+                                                                                        <small>Insurance:
+                                                                                            {{conversation?.message_data.meta?.insurance
+                                                                                            | titlecase}}</small>
+                                                                                    </div>
+                                                                                    <div class="d-grid small mb-2">
+                                                                                        <div>{{'app.department' | translate}}</div>
+                                                                                        <small>{{conversation?.message_data?.department_data?.name
+                                                                                            | titlecase}}</small>
+                                                                                    </div>
+                                                                                    <div class="d-grid small mb-2">
+                                                                                        <div>{{'app.treatment' | translate}}</div>
+                                                                                        @for (treatment of
+                                                                                        conversation?.message_data?.meta?.treatments;
+                                                                                        track treatment) {
+                                                                                        <small class="d-grid gap-1">
+                                                                                            {{ treatment?.treatment_name | titlecase
+                                                                                            }}
+                                                                                        </small>
+                                                                                        }
+                    
+                                                                                    </div>
+                                                                                    <div class="d-grid small">
+                                                                                        <div>{{'app.date' | translate}}</div>
+                                                                                        <small>{{conversation?.message_data?.createdAt |
+                                                                                            date:'dd.MM.yy HH:mm':'UTC'}}</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            }
+                    
+                                                                            @if(conversation.message_type == 'appointmentData'){
+                                                                            <div class="card mb-2">
+                                                                                <div class="card-body">
+                                                                                    <div class="fw-bold mb-2">
+                                                                                        <!-- {{conversation?.message_data?.service_data?.service_name
+                                                                                        | titlecase}} -->
+                                                                                        {{getServiceName(conversation?.message_data?.service_data)
+                                                                                    | titlecase}}
+                                                                                    </div>
+                                                                                    <div class="d-grid gap-1 small mb-2">
+                                                                                        <small>
+                                                                                            {{conversation?.message_data?.service_data?.meta?.is_new
+                                                                                            ? 'New Patient' : 'Existing Patient'}}
+                                                                                        </small>
+                                                                                        <small>Insurance:
+                                                                                            {{conversation?.message_data.meta?.insurance
+                                                                                            | titlecase}}</small>
+                                                                                    </div>
+                                                                                    <div class="d-grid small mb-2">
+                                                                                        <div>{{'app.department' | translate}}</div>
+                                                                                        <small>{{conversation?.message_data?.department_data?.name
+                                                                                            | titlecase}}</small>
+                                                                                    </div>
+                                                                                    <div class="d-grid small mb-2">
+                                                                                        <div>{{'app.treatment' | translate}}</div>
+                                                                                        @for (treatment of
+                                                                                        conversation?.message_data?.treatment_data;
+                                                                                        track treatment) {
+                                                                                        <small class="d-grid gap-1">
+                                                                                            {{ treatment?.name | titlecase
+                                                                                            }}
+                                                                                        </small>
+                                                                                        }
+                                                                                    </div>
+                                                                                    <div class="d-grid small">
+                                                                                        <div>{{'app.date' | translate}}</div>
+                                                                                        <small>{{conversation?.message_data?.createdAt |
+                                                                                            date:'dd.MM.yy HH:mm':'UTC'}}</small>
+                                                                                    </div>
+                                                                                    <!-- <div class="d-grid gap-2">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-sm btn-outline-success d-flex align-items-center gap-2">
+                                                                                            <i class="ri-check-line"></i>
+                                                                                            <div>Accept appointment</div>
+                                                                                        </button>
+                                                                                        <button type="button"
+                                                                                            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2">
+                                                                                            <i class="ri-close-fill"></i>
+                                                                                            <div>Decline appointment</div>
+                                                                                        </button>
+                                                                                    </div> -->
+                                                                                </div>
+                                                                            </div>
+                                                                            }
+                                                                            <!-- <div class="conversation-name">
+                                                                                <span class="d-none name">
+                                                                                    Lisa Parker</span>
+                                                                                <small class="text-muted time">
+                                                                                    {{ conversation.createdAt | date:'dd-MM-yyyy HH:mm' }}
+                                                                                </small>
+                                                                                <span class="text-success check-message-icon">
+                                                                                    <i class="bx bx-check-double"></i>
+                                                                                </span>
+                                                                            </div> -->
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                    
+                                                                }
+                                                            </ul>
+                                                            <!-- end chat-conversation-list -->
+                                                        </div>
+                                                    </div>
+                                                    <!-- end chat-conversation -->
+                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
+                            </div>
+                        </div>
+                        <div class="tab-pane" [class.active]="selectedTab === 'appointment'" id="appointment-1"
+                            role="tabpanel">
+                            <input class="form-control mb-3" type="search" [(ngModel)]="search" (input)="resetsearch()"
+                                [placeholder]="'app.search' | translate" aria-label="Search">
+                            <table class="table table-bordered table-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">{{'app.date' | translate}}</th>
+                                        <th scope="col">{{'app.start_time' | translate}}</th>
+                                        <th scope="col">{{'app.end_time' | translate}}</th>
+                                        <th scope="col">{{'app.location' | translate}}</th>
+                                        <th scope="col">{{'app.service' | translate}}</th>
+                                        <th scope="col">{{'app.department' | translate}}</th>
+                                        <th scope="col">{{'app.treatments' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (appointmentsLoader) {
+                                    @for (loader of skeleton_arr; track $index) {
+                                    <tr>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                        <td>
+                                            <div class="skeleton">Test</div>
+                                        </td>
+                                    </tr>
+                                    }
+                                    }
+                                    @else {
+                                    @for (appointment of appointment_arr; track appointment) {
+                                    <tr>
+                                        <td>{{appointment?.start_date | date:'dd.MM.yy':'UTC'}}</td>
+                                        <td>{{shared.getTimefromDate(appointment?.start_date)}}</td>
+                                        <td>{{shared.getTimefromDate(appointment?.end_date)}}</td>
+                                        <td>{{appointment?.location_data?.location_name}}</td>
+                                        <td>{{getServiceName(appointment?.service_data) | titlecase}}</td>
+                                        <td>{{appointment?.department_data?.name}}</td>
+                                        <td>
+                                            @for (treatment of appointment?.treatment_data; track treatment) {
+                                            <div>{{treatment?.name}}</div>
+                                            }
+                                        </td>
+                                    </tr>
+                                    }
+                                    }
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @if (!appointmentsLoader && appointment_arr.length == 0) {
+                            <div class="mt-3 text-center text-danger">{{'app.no' | translate}} {{'app.appointment' |
+                                translate}}
+                                {{'app.found' |
+                                translate}}
+                            </div>
+                            }
+                            @if (loadmore) {
+                            <div class="col-12 d-flex justify-content-center">
+                                <button type="button" class="btn btn-dark d-flex align-items-center gap-2"
+                                    (click)="getAppointments()">
+                                    <i class="ri-add-line"></i>
+                                    <span>{{'app.load_more' | translate}}</span>
+                                </button>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- patient info -->
+<div class="offcanvas offcanvas-end" tabindex="-1" [id]="'offcanvas-' + user_details?._id"
+    aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasExampleLabel" class="mb-0">{{'app.chat' | translate}} {{'app.info' | translate}}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body profile-offcanvas p-0">
+        <div class="p-3 text-center">
+            <h5 class="fs-16 mb-3">
+                {{user_details?.patient_data?.first_name}} {{user_details?.patient_data?.last_name}}
+            </h5>
+            <div class="d-flex gap-2 justify-content-center">
+                <button type="button" class="btn avatar-xs p-0">
+                    <span class="avatar-title rounded bg-light text-body">
+                        <i class="ri-phone-line"></i>
+                    </span>
+                </button>
+
+                <button type="button" class="btn avatar-xs p-0">
+                    <span class="avatar-title rounded bg-light text-body">
+                        <i class="ri-mail-line"></i>
+                    </span>
+                </button>
+
+                <!-- <button type="button" class="btn avatar-xs p-0">
+                    <span class="avatar-title rounded bg-light text-body">
+                        <i class="ri-map-pin-2-line"></i>
+                    </span>
+                </button> -->
+
+                <div class="dropdown">
+                    <button class="btn avatar-xs p-0" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="avatar-title bg-light text-body rounded">
+                            <i class="ri-more-fill"></i>
+                        </span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="ri-inbox-archive-line align-bottom text-muted me-2"></i>Archive</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="ri-mic-off-line align-bottom text-muted me-2"></i>Muted</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="ri-delete-bin-5-line align-bottom text-muted me-2"></i>Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top border-top-dashed p-3">
+            <h5 class="fs-15 mb-3">{{'app.personal_details' | translate}}</h5>
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.phone' | translate}}</p>
+                <h6>{{user_details?.patient_data?.phone}}</h6>
+            </div>
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.email' | translate}}</p>
+                <h6>{{user_details?.patient_data?.email}}</h6>
+            </div>
+        </div>
+
+        <div class="border-top border-top-dashed p-3">
+            <div class="mb-3 d-flex align-items-center gap-3">
+                <div class="h5 mb-0">{{'app.request_details' | translate}}</div>
+                <div class="badge text-white" [ngClass]="user_details?.meta?.is_new ? 'bg-dark' : 'bg-info'">
+                    {{user_details?.meta?.is_new ? 'New Patient' : 'Existing Patient'}}</div>
+            </div>
+            <!-- <div class="mb-3">
+                <h6 class="badge" [ngClass]="user_details?.meta?.is_new ? 'bg-dark' : 'bg-info'">{{user_details?.meta?.is_new ? 'New Patient' : 'Existing Patient'}}</h6>
+            </div> -->
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">Insurance</p>
+                <h6>{{user_details?.meta?.insurance | titlecase}}</h6>
+            </div>
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.department' | translate}}</p>
+                <h6 class="mb-0">{{user_details?.department_data?.name}}</h6>
+            </div>
+            <div>
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.treatment' | translate}}</p>
+                @for (treatment of user_details?.meta?.treatments; track treatment) {
+                <h6>{{treatment?.treatment_name}}</h6>
+                }
+            </div>
+        </div>
+    </div>
+</div>

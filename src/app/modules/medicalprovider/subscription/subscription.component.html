@@ -1,0 +1,279 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.subscription_plans' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line'></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'app.subscription_plans' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-5">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex">
+                    <ul class="nav nav-pills arrow-navtabs plan-nav rounded mb-3 p-1" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold active" id="month-tab" data-bs-toggle="pill"
+                                data-bs-target="#month" type="button" role="tab" aria-selected="true">{{'app.tab_month'
+                                | translate}}</button>
+                        </li>
+                        <!-- <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold" id="annual-tab" data-bs-toggle="pill"
+                                data-bs-target="#annual" type="button" role="tab" aria-selected="false"
+                                tabindex="-1">Annually</button>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @for (subscription of plans_arr; track subscription; let i = $index) {
+        <div class="col-xxl-4 col-lg-6 mb-3">
+            <div class="card pricing-box sameheight">
+                <div class="card-body bg-light m-4 position-relative p-0">
+                    <div class="d-flex align-items-center p-3 gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-grow-1">
+                            @if (subscription?.name == 'Rezi24') {
+                            <i class="ri-stethoscope-line ri-lg"></i>
+                            }
+                            @else if (subscription?.name == 'Rezi24 All Round') {
+                            <i class="ri-first-aid-kit-line ri-lg"></i>
+                            }
+                            @else {
+                            <i class="ri-database-line ri-lg"></i>
+                            }
+                            <h5 class="mb-0 fw-semibold">{{subscription?.name}}</h5>
+                            @if (subscription?.active_subs_data?.is_trial) {
+                            <div class="badge bg-info">{{'app.trial' | translate}}</div>
+                            }
+                        </div>
+                        <div class="ms-auto text-nowrap">
+                            <h5 class="month mb-0" style="display: block;">
+                                {{subscription?.stripe_prices?.price}}<small class="fw-light">€</small> <small
+                                    class="fs-13 text-muted">
+                                    @if (subscription?.stripe_prices?.billing_period == 'monthly') {
+                                    /{{'app.period_monthly' | translate}}
+                                    }
+                                </small></h5>
+                            <!-- <h5 class="annual mb-0" style="display: none;"><small class="fs-16"><del>$228</del></small>
+                                $171 <small class="fs-13 text-muted">/Year</small></h5> -->
+                        </div>
+                    </div>
+                    @if(subscription?.active_subs_data?.is_trial || subscription?.active_subs_data?.is_cancelled){
+                    <div class="d-flex justify-content-between align-items-center mb-3 px-3">
+                        <div class="small">{{'app.expires_on' | translate}}: <span
+                                class="text-danger">{{subscription?.active_subs_data?.end_date | date:
+                                'dd.MM.yy':'UTC'}}</span></div>
+                        @if (subscription?.active_subs_data?.is_cancelled) {
+                        <div class="badge bg-danger">{{'app.cancelled' | translate}}</div>
+                        }
+                    </div>
+                    }
+                    <p class="text-muted px-3">
+                        @if (subscription?.name == 'Rezi24') {
+                    <figure>
+                        <blockquote>
+                            <div>{{'app.heading_plan_1' | translate}}</div>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                            {{'app.text_plan_1' | translate}}
+                        </figcaption>
+                    </figure>
+                    }
+                    @else if (subscription?.name == 'Rezi24 All Round') {
+                    <figure>
+                        <blockquote>
+                            <div>{{'app.heading_plan_2' | translate}}</div>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                            {{'app.text_plan_2' | translate}}
+                        </figcaption>
+                    </figure>
+                    }
+                    @else {
+                    <figure>
+                        <blockquote>
+                            <div>{{'app.heading_plan_3' | translate}}</div>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                            {{'app.text_plan_3' | translate}}
+                        </figcaption>
+                    </figure>
+                    }
+
+                    </p>
+                    <ul class="list-unstyled vstack gap-3 px-3">
+                        @if ((subscription?.name == 'Rezi24')) {
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_1.1' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_2.1' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_3' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_4' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_5' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_6' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_7' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_8' | translate}}</li>
+                        }
+                        @else if ((subscription?.name == 'Rezi24 All Round')) {
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_1.2' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_2.1' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_3' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_4' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_5' | translate}}
+                        </li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_6' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_7' | translate}}</li>
+                        <li class="text-muted"><i class="ri-close-circle-line text-danger"></i> {{'app.plan_feature_8' | translate}}</li>
+                        }
+                        @else {
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_1.3' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_2.2' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_3' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_4' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_5' | translate}}
+                        </li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_6' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_7' | translate}}</li>
+                        <li><i class="ri-checkbox-circle-line text-success"></i> {{'app.plan_feature_8' | translate}}
+                        </li>
+                        }
+                    </ul>
+
+
+                    @if (subscription?.active_subs_data?.active) {
+                    <button type="button" class="btn w-100 position-absolute" style="bottom: -12px;"
+                        [ngClass]="subscription?.active_subs_data?.is_cancelled ? 'btn-success' : 'btn-danger'"
+                        (click)="cancelPlan(subscription?.active_subs_data?._id)"
+                        [disabled]="subscription?.active_subs_data?.is_cancelled">
+                        <span *ngIf="!cancel_loading">{{subscription?.active_subs_data?.is_cancelled ?
+                            ('app.current_plan' |
+                            translate) : ('app.cancel_plan' | translate)}}</span>
+                        <span *ngIf="cancel_loading">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </button>
+                    }
+                    @if (!subscription?.active_subs_data?.active) {
+                    <button type="button" class="btn btn-dark w-100 position-absolute" style="bottom: -12px;"
+                        (click)="submitPlan(i)">
+                        <span *ngIf="!submit_loading">{{'app.choose_plan' | translate}}</span>
+                        <span *ngIf="submit_loading">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+        <!--end col-->
+    </div>
+
+    <!-- <div class="row">
+        <div class="col-xxl-3 col-lg-6">
+            <div class="card pricing-box">
+                <div class="card-body bg-light m-2 p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-0 fw-semibold">Starter</h5>
+                        </div>
+                        <div class="ms-auto">
+                            <h2 class="month mb-0" style="display: none;">$19 <small
+                                    class="fs-13 text-muted">/Month</small></h2>
+                            <h2 class="annual mb-0" style="display: block;"><small class="fs-16"><del>$228</del></small>
+                                $171 <small class="fs-13 text-muted">/Year</small></h2>
+                        </div>
+                    </div>
+
+                    <p class="text-muted">The perfect way to get started and get used to our tools.</p>
+                    <ul class="list-unstyled vstack gap-3">
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-success me-1">
+                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <b>3</b> Projects
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-success me-1">
+                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <b>299</b> Customers
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-success me-1">
+                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    Scalable Bandwidth
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-success me-1">
+                                    <i class="ri-checkbox-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <b>5</b> FTP Login
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-danger me-1">
+                                    <i class="ri-close-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <b>24/7</b> Support
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-danger me-1">
+                                    <i class="ri-close-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <b>Unlimited</b> Storage
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 text-danger me-1">
+                                    <i class="ri-close-circle-fill fs-15 align-middle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    Domain
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="mt-3 pt-2">
+                        <a href="javascript:void(0);" class="btn btn-danger disabled w-100">Your Current Plan</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+</div>

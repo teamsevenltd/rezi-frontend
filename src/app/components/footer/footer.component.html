@@ -1,0 +1,23 @@
+<div class="btn-group w-100 position-absolute bottom-0 overflow-x-auto" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 rounded-0"
+        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('menu')">
+        <i class="ri-home-2-line"></i>{{'app.menu' | translate}}</button>
+    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
+        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('chat')">
+        <i class="ri-chat-2-line"></i>{{'app.chat' | translate}}</button>
+    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
+        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('news')">
+        <i class="ri-news-line"></i>{{'app.news' | translate}}</button>
+    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
+        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('feedback')">
+        <i class="ri-feedback-line"></i>{{'app.feedback' | translate}}</button>
+    <button type="button"
+        class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start rounded-0"
+        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('info')">
+        <i class="ri-user-3-line"></i>{{'app.info' | translate}}</button>
+</div>

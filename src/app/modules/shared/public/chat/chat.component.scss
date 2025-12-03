@@ -1,0 +1,11 @@
+.chat-conversation {
+    height: calc(100vh - 292px) !important;
+}
+.chat-conversation .conversation-list .ctext-wrap-content {
+    max-width: 200px;
+}
+@media (max-width: 991.98px) {
+    .chat-conversation {
+        height: calc(100vh - 245px) !important;
+    }
+}

@@ -1,0 +1,35 @@
+<div class="card rounded-0" [style.background-color]="facility_details ? facility_details?.background_color : '#fff'">
+    <div class="card-body d-flex justify-content-between align-items-center px-xl-5">
+        <div class="d-flex align-items-center gap-3">
+            <img [src]="facility_details?.site_logo ? auth.getapi() + facility_details?.site_logo : './assets/images/rez-icon.png'"
+                alt="" class="icon">
+            <div class="d-grid" [style.color]="facility_details?.text_color ? facility_details?.text_color : '#000'">
+                <div>{{facility_details?.title || ''}}</div>
+                <ol class="breadcrumb d-flex align-items-center gap-2 mb-0">
+                    <li class="breadcrumb-item">{{breadcrumb_info?.previous}}</li>
+                    <li> > </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{breadcrumb_info?.next}}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="dropdown ms-1 topbar-head-dropdown header-item">
+            <button type="button"
+                class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle"
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img id="header-lang-img" [src]="flagSrc" alt="Header Language" height="20" class="rounded">
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+                <a href="javascript:void(0);" class="dropdown-item notify-item language py-2"
+                    (click)="changeUserLanguage('en')" title="English">
+                    <img src="./assets/images/flags/us.svg" alt="user-image" class="me-2 rounded" height="18">
+                    <span class="align-middle">English</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item notify-item language" (click)="changeUserLanguage('de')"
+                    title="Deutsch">
+                    <img src="./assets/images/flags/germany.svg" alt="user-image" class="me-2 rounded" height="18">
+                    <span class="align-middle">Deutsch</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

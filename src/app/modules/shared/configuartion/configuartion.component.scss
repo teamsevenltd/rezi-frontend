@@ -1,0 +1,105 @@
+.card {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+@media screen and (min-width: 1300px) {
+    .nav {
+        width: 25%;
+        margin-right: 14px;
+    }
+    .tab-content {
+        width: 73.6% !important;
+    }
+}
+
+.nav-link,
+h6,
+p {
+    color: var(--main-black);
+}
+.nav-link,
+h6 {
+    font-weight: 600;
+}
+.nav-link {
+    font-size: 14px;
+    padding: 1.5rem 1rem;
+    width: 100%;
+    text-align: left;
+}
+
+.nav-pills .nav-link.active {
+    box-shadow: none;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-radius: 6px;
+}
+
+.container-fluid {
+    margin-inline: 0;
+    min-height: calc(100vh - 8rem);
+
+    .img {
+        img {
+            background-size: 100% 100%;
+            background-position: 100% 100%;
+            object-position: center;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: var(--gray-color);
+        }
+        i {
+            top: 68%;
+            right: 33%;
+            font-size: 19px;
+        }
+    }
+}
+.tab-content .tab-pane {
+    border: 0 !important;
+}
+h4 {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 23px;
+    span {
+        font-weight: 700;
+    }
+}
+.profile-head {
+    h5 {
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 23px;
+        position: relative;
+    }
+
+    h5:before {
+        content: "";
+        position: absolute;
+        height: 1rem;
+        width: 0.2rem;
+        inset-block-start: 0.15rem;
+        inset-inline-start: -0.65rem;
+        background: var(--blue-dark);
+        border-radius: 0.5rem;
+    }
+}
+.profile-form {
+    border-top: 1px solid var(--gray-color);
+    label {
+        font-weight: 600;
+        font-size: 13px;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus {
+        color: var(--main-black);
+        outline: 1px solid var(--secondary-color) !important;
+    }
+    button {
+        border-radius: 0.5rem;
+    }
+}

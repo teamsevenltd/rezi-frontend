@@ -1,0 +1,633 @@
+<div class="containter-fluid " style="margin-top: 77px;margin-bottom: 100px;">
+    <div class="d-md-flex d-block mx-3 mb-0 align-items-center mb-0 justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold  fs-18 mb-0">Steps</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a  [routerLink]="['/medicalprovider/services/steps/answer']">Back <i class='bx bx-chevrons-right ' ></i></a> </li>
+                    <li class="breadcrumb-item active" aria-current="page"> Steps</li>
+                </ol>
+            </nav>
+        </div>
+    </div> 
+    <div class="w-100 ">
+        <ul class="timeline list-unstyled">
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2 text-center cursor-pointer" [routerLink]="['/medicalprovider/services/steps/answer']" >
+                    <p class="fs-16 mt-2 ">Back to the higher perfomance</p>
+                    <h5 class="text-danger">First Step in the appointment process</h5>
+                </div>
+            </li>
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="accordion accordion-flush " id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button rounded-2 collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    Visibility <i class="bx bx-chevron-right fs-22 mx-2 text-muted fw-bold"></i> <span
+                                        class="text-muted">Edit Visibilty</span>
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse "
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body px-0 mx-0">
+                                    <div class="mt-3">
+                                        <p class="text-muted">For which patients should this question be displayed?</p>
+                                        <select class="form-select" (click)="clickpaitentgroup($event)">
+                                            <option value="" selected>All patients</option>
+
+                                            <option value="selectedpaitent">
+                                                Only selected patient groups
+                                            </option>
+                                        </select>
+                                        <div *ngIf=" paitentgroup">
+                                            <button
+                                                class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                                type="button">
+                                                <span class="ms-2">Pakistan</span><i
+                                                    class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                            </button>
+                                            <button
+                                                class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                                type="button">
+                                                <span class="ms-2">India</span><i
+                                                    class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p class="text-muted">Limit visibility</p>
+                                        <button
+                                            class="gray w-100 border-0 p-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Show only for selected locations</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                        <button
+                                            class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Pakistan</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> 
+                </div>
+            </li>
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="accordion accordion-flush " id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button rounded-2 collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapsetwo" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    Settings <i class="bx bx-chevron-right fs-22 mx-2 text-muted fw-bold"></i> <span
+                                        class="text-muted">Type of Answer</span>
+                                </button>
+                            </h2>
+                            <div id="flush-collapsetwo" class="accordion-collapse collapse "
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body px-0 mx-0">
+                                    <div class="mt-3">
+                                        <select class="form-select" (click)="clicktypeofanswer($event)">
+                                            <option value="" selected>Standard</option>
+
+                                            <option value="picture">
+                                                Question with picture
+                                            </option>
+                                        </select>
+                                        <div *ngIf="picturetype">
+                                            <div class="gray rounded-3 shadow-sm  p-3 mt-3  ">
+                                                <form>
+                                                    <div class="d-flex justify-content-between">
+                                                        <input type="file" class="fs-14 form-control mb-2 me-2"
+                                                            placeholder="">
+                                                        <div class="hstack gap-2 "> <a
+                                                                class="text-info fs-16   d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                                                style="width: 30px;height: 30px;"><i
+                                                                    class="ri-edit-line"></i></a> <a
+                                                                class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                                                style="width: 30px;height: 30px;"><i
+                                                                    class="bx bx-trash"></i></a> </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="accordion accordion-flush " id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button rounded-2 collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapsethree"
+                                    aria-expanded="false" aria-controls="flush-collapseOne">
+                                    Next Step<i class="bx bx-chevron-right fs-22 mx-2 text-muted fw-bold"></i> <span
+                                        class="text-muted">Patient choose this answer </span>
+                                </button>
+                            </h2>
+                            <div id="flush-collapsethree" class="accordion-collapse collapse "
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body px-0 mx-0">
+                                    <div class="mt-3">
+                                        <p class="">Specify how the further appointment process for this service
+                                            should look for each individual patient group (e.g. message for new
+                                            patients: "We currently have no appointments available.</p>
+                                        <form class="mt-3 row">
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Generally</label>
+                                         
+                                                <select class="form-select">
+                                                    <optgroup label="Allgemein">
+                                                        <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                        <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                    </optgroup>
+                                                  <optgroup label="Ablauf abbrechen">
+                                                        <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                        <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                        <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                    </optgroup>
+                                                  <optgroup label="Einen Serviceablauf starten">
+                                                        <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                        <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                        <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                        <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                        <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                        <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                        <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                        <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                        <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                    </optgroup>
+                                                  <optgroup label="Eine Aktionskette starten">
+                                                        <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                        <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                        <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                    </optgroup>
+                                                 
+                                                   
+
+                                                    
+                                                </select>
+                                            </div>
+                                            <div class=" col-12 mb-3">
+                                                <label class="form-label">Neupatients</label>
+                                            </div>
+                                            
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Generally</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Legally</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Private</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Self Payers</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">BG</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class=" col-12 mb-3">
+                                                <label class="form-label">File Patients</label>
+                                            </div>
+                                            
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Generally</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Legally</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Private</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">Self Payers</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label text-muted">BG</label>
+                                                <select class="form-select">
+
+                                                    <optgroup label="Allgemein">
+                                                          <option value="321med"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients move to the next step in the appointment process</font></font></option>
+                                                          <option value="notice"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Display a note and then continue to the next step in the process</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Ablauf abbrechen">
+                                                          <option value="message"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will receive an automatic message (enter message below)</font></font></option>
+                                                          <option value="link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Patients will be directed to an external service (enter link below)</font></font></option>
+                                                          <option value="iframe"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">An external service is displayed to patients (enter the integration code of the external service below)</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Einen Serviceablauf starten">
+                                                          <option value="34b0ebe5e139bd529e9b313f8fee39b0d0f5d12b"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Questions about cost plans &amp; treatment and cost plans"</font></font></option>
+                                                          <option value="ba0ffa5b56be367aab694f47e83bb3b83e3c67a0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ayesha"</font></font></option>
+                                                          <option value="bf90ddaa8585612bc2bcca13206ce5a22f16d16e"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "ok"</font></font></option>
+                                                          <option value="ae522f53e40b70ea08bc5d855fb1225178da966f"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "Cancel / reschedule appointment"</font></font></option>
+                                                          <option value="1b7e7679b8e5d3c43127d1f8415beb753fa335d5"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem added"</font></font></option>
+                                                          <option value="0613dd62bd88688a815a4bb757949d1bc1b2a2ca"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "For applicants (ZFA)"</font></font></option>
+                                                          <option value="e41a888ca304fa83c5cc70707bfd0d1050c3a490"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "MIR"</font></font></option>
+                                                          <option value="463b5705523f65cdd761830332b4ff0b30c71d24"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "tehreem"</font></font></option>
+                                                          <option value="874b35d94af569dfca8ce81a90100e80df2c3bc2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the service process "d,c,"</font></font></option>
+                                                      </optgroup>
+                                                    <optgroup label="Eine Aktionskette starten">
+                                                          <option value="0aabb524b9395238d92a7abe3ae53c1f8cc0d714"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Frequently Asked Questions: Parking Spaces"</font></font></option>
+                                                          <option value="5b08d19750069eb5855a4c1a043554697a2a2d0a"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the "Barrier-free" action chain</font></font></option>
+                                                          <option value="211a688b8ecd1b9333f03f00e37f484dc0ff8ada"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Start the action chain "Anamnesis form"</font></font></option>
+                                                      </optgroup>
+                                                    
+                                      
+                                  </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+            <li >
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="accordion accordion-flush " id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button rounded-2 collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapsefour" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    Next Step <i class="bx bx-chevron-right fs-22 mx-2 text-muted fw-bold"></i> <span
+                                        class="text-muted">Add more individual steps</span>
+                                </button>
+                            </h2>
+                            <div id="flush-collapsefour" class="accordion-collapse collapse "
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body px-0 mx-0">
+                                    <div class="mt-3">
+                                        <p class="mb-3">Add additional questions to be asked when patients select this answer</p>
+                                        <div class="gray rounded-3 shadow-sm  p-3 mt-3  ">
+                                            <form>
+                                                <div class="d-flex justify-content-between">
+                                                    <input type="text" class="fs-14 form-control mb-2 me-2"
+                                                        placeholder="">
+                                                    <div class="hstack gap-2 "> <a
+                                                        [routerLink]="['/medicalprovider/services/steps/answer/subpredefine-answer']"
+                                                            class="text-info fs-16   d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                                            style="width: 30px;height: 30px;"><i
+                                                                class="ri-edit-line"></i></a> <a
+                                                            class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                                            style="width: 30px;height: 30px;"><i
+                                                                class="bx bx-trash"></i></a> </div>
+                                                </div>
+                                            </form>
+    
+                                        </div>
+                                        <div *ngFor="let step of steps; let i = index">
+                                            <div *ngIf="stepbtn">
+                                                <div class="gray rounded-3 shadow-sm  p-3 mt-3  ">
+                                                    <form>
+                                                        <div class="d-flex justify-content-between">
+                                                            <input type="text" class="fs-14 form-control mb-2 me-2"
+                                                                placeholder="">
+                                                            <div class="hstack gap-2 "> <a
+                                                                [routerLink]="['/medicalprovider/services/steps/answer/subpredefine-answer']"
+                                                                    class="text-info fs-16   d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                                                    style="width: 30px;height: 30px;"><i
+                                                                        class="ri-edit-line"></i></a> <a
+                                                                    class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                                                    style="width: 30px;height: 30px;"><i
+                                                                        class="bx bx-trash"></i></a> </div>
+                                                        </div>
+                                                    </form>
+            
+                                                </div>
+            
+                                            </div>
+                                        </div>
+            
+                                        <div class="d-flex justify-content-center mt-5" (click)="clickbtn()">
+                                            <button type="button"
+                                                class=" btn btn-dark w-50 py-2 justify-content-center d-flex align-items-center fs-16">
+                                                <i class="bx bx-plus fs-20 me-1"></i> Add Steps
+                                            </button>
+            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+           
+           
+           
+           
+           
+           
+           
+            
+        </ul>
+       
+    </div>
+</div>
+
+
+
+
+

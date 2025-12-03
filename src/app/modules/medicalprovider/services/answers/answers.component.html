@@ -1,0 +1,320 @@
+<div class="container-fluid " style="margin-top: 77px;margin-bottom: 100px;">
+    <div class="d-md-flex d-block mx-3 align-items-center mb-0 justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold  fs-18 mb-0">Steps</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a  [routerLink]="['/medicalprovider/services/steps']">Back <i class='ri-arrow-right-double-line' ></i></a> </li>
+                    <li class="breadcrumb-item active" aria-current="page"> Steps</li>
+                </ol>
+            </nav>
+        </div>
+    </div> 
+    <div class="w-100 ">
+        <ul class="timeline list-unstyled">
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p class="fs-16 mt-2 cursor-pointer" [routerLink]="['/medicalprovider/services/steps']">Back to the higher perfomance</p>
+                    </div>
+                </div>
+            </li>
+           
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <p class="fs-16 mt-2 ">Position of the question</p>
+                        <p class="text-muted">At what point in the process should the question appear?</p>
+                        <select class="form-select">
+                            <option value="" selected>Before querying the perfomance</option>
+                            <option [value]="">After querying the perfomance, before further question</option>
+                            <option [value]="">After further questions,before requesting contact details</option>
+                        </select>
+                </div>
+            </li>
+            <li>
+                <div class="timeline-time text-end"> 
+        </div>
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body">
+                    <div class="accordion accordion-flush " id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button rounded-2 collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    Visibility <i class="bx bx-chevron-right fs-22 mx-2 text-muted fw-bold"></i> <span
+                                        class="text-muted">Edit Visibilty</span>
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse "
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body px-0 mx-0">
+                                    <div class="mt-3">
+                                        <p class="text-muted">For which locations should this question be available?</p>
+                                        <button
+                                            class="gray w-100 border-0 p-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Pakistan</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                        <button
+                                            class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">India</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p class="text-muted">For which patients should this question be displayed?</p>
+                                        <select class="form-select" (click)="clickpaitentgroup($event)">
+                                            <option value="" selected>All patients</option>
+
+                                            <option value="selectedpaitent">
+                                                Only selected patient groups
+                                            </option>
+                                        </select>
+                                        <div *ngIf=" paitentgroup">
+                                            <button
+                                                class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                                type="button">
+                                                <span class="ms-2">Pakistan</span><i
+                                                    class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                            </button>
+                                            <button
+                                                class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                                type="button">
+                                                <span class="ms-2">India</span><i
+                                                    class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p class="text-muted">Limit visibility</p>
+                                        <button
+                                            class="gray w-100 border-0 p-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Show only for selected locations</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                        <button
+                                            class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Pakistan</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p class="text-muted">Hide question for certain services:</p>
+                                        <button
+                                            class="gray w-100 border-0 p-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Follow up examination</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                        <button
+                                            class="gray w-100 border-0 p-2 mt-2 d-flex justify-content-between  rounded-2"
+                                            type="button">
+                                            <span class="ms-2">Filling</span><i
+                                                class="bx bxs-toggle-right fs-24 text-danger-emphasis "></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+           
+            <li>
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="">
+                        <p class="fs-16 mt-2 ">Type of junction</p>
+                        <p class="text-muted">What should this hub be?</p>
+                        <select class="form-select" (click)="junctiontype($event)">
+                            <option>Selected</option>
+                            <option value="singlequestion">Question with single choice of given answers</option>
+                            <option value="multiplequestion">Question with multiple choice of given answers</option>
+                            <option value="filedownload">File Download</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+           
+            <li *ngIf="squestion">
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div >
+                        <p class="fs-16 mt-2 ">Predefined answers</p>
+                        <div class="card  ">
+                            <div
+                                class="gray rounded-3  my-2  p-3 d-flex justify-content-between align-items-center">
+                                <p class="fs-14 mt-2  fw-medium">First Step in the appointment process</p>
+                                <div class="hstack gap-2 "> <a
+                                        class="text-info fs-16  d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                        [routerLink]="['/medicalprovider/services/steps/answer/predefine-answer']"
+                                        style="width: 30px;height: 30px;"><i class="ri-edit-line"></i></a> <a
+                                        class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                        style="width: 30px;height: 30px;"><i class="bx bx-trash"></i></a> </div>
+
+                            </div>
+
+
+                            <div *ngFor="let step of steps; let i = index">
+                                <div *ngIf="stepbtn">
+                                    <div class="gray rounded-3 shadow-sm  p-3 mt-3  ">
+                                        <form>
+                                            <div class="d-flex justify-content-between">
+                                                <input type="text" class="fs-14 form-control mb-2 me-2"
+                                                    placeholder="">
+                                                <div class="hstack gap-2 "> <a
+                                                        [routerLink]="['/medicalprovider/services/steps/answer/predefine-answer']"
+                                                        class="text-info fs-16   d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                                        style="width: 30px;height: 30px;"><i
+                                                            class="ri-edit-line"></i></a> <a
+                                                        class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                                        style="width: 30px;height: 30px;"><i
+                                                            class="bx bx-trash"></i></a> </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-5" (click)="clickbtn()">
+                                <button type="button"
+                                    class=" btn btn-dark w-50 py-2 justify-content-center d-flex align-items-center fs-16">
+                                    <i class="bx bx-plus fs-20 me-1"></i> Add Answer
+                                </button>
+
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+           
+            <li *ngIf="mquestion">
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="">
+                        <p class="fs-16 mt-2 ">Predefined answers</p>
+                        <div class="card  ">
+                            <div
+                                class="gray rounded-3 my-2   p-3 d-flex justify-content-between align-items-center">
+                                <p class="fs-14 mt-2 fw-medium">First Step in the appointment process</p>
+                                <div class="hstack gap-2 "> <a
+                                        class="text-info fs-16  d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                        [routerLink]="['/medicalprovider/services/steps/answer/predefine-answer']"
+                                        style="width: 30px;height: 30px;"><i class="ri-edit-line"></i></a> <a
+                                        class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                        style="width: 30px;height: 30px;"><i class="bx bx-trash"></i></a> </div>
+
+                            </div>
+                            <div
+                                class="gray rounded-3  my-2 shadow-sm   p-3 d-flex justify-content-between align-items-center">
+                                <p class="fs-14 mt-2 fw-medium ">Second Step in the appointment process</p>
+                                <div class="hstack gap-2 "> <a
+                                        class="text-info fs-16  d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                        [routerLink]="['/medicalprovider/services/steps/answer/predefine-answer']"
+                                        style="width: 30px;height: 30px;"><i class="ri-edit-line"></i></a> <a
+                                        class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                        style="width: 30px;height: 30px;"><i class="bx bx-trash"></i></a> </div>
+
+                            </div>
+
+
+                            <div *ngFor="let step of steps; let i = index">
+                                <div *ngIf="stepbtn">
+                                    <div class="gray rounded-3 shadow-sm  p-3 mt-3  ">
+                                        <form>
+                                            <div class="d-flex justify-content-between">
+                                                <input type="text" class="fs-14 form-control mb-2 me-2"
+                                                    placeholder="">
+                                                <div class="hstack gap-2 "> <a
+                                                        [routerLink]="['/medicalprovider/services/steps/answer/predefine-answer']"
+                                                        class="text-info fs-16   d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                                        style="width: 30px;height: 30px;"><i
+                                                            class="ri-edit-line"></i></a> <a
+                                                        class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                                        style="width: 30px;height: 30px;"><i
+                                                            class="bx bx-trash"></i></a> </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-5 " (click)="clickbtn()">
+                                <button type="button"
+                                    class=" btn btn-dark w-50 py-2 justify-content-center d-flex align-items-center fs-16">
+                                    <i class="bx bx-plus fs-20 me-1"></i> Add Answer
+                                </button>
+
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li *ngIf="fdownload">
+               
+                <div class="timeline-icon"> <a ></a> </div>
+                <div class="timeline-body my-2">
+                    <div class="">
+                        <div class="card  ">
+
+
+                            <div class="gray rounded-3 shadow-lg  p-3 mt-3  ">
+                                <form>
+                                    <div class="d-flex justify-content-between">
+                                        <input type="file" class="fs-14 form-control mb-2 me-2"
+                                            placeholder="">
+                                        <div class="hstack gap-2 "> <a
+                                                [routerLink]="['/medicalprovider/services/steps/answer/predefine-answer']"
+                                                class="text-info fs-16   d-flex rounded-2 align-items-center justify-content-center bg-success-subtle  lh-1"
+                                                style="width: 30px;height: 30px;"><i class="ri-edit-line"></i></a> <a
+                                                class="text-danger fs-16 bg-danger-subtle rounded-2 d-flex align-items-center justify-content-center  lh-1"
+                                                style="width: 30px;height: 30px;"><i class="bx bx-trash"></i></a> </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+           
+           
+           
+            
+        </ul>
+       
+    </div>
+</div>
+
+
+

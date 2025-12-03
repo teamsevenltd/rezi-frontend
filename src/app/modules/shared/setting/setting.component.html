@@ -1,0 +1,528 @@
+<div class="container-fluid px-0 mt-5 py-1"> <!-- Page Header -->
+  <div class="col-12">
+    <div class="card shadow-none">
+      <div class="card-body">
+        <div class="row">
+          <div class="nav flex-column  nav-pills px-0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="rounded-2 bg-white py-2 mb-2 text-center">
+              <div class="position-relative">
+                <img [src]="user?.picture ? auth.getapi() + user?.picture : './assets/images/users/avatar-3.jpg'"
+                  id="imagePreview" style="display:block;" class="img-fluid mx-auto object-fit-cover profile-img mt-4"
+                  alt="">
+                @if (role == 'superadmin') {
+                <label for="file">
+                  <i class="ri-edit-line image-icon bg-secondary-subtle" role="button"> </i>
+                </label>
+                <input type="file" id="file" (change)="updateProfileImage($event)" accept="image/*">
+                }@else {
+                <label>
+                  <i class="ri-edit-line image-icon bg-secondary-subtle" role="button" (click)="chooseOption()"> </i>
+                </label>
+                <input type="file" id="file" style="display: none" (change)="updateProfileImage($event)"
+                  accept="image/*">
+                }
+              </div>
+              <h6 class="fw-semibold">{{user ? (user?.first_name + ' ' + user?.last_name | titlecase) : ''}}</h6>
+              <!-- <p class="fw-normal">{{user ? user?.role_id?.name : ''}}</p> -->
+            </div>
+            <!-- tabs -->
+            <div class="rounded-2 bg-white" style="margin-top: 5px;margin-bottom: 24px;">
+              <button class="nav-link active d-flex align-items-center" id="v-pills-home-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+                aria-selected="true">
+                <i class="ri-user-3-line  mx-3 fs-16"></i>
+                {{'app.personal_details' | translate}}
+              </button>
+              @if (user?.role_id?.key == 'superadmin') {
+              <button class="nav-link d-flex align-items-center" id="v-pills-appsetting-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-appsetting" type="button" role="tab" aria-controls="v-pills-appsetting"
+                aria-selected="false">
+                <i class="ri-settings-3-line mx-3 fs-18"></i>
+                {{'app.app_setting' | translate}}
+              </button>
+              }
+              <button class="nav-link d-flex align-items-center" id="v-pills-profile-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+                aria-selected="false">
+                <i class="ri-edit-line mx-3 fs-16"></i>
+                {{'app.change_password' | translate}}
+              </button>
+              @if (user?.role_id?.key != 'superadmin') {
+              <button class="nav-link d-flex align-items-center" id="v-pills-availability-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-availability" type="button" role="tab" aria-controls="v-pills-availability"
+                aria-selected="false">
+                <i class="ri-calendar-2-line mx-3 fs-16"></i>
+                {{'app.availability' | translate}}
+              </button>
+              }
+            </div>
+          </div>
+
+          <div class="tab-content bg-white mb-4 rounded-2" id="v-pills-tabContent">
+            <!-- personal details -->
+            <div class="tab-pane fade show active p-3" id="v-pills-home" role="tabpanel"
+              aria-labelledby="v-pills-home-tab">
+              <div class="profile-head">
+                <h5 class="fs-20">{{'app.personal_details' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+
+              <div class="profile-form">
+                <form [formGroup]="profileForm" (ngSubmit)="profileSubmit()">
+                  <div class="row">
+                    <div class="col-md-6 col-12 mb-3">
+                      <label for="first_name" class="form-label">{{'app.first' | translate}}</label>
+                      <input type="text" class="form-control" formControlName="first_name">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                      <label for="last_name" class="form-label">{{'app.last' | translate}}</label>
+                      <input type="text" class="form-control" formControlName="last_name">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label for="email" class="form-label">{{'app.email' | translate}}</label>
+                      <input type="email" class="form-control" formControlName="email" readonly>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                      <label for="role" class="form-label">Role</label>
+                      <input type="text" class="form-control" formControlName="role" readonly>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                      <label for="phone_number" class="form-label">{{'app.phone' | translate}}</label>
+                      <input type="tel" class="form-control" formControlName="phone_number">
+                    </div>
+                  </div>
+
+                  <div class="row" formGroupName="address">
+                    <div class="col-12 mb-3">
+                      <label for="street" class="form-label">{{'app.address' | translate}}</label>
+                      <textarea class="form-control" rows="2" formControlName="street"></textarea>
+                    </div>
+                    <div class="col-md-4 col-12 mb-3">
+                      <label for="city" class="form-label">{{'app.city' | translate}}</label>
+                      <input type="text" class="form-control" formControlName="city">
+                    </div>
+                    <div class="col-md-4 col-12 mb-3">
+                      <label for="country" class="form-label">{{'app.country' | translate}}</label>
+                      <input type="text" class="form-control" formControlName="country">
+                    </div>
+                    <div class="col-md-4 col-12 mb-3">
+                      <label for="zip" class="form-label">{{'app.zip' | translate}}</label>
+                      <input type="text" class="form-control" formControlName="zip">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                      <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center">
+                        <span *ngIf="!loading" class="d-flex align-items-center"><i
+                            class='ri-save-3-line me-2 fs-5'></i>{{'app.update' | translate}}</span>
+                        <span *ngIf="loading">
+                          <div class="spinner-border spinner-border-sm text-light" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              @if (role == 'medicalprovider') {
+              <div class="profile-head mt-4">
+                <h5 class="fs-20">{{'app.set_pin' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                @if (otp_pin) {
+                <h5 class="mb-0">{{otp_pin}}</h5>
+                }
+                <button type="button" class="btn btn-dark d-flex align-items-center" (click)="generatePin()">
+                  <i class="ri-loop-right-line me-2 fs-5"></i>
+                  {{'app.generate_otp' | translate}}
+                </button>
+              </div>
+              }
+            </div>
+
+            <!-- app setting -->
+            <div class="tab-pane fade p-3" id="v-pills-appsetting" role="tabpanel"
+              aria-labelledby="v-pills-appsetting-tab">
+              <div class="profile-head">
+                <h5 class="fs-20">{{'app.app_setting' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+              <div class="profile-form">
+                <form class="row">
+                  <div class="col-12">
+                    <div class="mb-3">Please enter your SendGrid to send emails</div>
+                  </div>
+                  <div class="col-12 mb-2">
+                    <label for="" class="form-label">SendGrid Email</label>
+                    <input type="text" class="form-control" [(ngModel)]="sendgrid_mail"
+                      [ngModelOptions]="{standalone: true}">
+                  </div>
+                  <div class="col-12 mb-2">
+                    <label for="" class="form-label">API Key</label>
+                    <input type="text" class="form-control" [(ngModel)]="sendgrid_key"
+                      [ngModelOptions]="{standalone: true}">
+                  </div>
+                  <div class="col-12">
+                    <div class="mb-3">Please enter your Stripe for payments</div>
+                  </div>
+                  <div class="col-12 mb-2">
+                    <label for="" class="form-label">Stripe Key</label>
+                    <input type="text" class="form-control" [(ngModel)]="stripe_key"
+                      [ngModelOptions]="{standalone: true}">
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- change password -->
+            <div class="tab-pane fade p-3" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              <div class="profile-head">
+                <h5 class="fs-20">{{'app.change_password' | translate}}</h5>
+                <hr style="margin-top: -5px;">
+              </div>
+              <div class="profile-form">
+                <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>{{'app.be_aware' | translate}}</strong> {{'app.aware_text' | translate}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div> -->
+
+                <form [formGroup]="profileForm" class="row" (ngSubmit)="updatePassword()">
+                  <div class="col-lg-6 col-12 mb-3">
+                    <label for="old_password" class="form-label">{{'app.old_password' | translate}}<sup
+                        class="text-danger">*</sup></label>
+                    <input type="text" class="form-control" formControlName="old_password" placeholder="********">
+                  </div>
+                  <div class="col-lg-6 col-12 mb-3">
+                    <label for="new_password" class="form-label">{{'app.new_password' | translate}}<sup
+                        class="text-danger">*</sup></label>
+                    <input type="text" class="form-control" formControlName="new_password" placeholder="********">
+                  </div>
+                  <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center">
+                      <span *ngIf="!loading" class="d-flex align-items-center"><i
+                          class='ri-save-3-line me-2 fs-5'></i>{{'app.save' | translate}}</span>
+                      <span *ngIf="loading">
+                        <div class="spinner-border spinner-border-sm text-light" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- medicalprovider availability  -->
+            <div class="tab-pane fade p-3" id="v-pills-availability" role="tabpanel"
+              aria-labelledby="v-pills-availability-tab">
+              <div class="profile-head d-flex justify-content-between align-items-center mb-2">
+                <h5 class="fs-20 mb-0">{{'app.availability' | translate}}</h5>
+                <button type="button" class="btn btn-dark d-flex align-items gap-2" data-bs-toggle="modal"
+                  data-bs-target="#addAvailability">
+                  <i class="ri-add-line"></i>
+                  {{'app.add' | translate}} {{'app.availability' | translate}}
+                </button>
+              </div>
+              <hr style="margin-top: -5px;">
+              <div class="profile-form">
+                @if (getLoader) {
+                <div class="row">
+                  @for (loader of skeleton_arr; track $index) {
+                  <div class="col-xxl-3 col-xl-4 col-lg-6 col-12">
+                    <div class="card shadow-none">
+                      <div class="card-header align-items-center d-flex border-0">
+                        <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                      </div>
+                      <div class="card-body p-0">
+                        <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                      </div>
+                    </div>
+                  </div>
+                  }
+                </div>
+                }@else {
+                <div class="row">
+                  @for (availability of availability_arr; track availability; let x = $index) {
+                  <div class="col-xxl-3 col-xl-4 col-lg-6 col-12">
+                    <div class="card card-shadow">
+                      <div class="card-header align-items-center d-flex border-0 pb-0">
+                        <h4 class="card-title mb-0 flex-grow-1">{{availability?.weekday | titlecase}}</h4>
+                        <div class="flex-shrink-0">
+                          <div class="dropdown card-header-dropdown">
+                            <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false">
+                              <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end border">
+                              <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                (click)="editAvailable(x)" data-bs-toggle="modal" data-bs-target="#editAvailability"><i
+                                  class="ri-edit-line text-secondary"></i>{{'app.edit' |
+                                translate}}</a>
+                              <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                (click)="deleteAvailability(availability?._id)"><i
+                                  class="ri-delete-bin-line text-danger"></i>{{'app.delete' | translate}}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body p-0">
+                        <ul class="list-group list-group-flush border-dashed">
+                          @for (hours of sortedWorkingHours(availability?.working_hours); track hours) {
+                          <li class="list-group-item">
+                            <div class="d-flex align-items-baseline gap-2">
+                              <i class="ri-time-line fs-16"></i>
+                              {{hours?.opening_hours}} - {{hours?.closing_hours}}
+                            </div>
+                          </li>
+                          }
+                        </ul>
+                      </div>
+
+                    </div>
+                  </div>
+                  }@empty {
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <div class="text-danger">{{'app.no' | translate}} {{'app.availability' | translate}}
+                          {{'app.found' |
+                          translate}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  }
+                </div>
+                }
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- avatar gallery modal -->
+<div id="galleryModal" class="modal fade" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true"
+  data-bs-backdrop="static" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="galleryModalLabel">Avatar Gallery</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeModal aria-label="Close"> </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          @if (getLoader) {
+          @for (loader of skeleton_arr; track loader) {
+          <div class="col-xxl-2 col-lg-4 col-md-6">
+            <div class="card shadow-none">
+              <div class="card-body">
+                <div class="skeleton-card">Lorem, ipsum.</div>
+                <div class="skeleton-card">Lorem, ipsum.</div>
+                <div class="skeleton-card">Lorem, ipsum.</div>
+                <div class="skeleton-card">Lorem, ipsum.</div>
+              </div>
+            </div>
+          </div>
+          }
+          }
+          @else {
+          @for (image of gallery_arr; track gallery_arr; let i = $index) {
+          <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
+            <div class="card shadow-none" role="button" (click)="selectImage(image?.avatar)">
+              <div class="card-body text-center">
+                <img [src]="image?.avatar ? auth.getapi() + image?.avatar : ''"
+                  class="rounded avatar-xl material-shadow" [ngClass]="{
+                    'selected-image': selectedImagePath === image?.avatar
+                  }">
+              </div>
+            </div>
+          </div>
+          }
+          }
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- add availability modal -->
+<div id="addAvailability" class="modal fade" tabindex="-1" aria-labelledby="addAvailabilityLabel"
+  data-bs-backdrop="static" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAvailabilityLabel">{{'app.new' | translate}} {{'app.availability' | translate}}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAvailability aria-label="Close"> </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addAvailability" (ngSubmit)="submitAvailability()">
+          <div class="row">
+            <!-- <div class="col-12 text-center">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-dark material-shadow-none"
+                  [ngClass]="{ 'active': choiceSelected === 'weekly' }" (click)="changeChoice('weekly')">Weekly</button>
+                <button type="button" class="btn btn-outline-dark material-shadow-none"
+                  [ngClass]="{ 'active': choiceSelected === 'custom' }" (click)="changeChoice('custom')">Custom</button>
+              </div>
+            </div> -->
+
+            <div class="col-12 mb-3">
+              <label for="location_id" class="form-label">{{'app.location' | translate}}<sup
+                  class="text-danger">*</sup></label>
+              <select class="form-select" formControlName="location_id">
+                <option value="" selected>{{'app.select_a_value' | translate}}</option>
+                @for (location of location_arr; track location) {
+                <option [value]="location?._id">{{location?.location_name | titlecase}}</option>
+                }
+              </select>
+            </div>
+            <div class="col-12 mb-3">
+              <label for="weekday" class="form-label">{{'app.weekday' | translate}}<sup
+                  class="text-danger">*</sup></label>
+              <select class="form-select" formControlName="weekday">
+                <option value="" selected>{{'app.select_a_value' | translate}}</option>
+                @for (weekday of weekdays; track weekday) {
+                <option [value]="weekday.value">{{weekday?.label}}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="row" formArrayName="working_hours">
+            <div class="col-12">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label mb-0">{{'app.business_hours' | translate}}</label>
+                <button type="button" class="btn btn-sm btn-dark d-flex align-items-center gap-2"
+                  (click)="addWeeklyHours()"><i class="ri-add-line"></i>{{'app.hours' | translate}}</button>
+              </div>
+              <div *ngFor="let hour of WeeklyHours.controls; let i = index" [formGroupName]="i">
+                <div class="row">
+                  <div class="col-md-6 col-12 mb-2">
+                    <label for="opening_hours" class="form-label">{{'app.starting_hours' | translate}}<sup
+                        class="text-danger">*</sup></label>
+                    <input type="time" class="form-control" formControlName="opening_hours">
+                  </div>
+                  <div class="col-md-6 col-12 mb-2">
+                    <label for="closing_hours" class="form-label">{{'app.ending_hours' | translate}}<sup
+                        class="text-danger">*</sup></label>
+                    <input type="time" class="form-control" formControlName="closing_hours">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+              translate}}</button>
+            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+              [disabled]="submitted || addAvailability.invalid">
+              <span *ngIf="!loading" class="d-flex align-items-center">
+                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+              <span *ngIf="loading">
+                <div class="spinner-border spinner-border-sm text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- edit availability modal -->
+<div id="editAvailability" class="modal fade" tabindex="-1" aria-labelledby="editAvailabilityLabel" aria-hidden="true"
+  data-bs-backdrop="static" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAvailabilityLabel">{{'app.edit' | translate}} {{'app.availability' | translate}}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditAvailable aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editAvailability" (ngSubmit)="updateAvailability()">
+          <div class="row">
+            <!-- <div class="col-12 text-center">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-dark material-shadow-none"
+                  [ngClass]="{ 'active': choiceSelected === 'weekly' }" (click)="changeChoice('weekly')">Weekly</button>
+                <button type="button" class="btn btn-outline-dark material-shadow-none"
+                  [ngClass]="{ 'active': choiceSelected === 'custom' }" (click)="changeChoice('custom')">Custom</button>
+              </div>
+            </div> -->
+            <div class="col-12 mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <label for="weekday" class="form-label">{{'app.weekday' | translate}}<sup
+                    class="text-danger">*</sup></label>
+                <div class="form-check form-switch form-switch-dark">
+                  <input class="form-check-input" type="checkbox" role="switch" formControlName="status">
+                </div>
+              </div>
+              <select class="form-select" formControlName="weekday">
+                <option value="" selected>{{'app.select_a_value' | translate}}</option>
+                @for (weekday of weekdays; track weekday) {
+                <option [value]="weekday.value">{{weekday?.label}}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="row" formArrayName="working_hours">
+            <div class="col-12">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label mb-0">{{'app.business_hours' | translate}}</label>
+                <button type="button" class="btn btn-sm btn-dark d-flex align-items-center gap-2"
+                  (click)="updateWeeklyHours()"><i class="ri-add-line"></i>{{'app.hours' | translate}}</button>
+              </div>
+              <div *ngFor="let hour of updatedWeeklyHours.controls; let j = index" [formGroupName]="j">
+                <div class="row">
+                  <div class="col-md-6 col-12 mb-2">
+                    <label for="opening_hours" class="form-label">{{'app.starting_hours' | translate}}<sup
+                        class="text-danger">*</sup></label>
+                    <input type="time" class="form-control" formControlName="opening_hours">
+                  </div>
+                  <div class="col-md-6 col-12 mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="closing_hours" class="form-label">{{'app.ending_hours' | translate}}<sup
+                          class="text-danger">*</sup></label>
+                      <i class="ri-delete-bin-line text-danger" role="button" (click)="removeHours(j)"></i>
+                    </div>
+                    <input type="time" class="form-control" formControlName="closing_hours">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+              translate}}</button>
+            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+              [disabled]="submitted || editAvailability.invalid">
+              <span *ngIf="!loading" class="d-flex align-items-center">
+                <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+              <span *ngIf="loading">
+                <div class="spinner-border text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

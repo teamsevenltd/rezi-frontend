@@ -1,0 +1,278 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.patients' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'app.patients' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="search" [(ngModel)]="search" (input)="resetsearch()"
+                                [placeholder]="'app.search' | translate" aria-label="Search">
+                        </div>
+                        <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                            data-bs-toggle="modal" data-bs-target="#addPatient">
+                            <i class="ri-add-line"></i>
+                            {{'app.add' | translate}} {{'app.patient' | translate}}</button>
+                        <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                            data-bs-target="#addPatient">
+                            <i class="ri-add-line"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (getLoader) {
+        @for (data of skeleton_arr; track $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="skeleton-card">Test</div>
+                            <br>
+                            <div class="skeleton-card">Test</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (!getLoader) {
+        @for (patient of patient_arr; track patient; let i = $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="card-title m-0 d-flex align-items-center gap-2 flex-grow-1">
+                        <h4 class="mb-0">
+                            {{patient?.first_name | titlecase}} {{patient?.last_name |
+                            titlecase}}
+                        </h4>
+                        <div class="badge"
+                            [ngClass]=" patient?.insurance === 'public' ? 'bg-light-red' : patient?.insurance === 'private' ? 'bg-light-green' : patient?.insurance === 'self-payer' ? 'bg-info' : ''">
+                            {{patient?.insurance === 'public' ? 'GKV' : patient?.insurance === 'private' ? 'PKV' :
+                            patient?.insurance === 'self-payer' ? 'Selbstzahler' : ''}}
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="dropdown card-header-dropdown">
+                            <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    [routerLink]="['/medicalprovider/patients/', patient?._id]"><i
+                                        class="ri-eye-line text-dark"></i>{{'app.view' | translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#editPatient" (click)="editPatient(i)"><i
+                                        class="ri-edit-line text-secondary"></i>{{'app.edit' | translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="deletePatient(patient?._id)"><i
+                                        class="ri-delete-bin-line text-danger"></i>{{'app.delete' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="mb-0 d-flex align-items-center gap-2">
+                                    <i class="ri-calendar-fill fs-16"></i>
+                                    {{patient?.date_of_birth | date: 'dd.MM.yy':'UTC'}}
+                                </div>
+                                <div class="mb-0 d-flex align-items-center gap-2">
+                                    <i class="ri-phone-fill fs-16"></i>
+                                    {{patient?.phone}}
+                                </div>
+                            </div>
+                            <p class=" d-flex align-items-center gap-2">
+                                <i class="ri-mail-fill fs-16"></i>
+                                {{patient?.email}}
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        } @empty {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">{{'app.no' | translate}} {{'app.patient' | translate}} {{'app.found' |
+                        translate}}</div>
+                </div>
+            </div>
+        </div>
+        }
+        @if (loadmore) {
+        <div class="col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-dark d-flex align-items-center gap-2" (click)="getPatients()">
+                <i class="ri-add-line"></i>
+                <span>{{'app.load_more' | translate}}</span>
+            </button>
+        </div>
+        }
+        }
+    </div>
+</div>
+
+<!-- add patient modal -->
+<div id="addPatient" class="modal fade" tabindex="-1" aria-labelledby="addPatientLabel" aria-hidden="true"
+    style="display: none;" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPatientLabel">{{'app.new' | translate}} {{'app.patient' | translate}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addPatientForm" class="row" (ngSubmit)="savePatient()">
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="first_name" class="form-label">{{'app.first' | translate}} {{'app.name' |
+                            translate}} </label>
+                        <input type="text" class="form-control" formControlName="first_name"
+                            placeholder="Enter First Name">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="last_name" class="form-label">{{'app.last' | translate}} {{'app.name' | translate}}
+                        </label>
+                        <input type="text" class="form-control" formControlName="last_name"
+                            placeholder="Enter Last Name">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="date_of_birth" class="form-label">{{'app.date_of_birth' | translate}} </label>
+                        <input type="date" class="form-control" formControlName="date_of_birth">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="phone" class="form-label">{{'app.phone' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="tel" class="form-control" formControlName="phone" placeholder="Enter Phone Number">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">{{'app.email' | translate}} <sup
+                                class="text-danger">*</sup></label>
+                        <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="insurance" class="form-label">{{'app.insurance' | translate}}<sup
+                                class="text-danger">*</sup>
+                        </label>
+                        <select class="form-select" formControlName="insurance">
+                            <option value="" selected>Select a value</option>
+                            <option value="public">{{'app.state_insurance' | translate}}</option>
+                            <option value="private">{{'app.private_insurance' | translate}}</option>
+                            <option value="self-payer">{{'app.self_payer_insurance' | translate}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || addPatientForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit patient modal -->
+<div id="editPatient" class="modal fade" tabindex="-1" aria-labelledby="editPatientLabel" aria-hidden="true"
+    style="display: none;" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPatientLabel">{{'app.edit' | translate}} {{'app.patient' | translate}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editPatientForm" class="row" (ngSubmit)="updatePatient()">
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="first_name" class="form-label">{{'app.first' | translate}} {{'app.name' |
+                            translate}}</label>
+                        <input type="text" class="form-control" formControlName="first_name"
+                            placeholder="Enter First Name">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="last_name" class="form-label">{{'app.last' | translate}} {{'app.name' |
+                            translate}}</label>
+                        <input type="text" class="form-control" formControlName="last_name"
+                            placeholder="Enter Last Name">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="date_of_birth" class="form-label">{{'app.date_of_birth' | translate}}</label>
+                        <input type="date" class="form-control" formControlName="date_of_birth">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="phone" class="form-label">{{'app.phone' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="tel" class="form-control" formControlName="phone" placeholder="Enter Phone Number">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">{{'app.email' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="insurance" class="form-label">{{'app.insurance' | translate}}<sup
+                                class="text-danger">*</sup>
+                        </label>
+                        <select class="form-select" formControlName="insurance">
+                            <option value="">Select a value</option>
+                            <option value="public">{{'app.state_insurance' | translate}}</option>
+                            <option value="private">{{'app.private_insurance' | translate}}</option>
+                            <option value="self-payer">{{'app.self_payer_insurance' | translate}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || editPatientForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

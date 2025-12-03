@@ -1,0 +1,451 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.locations' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'app.locations' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="search" [(ngModel)]="search" (input)="resetsearch()"
+                                [placeholder]="'app.search' | translate" aria-label="Search">
+                        </div>
+                        <div>
+                            <select class="form-select" role="button" (change)="selectStatus($event)">
+                                <option value="true" selected>{{'app.active' | translate}}</option>
+                                <option value="false">{{'app.inactive' | translate}}</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                            data-bs-toggle="modal" data-bs-target="#addLocationModal"
+                            [disabled]="location_arr.length >= location">
+                            <i class="ri-add-line"></i>
+                            {{'app.add' | translate}} {{'app.location' | translate}}</button>
+                        <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                            data-bs-target="#addLocationModal" [disabled]="location_arr.length >= location">
+                            <i class="ri-add-line"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (getLoader) {
+        @for (data of skeleton_arr; track $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="skeleton-card">Test</div>
+                            <br>
+                            <div class="skeleton-card">Test</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @else {
+        @for (item of location_arr; track item; let i = $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <h4 class="card-title mb-0 flex-grow-1">{{item?.location_name | titlecase}}</h4>
+                    <div class="flex-shrink-0">
+                        <div class="dropdown card-header-dropdown">
+                            <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="changeStatus(item?._id, item?.status)"><i
+                                        class="ri-arrow-left-right-line text-dark"></i>{{'app.status' |
+                                    translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#editLocationModal"
+                                    (click)="editLocation(i)"><i class="ri-edit-line text-secondary"></i>{{'app.edit' |
+                                    translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="deleteLocation(item?._id)"><i
+                                        class="ri-delete-bin-line text-danger"></i>{{'app.delete' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <p class=" d-flex align-items-center gap-2">
+                                <i class="ri-mail-fill fs-16"></i>
+                                {{item?.primary_email}}
+                            </p>
+                            <p class="mb-0 d-flex align-items-center gap-2">
+                                <i class="ri-map-pin-fill fs-16"></i>
+                                {{item?.address}}
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">{{'app.none' | translate}} {{'app.location' | translate}} {{'app.found' |
+                        translate}}</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (loadmore) {
+        <div class="col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-dark d-flex align-items-center gap-2" (click)="getLocations()">
+                <i class="ri-add-line"></i>
+                <span>{{'app.load_more' | translate}}</span>
+            </button>
+        </div>
+        }
+    </div>
+</div>
+
+<!-- add location modal -->
+<div id="addLocationModal" class="modal fade" tabindex="-1" aria-labelledby="addLocationModalLabel"
+    style="display: none;" data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addLocationModalLabel">{{'app.new' | translate}} {{'app.location' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addLocationForm" class="row" (ngSubmit)="submitAddForm()">
+                    <div class="col-lg-6 col-12 mb-3">
+                        <label class="form-label">{{'app.location' | translate}} {{'app.name' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control"
+                            [placeholder]="'app.placeholder_enter_location' | translate"
+                            formControlName="location_name">
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <label class="form-label">{{'app.email' | translate}}<sup class="text-danger">*</sup></label>
+                        <input type="email" class="form-control"
+                            [placeholder]="'app.placeholder_enter_email' | translate" formControlName="primary_email">
+                    </div>
+
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="visibility"
+                                formControlName="visibility">
+                            <label class="form-check-label" for="visibility">{{'app.visibility' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="files"
+                                formControlName="send_files">
+                            <label class="form-check-label" for="files">{{'app.send_files' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="health_insurance"
+                                formControlName="statutory_health_insurance">
+                            <label class="form-check-label" for="health_insurance">{{'app.statutory_health_insurance' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="private_health"
+                                formControlName="private_health_insurance">
+                            <label class="form-check-label" for="private_health">{{'app.private_health_insurance' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="self_pay"
+                                formControlName="self_insurance">
+                            <label class="form-check-label" for="self_pay">{{'app.self_payer' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="bg_active"
+                                formControlName="bg_insurance">
+                            <label class="form-check-label" for="bg_active">{{'app.bg_aktiv' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="holidays_calendar"
+                                formControlName="show_holidays_calendar">
+                            <label class="form-check-label" for="holidays_calendar">{{'app.holidays_calendar' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="appointments_public"
+                                formControlName="restrict_appointments_on_holidays">
+                            <label class="form-check-label"
+                                for="appointments_public">{{'app.do_not_display_appointments' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="secondary_email"
+                                formControlName="secondary_email_notifications">
+                            <label class="form-check-label" for="secondary_email">{{'app.secondary_email_notification' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    @if (addLocationForm.value.secondary_email_notifications == true) {
+                    <div class="col-12 mb-3">
+                        <label for="secondary_email" class="form-label">{{'app.secondary_email' | translate}}</label>
+                        <input type="email" class="form-control" formControlName="secondary_email"
+                            placeholder="Enter Secondary Email">
+                    </div>
+                    }
+
+                    <div class="col-12 mb-3">
+                        <label class="form-label">{{'app.address' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control mb-2"
+                            [placeholder]="'app.placeholder_enter_address' | translate" formControlName="address"
+                            (input)="OnInputChange($event)">
+                        @if (suggestionlist?.length>0) {
+                        <small class="text-danger">Select location from options<sup>*</sup></small>
+                        <select class="form-control form-select" (click)="getPlacedetails($event, 'new')">
+                            @for (item of suggestionlist; track item) {
+                            <option [value]="item?.place_id">{{item?.description}}
+                            </option>
+                            }
+                        </select>
+                        }
+                    </div>
+                    <div class="col-lg-4 col-12 mb-3">
+                        <label class="form-label">{{'app.city' | translate}}</label>
+                        <input type="text" class="form-control" [placeholder]="'app.placeholder_enter_city' | translate"
+                            formControlName="city">
+                    </div>
+                    <div class="col-lg-4 col-12 mb-3">
+                        <label class="form-label">{{'app.state' | translate}}</label>
+                        <input type="text" class="form-control"
+                            [placeholder]="'app.placeholder_enter_state' | translate" formControlName="state">
+                    </div>
+                    <div class="col-lg-4 col-12 mb-3">
+                        <label class="form-label">{{'app.zip' | translate}}</label>
+                        <input type="number" class="form-control"
+                            [placeholder]="'app.placeholder_enter_zip_code' | translate" formControlName="zip_code">
+                    </div>
+                    <div class="col-12">
+                        <google-map [center]="mapCenter" [zoom]="zoom" width="100%" height="400px">
+                            <map-marker *ngIf="markerPosition" [position]="markerPosition"></map-marker>
+                        </google-map>
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || addLocationForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- edit location modal -->
+<div id="editLocationModal" class="modal fade" tabindex="-1" aria-labelledby="editLocationModalLabel"
+    data-bs-backdrop="static" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLocationModalLabel">{{'app.edit' | translate}} {{'app.location' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editLocationForm" class="row" (ngSubmit)="updateLocation()">
+                    <div class="col-lg-6 col-12 mb-3">
+                        <label class="form-label">{{'app.location' | translate}} {{'app.name' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control"
+                            [placeholder]="'app.placeholder_enter_location' | translate"
+                            formControlName="location_name">
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <label class="form-label">{{'app.email' | translate}}<sup class="text-danger">*</sup></label>
+                        <input type="email" class="form-control"
+                            [placeholder]="'app.placeholder_enter_email' | translate" formControlName="primary_email">
+                    </div>
+
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_visibility"
+                                formControlName="visibility">
+                            <label class="form-check-label" for="edit_visibility">{{'app.visibility' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_files"
+                                formControlName="send_files">
+                            <label class="form-check-label" for="edit_files">{{'app.send_files' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_health_insurance"
+                                formControlName="statutory_health_insurance">
+                            <label class="form-check-label"
+                                for="edit_health_insurance">{{'app.statutory_health_insurance' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_private_health"
+                                formControlName="private_health_insurance">
+                            <label class="form-check-label" for="edit_private_health">{{'app.private_health_insurance' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="self_pay"
+                                formControlName="self_insurance">
+                            <label class="form-check-label" for="self_pay">{{'app.self_payer' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_bg_active"
+                                formControlName="bg_insurance">
+                            <label class="form-check-label" for="edit_bg_active">{{'app.bg_aktiv' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_holidays_calendar"
+                                formControlName="show_holidays_calendar">
+                            <label class="form-check-label" for="edit_holidays_calendar">{{'app.holidays_calendar' |
+                                translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_appointments_public"
+                                formControlName="restrict_appointments_on_holidays">
+                            <label class="form-check-label"
+                                for="edit_appointments_public">{{'app.do_not_display_appointments' | translate}}</label>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-check form-check-right form-switch form-switch-dark">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_secondary_email"
+                                formControlName="secondary_email_notifications">
+                            <label class="form-check-label"
+                                for="edit_secondary_email">{{'app.secondary_email_notification' | translate}}</label>
+                        </div>
+                    </div>
+                    @if (editLocationForm.value?.secondary_email_notifications == true) {
+                    <div class="col-12 mb-3">
+                        <label for="secondary_email" class="form-label">{{'app.secondary_email' | translate}}</label>
+                        <input type="email" class="form-control" formControlName="secondary_email"
+                            placeholder="enter secondary email">
+                    </div>
+                    }
+
+                    <div class="col-12 mb-3">
+                        <label class="form-label">{{'app.address' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control mb-2"
+                            [placeholder]="'app.placeholder_enter_address' | translate" formControlName="address"
+                            (input)="OnInputChange($event)">
+                        @if (suggestionlist?.length>0) {
+                        <small class="text-danger">Select location from options<sup>*</sup></small>
+                        <select class="form-control form-select" (click)="getPlacedetails($event, 'edit')">
+                            @for (item of suggestionlist; track item) {
+                            <option [value]="item?.place_id">{{item?.description}}
+                            </option>
+                            }
+                        </select>
+                        }
+                        <!-- <input type="text" class="form-control" placeholder="enter your address"
+                            formControlName="address"> -->
+                    </div>
+                    <div class="col-lg-4 col-12 mb-3">
+                        <label class="form-label">{{'app.city' | translate}}</label>
+                        <input type="text" class="form-control" [placeholder]="'app.placeholder_enter_city' | translate"
+                            formControlName="city">
+                    </div>
+                    <div class="col-lg-4 col-12 mb-3">
+                        <label class="form-label">{{'app.state' | translate}}</label>
+                        <input type="text" class="form-control"
+                            [placeholder]="'app.placeholder_enter_state' | translate" formControlName="state">
+                    </div>
+                    <div class="col-lg-4 col-12 mb-3">
+                        <label class="form-label">{{'app.zip' | translate}}</label>
+                        <input type="number" class="form-control"
+                            [placeholder]="'app.placeholder_enter_zip_code' | translate" formControlName="zip_code">
+                    </div>
+                    <div class="col-12">
+                        <google-map [center]="mapCenter" [zoom]="zoom" width="100%" height="400px">
+                            <map-marker *ngIf="markerPosition" [position]="markerPosition"></map-marker>
+                        </google-map>
+                    </div>
+                    <div class="col-12">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                                translate}}</button>
+                            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                                [disabled]="submitted || editLocationForm.invalid">
+                                <span *ngIf="!loading" class="d-flex align-items-center">
+                                    <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+                                <span *ngIf="loading">
+                                    <div class="spinner-border  spinner-border-smtext-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

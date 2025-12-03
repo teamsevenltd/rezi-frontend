@@ -1,0 +1,246 @@
+<form class="row" [formGroup]="customForm">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Title" aria-label="Title"
+            formControlName="step_description" aria-describedby="basic-addon2">
+        <button class="input-group-text text-primary" id="order"><i class="ri-expand-up-down-fill"></i></button>
+        <button class="input-group-text text-secondary" id="edit" data-bs-toggle="modal"
+            [attr.data-bs-target]="'#editSteps'+id" (click)="editCustomStep()"><i class="ri-edit-fill"></i></button>
+        <button type="button" class="input-group-text text-danger" id="delete" [disabled]="step_arr.length == 1"
+            (click)="deleteStepsRow()"><i class="ri-delete-bin-fill"></i></button>
+    </div>
+</form>
+
+<!-- edit step modal -->
+<div [id]="'editSteps'+id" class="modal fade" tabindex="-1" aria-labelledby="editStepsLabel" data-bs-backdrop="static"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStepsLabel">{{'app.edit_steps' | translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeCustomModal aria-label="Close"
+                    (click)="resetEditForm()"> </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="stepForm" (ngSubmit)="submitCustomStep()">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="accordion custom-accordionwithicon accordion-fill-dark" id="accordionFill">
+                                <div class="accordion-item material-shadow">
+                                    <h2 class="accordion-header" id="visibilityAccordion">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#accor_fill1"
+                                            aria-expanded="false" aria-controls="accor_fill1">
+                                            {{'app.visibility' | translate}}
+                                        </button>
+                                    </h2>
+                                    <div id="accor_fill1" class="accordion-collapse collapse"
+                                        aria-labelledby="visibilityAccordion" data-bs-parent="#accordionFill">
+                                        <div class="accordion-body">
+                                            <div class="small mb-2">{{'app.question_display' | translate}}</div>
+                                            <select class="form-select" role="button" formControlName="all_patient">
+                                                <option [value]="true" selected>{{'app.all_patients' | translate}}
+                                                </option>
+                                                <option [value]="false">{{'app.selected_patients' | translate}}</option>
+                                            </select>
+                                            @if(stepForm.value.all_patient == false || stepForm.value.all_patient ==
+                                            'false'){
+                                            <div class="d-grid gap-2 mt-4">
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="new_health"
+                                                            role="button">{{'app.new_health' | translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="new_health" role="switch"
+                                                                formControlName="new_statutory_health_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="new_insured"
+                                                            role="button">{{'app.new_insured' | translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="new_insured" role="switch"
+                                                                formControlName="new_private_health_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="new_selfpaying"
+                                                            role="button">{{'app.new_selfpaying' | translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="new_selfpaying" role="switch"
+                                                                formControlName="new_self_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="new_bg" role="button">{{'app.new_bg' |
+                                                            translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox" id="new_bg"
+                                                                role="switch" formControlName="new_bg_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="existing_health"
+                                                            role="button">{{'app.existing_health' | translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="existing_health" role="switch"
+                                                                formControlName="old_statutory_health_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="existing_insured"
+                                                            role="button">{{'app.existing_insured' | translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="existing_insured" role="switch"
+                                                                formControlName="old_private_health_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="existing_selfpaying"
+                                                            role="button">{{'app.existing_selfpaying' |
+                                                            translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="existing_selfpaying" role="switch"
+                                                                formControlName="old_self_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card custom-card mb-0">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <label class="mb-0" for="existing_bg"
+                                                            role="button">{{'app.existing_bg' | translate}}</label>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="existing_bg" role="switch"
+                                                                formControlName="old_bg_insurance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="junctionAccordion">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#accor_fill2"
+                                            aria-expanded="false" aria-controls="accor_fill2">
+                                            {{'app.junction' | translate}}
+                                        </button>
+                                    </h2>
+                                    <div id="accor_fill2" class="accordion-collapse collapse"
+                                        aria-labelledby="junctionAccordion" data-bs-parent="#accordionFill">
+                                        <div class="accordion-body">
+                                            <div class="small mb-2">{{'app.junction_type' | translate}}</div>
+                                            <select class="form-select" role="button" formControlName="junction_type"
+                                                (change)="selectJunction($event)">
+                                                @for (junction of junctionTypes; track junction) {
+                                                <option [value]="junction?.value">{{ junction.label ? (junction.label |
+                                                    translate) : ''}}</option>
+                                                }
+                                            </select>
+                                            @if (stepForm.value?.junction_type == 'answers' ||
+                                            stepForm.value?.junction_type == 'multi_answers') {
+                                            <div class="row">
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <button type="button" (click)="addAnswer()"
+                                                        class="btn btn-dark btn-sm mt-2">
+                                                        <i class="ri-add-line"></i>
+                                                        {{'app.answer' | translate}}</button>
+                                                </div>
+                                                <div formArrayName="answers">
+                                                    <div *ngFor="let answer of answers.controls; let i = index"
+                                                        [formGroupName]="i">
+                                                        <div class="col-12 d-flex align-items-center gap-2 mt-2">
+                                                            <input type="text" class="form-control"
+                                                                formControlName="answer_text">
+                                                            <button type="button" (click)="removeAnswer(i)"
+                                                                class="btn btn-danger p-2"><i
+                                                                    class="ri-delete-bin-line ri-lg"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                            @else if(stepForm.value?.junction_type == 'download_no_confirmation' ||
+                                            stepForm.value?.junction_type == 'download_confirmation' ||
+                                            stepForm.value?.junction_type == 'content_no_confirmation' ||
+                                            stepForm.value?.junction_type == 'content_confirmation' ||
+                                            stepForm.value?.junction_type == 'external_link' ||
+                                            stepForm.value?.junction_type == 'video'){
+                                            <div class="row">
+                                                <div class="col-12 mt-2">
+                                                    @if (stepForm.value?.junction_type == 'download_no_confirmation' ||
+                                                    stepForm.value?.junction_type == 'download_confirmation' ||
+                                                    stepForm.value?.junction_type == 'external_link') {
+                                                    <label for="" class="form-label">Url
+                                                        <sup class="text-danger">*</sup></label>
+                                                    }
+                                                    @else if (stepForm.value?.junction_type == 'content_no_confirmation'
+                                                    || stepForm.value?.junction_type == 'content_confirmation') {
+                                                    <label for="" class="form-label">Text
+                                                        <sup class="text-danger">*</sup></label>
+                                                    }
+                                                    @else if (stepForm.value?.junction_type == 'video') {
+                                                    <label for="" class="form-label">Embeded Link
+                                                        <sup class="text-danger">*</sup></label>
+                                                    }
+                                                    <textarea class="form-control" placeholder="Enter here"
+                                                        formControlName="media"></textarea>
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                (click)="resetEditForm()">{{'app.close' | translate}}</button>
+                            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center">
+                                <span *ngIf="!loading" class="d-flex align-items-center">
+                                    <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                                <span *ngIf="loading">
+                                    <div class="spinner-border spinner-border-sm text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary ">Save Changes</button>
+            </div> -->
+        </div>
+    </div>
+</div>

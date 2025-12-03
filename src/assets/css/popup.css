@@ -1,0 +1,60 @@
+.rezi-popup-btn {
+  background-color: #f3f3f9;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  border-radius: 100px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.rezi-icon {
+  width: 30px;
+  height: auto;
+}
+
+/* The popup form - hidden by default */
+.rezi-form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  z-index: 9;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 0.5rem 0 0 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Add styles to the form container */
+.rezi-form-container {
+  width: 450px;
+  background-color: white;
+  height: 600px;
+}
+
+/* Add a red background color to the cancel button */
+.rezi-form-popup .cancel {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+  background-color: #000;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+}

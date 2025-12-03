@@ -1,0 +1,23 @@
+footer {
+    position: fixed;
+    background-color: #fff;
+    border-block: 1px solid var(--light-blue);
+    padding: .7rem;
+    // margin-top: 2.5rem;
+    height: 3rem;
+    background: white;
+    // bottom: .2px;
+    bottom: 0;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+.highlight-text {
+
+    font-weight: 600;
+    color: var(--secondary-color);
+
+}

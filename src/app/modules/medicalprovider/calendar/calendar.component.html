@@ -1,0 +1,264 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.appointments' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{'app.appointment' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <select class="form-select" role="button">
+                                <option value="" selected>{{'app.select_filter' | translate}}</option>
+                            </select>
+                        </div>
+                        <!-- <div>
+                            <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                                data-bs-toggle="modal" data-bs-target="#addBlocker">
+                                <i class="ri-add-line"></i>{{'app.add_blocker' | translate}}</button>
+                            <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                                data-bs-target="#addBlocker">
+                                <i class="ri-add-line"></i></button>
+                        </div> -->
+                        <div>
+                            <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                                (click)="openModal()" data-bs-toggle="modal" data-bs-target="#addAppointment">
+                                <i class="ri-add-line"></i>{{'app.make_appointment' | translate}}</button>
+                            <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                                data-bs-target="#addAppointment">
+                                <i class="ri-add-line"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <full-calendar [options]="calendarOptions"></full-calendar>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add appointment modal -->
+<div id="addAppointment" class="modal fade" tabindex="-1" aria-labelledby="addAppointmentLabel" style="display: none;"
+    data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAppointmentLabel">{{'app.new' | translate}} {{'app.appointment' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addAppointmentForm" class="row" (ngSubmit)="saveAppointment()">
+                    <div class="col-12 mb-3">
+                        <label for="patient_id" class="form-label">{{'app.patient' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select2 [data]="required_patient" [placeholder]="'app.select_patient' | translate"
+                            formControlName="patient_id">
+                        </select2>
+                    </div>
+
+                    <!-- <div class="col-md-6 col-12 mb-3">
+                        <label for="patient_id" class="form-label">Patients<sup class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="patient_id" role="button">
+                            <option value="" selected>Select a patient</option>
+                            @for (patient of patient_arr; track patient) {
+                            <option [value]="patient?._id">{{patient?.first_name}} {{patient?.last_name}}</option>
+                            }
+                        </select>
+                    </div> -->
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="location_id" class="form-label">{{'app.location' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="location_id" role="button">
+                            <!-- (change)="onSelectLocation($event)" -->
+                            <option value="" selected>{{'app.select' | translate}} a {{'app.location' | translate}}
+                            </option>
+                            @for (location of location_arr; track location) {
+                            <option [value]="location?._id">{{location?.location_name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="department_id" class="form-label">{{'app.department' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="department_id" role="button">
+                            <!-- (change)="onSelectDepartment($event)" -->
+                            <option value="" selected>{{'app.select_department' | translate}}
+                            </option>
+                            @for (department of departments_arr; track department) {
+                            <option [value]="department?._id">{{department?.name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                        <label for="start_date" class="form-label">{{'app.date' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="date" class="form-control" [min]="current_date" formControlName="start_date"
+                            (change)="selectDate($event)">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                        <label for="start_time" class="form-label">{{'app.start_time' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="time" class="form-control" formControlName="start_time"
+                            (change)="selectStartTime($event)">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                        <label for="end_time" class="form-label">{{'app.end_time' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="time" class="form-control" formControlName="end_time">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="service_id" class="form-label">{{'app.service' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <!-- <select class="form-select" formControlName="service_id" role="button">
+                            <option value="" selected>{{'app.select' | translate}} a {{'app.service' | translate}}
+                            </option>
+                            @for (service of services_arr; track service) {
+                            <option [value]="service?._id">{{service?.service_name}}</option>
+                            }
+                        </select> -->
+                        <input type="text" class="form-control" [value]="'appointment'" readonly />
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label class="form-label">{{'app.treatment' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" role="button" (change)="onSelect($event)">
+                            <option value="" selected>{{'app.select_treatment' | translate}}
+                            </option>
+                            @for (treatment of treatments_arr; track treatment) {
+                            <option [value]="treatment?.name + ',' + treatment?._id">
+                                <!-- (change)="onSelect(treatment?._id, treatment?.name)" -->
+                                {{treatment?.name}}
+                            </option>
+                            }
+                        </select>
+
+                        @for (selected of selected_treatment; let i = $index; track selected) {
+                        <div class="badge bg-success mt-1 me-2">
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="ri-close-line" role="button" (click)="removeSelection(i)"></i>{{selected}}
+                            </span>
+                        </div>
+                        }
+                    </div>
+
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || addAppointmentForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Add Blocker -->
+<div class="modal fade " id="addBlocker" tabindex="-1" aria-labelledby="addBlockerLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header border-1 pb-3">
+                <h2 class="modal-title fs-5" id="addBlockerLabel"><i class="bx bx-task me-1"></i> Add Blocker</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+            <form>
+                <div class="modal-body row">
+
+                    <div class=" col-lg-4 mb-3">
+                        <label class="form-label">From</label>
+                        <input type="date" class="form-control">
+
+                    </div>
+                    <div class=" col-lg-4 mb-3">
+                        <label class="form-label">Until</label>
+                        <input type="date" class="form-control">
+
+                    </div>
+                    <div class=" col-lg-4 mb-3">
+                        <label class="form-label">Whole Day</label>
+                        <button class="form-control bg-light-subtle  d-flex justify-content-end"><i
+                                class="bx bx-toggle-right fs-22"></i></button>
+
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">From</label>
+                        <input type="time" class="form-control">
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <label class="form-label">Until</label>
+                        <input type="time" class="form-control">
+                    </div>
+                    <div class=" col-12 mb-3">
+                        <label class="form-label">Name of the Blocker</label>
+                        <input type="text" class="form-control" placeholder="enter your blocker name ">
+
+                    </div>
+                    <div class=" col-12 mb-3">
+                        <label class="form-label">Which resources should be blocked?</label>
+
+                        <button class="form-control bg-light-subtle  d-flex justify-content-between"><span>Select
+                                all</span> <i class="bx bx-toggle-right fs-22"></i></button>
+                        <ul class="row list-unstyled">
+                            <li class="col-lg-3 col-md-6 mt-3"><button
+                                    class="btn btn-light w-100">upexamintaion</button></li>
+                            <li class="col-lg-3 col-md-6 mt-3"><button class="btn btn-light w-100">gum
+                                    examintaion</button></li>
+                            <li class="col-lg-3 col-md-6 mt-3"><button class="btn btn-light w-100">teeth
+                                    cleaning</button></li>
+                            <li class="col-lg-3 col-md-6 mt-3"><button
+                                    class="btn btn-light w-100">upexamintaion</button></li>
+                            <li class="col-lg-3 col-md-6 mt-3"><button class="btn btn-light w-100">gum
+                                    examintaion</button></li>
+                            <li class="col-lg-3 col-md-6 mt-3"><button class="btn btn-light w-100">teeth
+                                    cleaning</button></li>
+                        </ul>
+
+
+                    </div>
+                    <div class=" col-12 mb-3">
+                        <label class="form-label">Color</label>
+                        <select class="form-select">
+                            <option value="">Green</option>
+                            <option value="">Red</option>
+                            <option value="">Yellow</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-dark d-flex w-100 justify-content-center align-items-center"><i
+                            class="bx bx-save mx-1 fs-16 "></i>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,214 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.facilities' | translate}}</h1>
+        <!-- <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard <i
+                                class='ri-arrow-right-double-line '></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Locations</li>
+                </ol>
+            </nav>
+        </div> -->
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="search" [(ngModel)]="search" (input)="resetsearch()"
+                                [placeholder]="'app.search' | translate" aria-label="Search">
+                        </div>
+                        <div class="flex-shrink-0">
+                            <select class="form-select" role="button" (change)="selectStatus($event)">
+                                <option value="all" selected>All</option>
+                                <option value="true">{{'app.active' | translate}}</option>
+                                <option value="false">{{'app.inactive' | translate}}</option>
+                            </select>
+                        </div>
+
+                        <!-- <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                            data-bs-toggle="modal" data-bs-target="#addFacility">
+                            <i class="ri-add-line"></i>
+                            Add Facility</button>
+                        <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                            data-bs-target="#addFacility">
+                            <i class="ri-add-line"></i></button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (getLoader) {
+        @for (loader of skeleton_arr; track $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="skeleton-card">Test</div>
+                            <br>
+                            <div class="skeleton-card">Test</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        }
+        }
+
+        @else {
+        @for (facility of facility_arr; track $index; let i = $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="d-flex flex-grow-1 align-items-center gap-2">
+                        <h4 class="card-title mb-0">{{facility?.user_data?.first_name}}
+                            {{facility?.user_data?.last_name}}</h4>
+                        <div class="badge" [ngClass]="facility?.status ? 'bg-success' : 'bg-danger'">
+                            {{facility?.status ? 'Active' : 'Inactive'}}</div>
+                    </div>
+                    <div class="flex-shrink-0">
+                        <div class="dropdown card-header-dropdown">
+                            <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#pinModal"
+                                    (click)="getFacilityID(facility?.user_data?._id)">
+                                    <i class="ri-login-box-line"></i>{{'app.login_admin' | translate}}
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="changeStatus(facility?._id, facility?.status)"><i
+                                        class="ri-arrow-left-right-line text-dark"></i>{{'app.status' |
+                                    translate}}</a>
+                                <!-- <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        data-bs-toggle="modal" data-bs-target="#editFacility"><i
+                                            class="ri-edit-line text-secondary"></i>Edit</a> -->
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="deleteFacility(facility?._id)"><i
+                                        class="ri-delete-bin-line text-danger"></i>{{'app.delete' |
+                                    translate}}</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <p class="d-flex align-items-center gap-2">
+                                <i class="ri-bookmark-line fs-16"></i>
+                                {{facility?.title}}
+                            </p>
+                            <p class="d-flex align-items-center gap-2">
+                                <i class="ri-mail-fill fs-16"></i>
+                                {{facility?.user_data?.email}}
+                            </p>
+                            <p class="d-flex align-items-center gap-2">
+                                <i class="ri-phone-fill fs-16"></i>
+                                {{facility?.user_data?.phone_number}}
+                            </p>
+                            <p class="mb-0 d-flex align-items-center gap-2">
+                                <i class="ri-price-tag-line fs-16"></i>
+                                @if (facility?.subs_data) {
+                                {{facility?.subs_data?.plan_data?.name}} - <span
+                                    [ngClass]="facility?.subs_data?.status ? 'text-success' : 'text-danger'">{{facility?.subs_data?.status
+                                    ? 'Active' : 'Inactive'}}</span>
+                                }@else {
+                                No plan purchased
+                                }
+                            </p>
+
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        }
+        @empty {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">{{'app.no' | translate}} {{'app.facility' | translate}} {{'app.found' |
+                        translate}}</div>
+                </div>
+            </div>
+        </div>
+        }
+        @if (loadmore) {
+        <div class="col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-dark d-flex align-items-center gap-2" (click)="getFacility()">
+                <i class="ri-add-line"></i>
+                <span>{{'app.load_more' | translate}}</span>
+            </button>
+        </div>
+        }
+        }
+    </div>
+
+</div>
+
+<!-- add facility modal -->
+<!-- <div id="editFacility" class="modal fade" tabindex="-1" aria-labelledby="editFacilityLabel" aria-hidden="true"
+    style="display: none;" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editFacilityLabel">Edit Facility</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- Set pin Modals -->
+<div id="pinModal" class="modal fade" tabindex="-1" aria-labelledby="pinModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pinModalLabel">{{'app.add_pin' | translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeModal aria-label="Close"> </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">Enter the 4-digit pin</div>
+                <form [formGroup]="loginForm" class="row mt-3" (ngSubmit)="submitPin()">
+                    <div class="col-12 d-flex justify-content-center gap-2">
+                        @for (otp of otp_array; track $index) {
+                        <input #otpInput type="text" maxlength="1" class="form-control border-0 otp-box text-center"
+                            (input)="onInput($event, $index)" (keydown)="onKeyDown($event, $index)">
+                        }
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

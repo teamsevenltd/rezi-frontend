@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row vh-100 align-items-center">
+        <div class="col-xxl-5 col-lg-6 col-12 mx-auto">
+            <div class="card card-bg-fill">
+                <div class="card-body p-4 text-center">
+                    <div class="avatar-lg mx-auto mt-2 mb-4">
+                        <div class="avatar-title bg-light text-success display-3 rounded-circle">
+                            <i class="ri-checkbox-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>{{'app.account_name' | translate}}</span>
+                            <span>{{details?.account_name | titlecase}}</span>
+                        </div>
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>{{'app.plan' | translate}}</span>
+                            <span>{{details?.plan}}</span>
+                        </div>
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>{{'app.payment_method' | translate}}</span>
+                            <span>{{details?.card_type | titlecase}}</span>
+                        </div>
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>{{'app.total_amount_paid' | translate}}</span>
+                            <span class="fw-bold">{{details?.total | number:'1.2-2'}}€</span>
+                        </div>
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>{{'app.date' | translate}}</span>
+                            <span>{{details?.date | date: 'dd.MM.yy'}}</span>
+                            <!-- :'UTC' gives older date -->
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-dark w-100" (click)="confirm()">{{'app.confirm' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

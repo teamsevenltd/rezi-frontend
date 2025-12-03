@@ -1,0 +1,32 @@
+.welcome-overlay {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 12.5rem;
+    height: 12.5rem;
+
+    background-image: url("../../../assets/images/Otter\ waving.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    z-index: 99999 !important;
+    pointer-events: none;
+
+    animation: upDownPause 5s ease-in-out forwards;
+}
+
+@keyframes upDownPause {
+    0% {
+        transform: translateY(100%);
+    }
+    40% {
+        transform: translateY(0); /* Reached top */
+    }
+    60% {
+        transform: translateY(0); /* Hold at top */
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}

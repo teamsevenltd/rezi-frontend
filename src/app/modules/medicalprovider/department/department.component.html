@@ -1,0 +1,301 @@
+<div class="container-fluid px-0"> <!-- Page Header -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="d-flex justify-content-between gap-2">
+                <div class="flex-grow-1">
+                    <input class="form-control" type="search" [(ngModel)]="search" (input)="resetsearch()"
+                        [placeholder]="'app.search' | translate" aria-label="Search">
+                </div>
+                <!-- <div>
+                    <select class="form-select" role="button" (change)="selectStatus($event)">
+                        <option value="true" selected>{{'app.active' | translate}}</option>
+                        <option value="false">{{'app.inactive' | translate}}</option>
+                    </select>
+                </div> -->
+                <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#addDepartment"
+                    [disabled]="department_arr.length >= department">
+                    <i class="ri-add-line"></i>
+                    {{'app.add' | translate}} {{'app.department' | translate}}</button>
+                <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                    data-bs-target="#addDepartment" [disabled]="department_arr.length >= department">
+                    <i class="ri-add-line"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (getLoader) {
+        @for (loader of skeleton_arr; track $index) {
+        <div class="col-xl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0">
+                    <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="skeleton-card">Test</div>
+                            <br>
+                            <div class="skeleton-card">Test</div>
+                        </li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @else {
+        @for (department of department_arr; let i = $index; track department) {
+        <div class="col-xl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0">
+                    <h4 class="card-title mb-0 flex-grow-1">{{department?.name | titlecase}}</h4>
+                    <div class="flex-shrink-0">
+                        <div class="dropdown card-header-dropdown">
+                            <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="changeStatus(department?._id, department?.status)"><i
+                                        class="ri-arrow-left-right-line text-dark"></i>{{'app.status' |
+                                    translate}}</a> -->
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#treatmentModal"
+                                    (click)="chooseDepartment(department?._id)"><i
+                                        class="ri-add-line text-dark"></i>{{'app.treatments' | translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    data-bs-toggle="modal" data-bs-target="#editDepartment"
+                                    (click)="editDepartment(i)"><i class="ri-edit-line text-secondary"></i>{{'app.edit'
+                                    | translate}}</a>
+                                <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    (click)="deleteDepartment(department?._id)"><i
+                                        class="ri-delete-bin-line text-danger"></i>{{'app.delete' | translate}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <p class=" d-flex align-items-center gap-2">
+                                <i class="ri-mail-fill fs-16"></i>
+                                {{item?.primary_email}}
+                            </p>
+                            <p class="mb-0 d-flex align-items-center gap-2">
+                                <i class="ri-map-pin-fill fs-16"></i>
+                                {{department?.location_data?.location_name | titlecase}}
+                            </p>
+                        </li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+        }@empty {
+        <div class="col-12 mt-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">{{'app.no' | translate}} {{'app.department' | translate}} {{'app.found' |
+                        translate}}</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (loadmore) {
+        <div class="col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-dark d-flex align-items-center gap-2" (click)="getDepartments()">
+                <i class="ri-add-line"></i>
+                <span>{{'app.load_more' | translate}}</span>
+            </button>
+        </div>
+        }
+    </div>
+
+</div>
+
+
+<!-- add department modal -->
+<div id="addDepartment" class="modal fade" tabindex="-1" aria-labelledby="addDepartmentLabel" aria-hidden="true"
+    style="display: none;" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDepartmentLabel">{{'app.new' | translate}} {{'app.department' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addDepartmentForm" class="row" (ngSubmit)="saveDepartment()">
+                    <div class="col-12 mb-3">
+                        <label for="name" class="form-label">{{'app.name' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" placeholder="Enter Department Name"
+                            formControlName="name">
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || addDepartmentForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit department modals -->
+<div id="editDepartment" class="modal fade" tabindex="-1" aria-labelledby="editDepartmentLabel" aria-hidden="true"
+    style="display: none;" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDepartmentLabel">{{'app.edit' | translate}} {{'app.department' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editDepartmentForm" class="row" (ngSubmit)="updateDepartment()">
+                    <div class="col-12 mb-3">
+                        <label for="name" class="form-label">{{'app.name' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" placeholder="Enter Department Name"
+                            formControlName="name">
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || editDepartmentForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add/view/edit treatment modal -->
+<div id="treatmentModal" class="modal fade" tabindex="-1" aria-labelledby="treatmentModalLabel" aria-hidden="true"
+    style="display: none;" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="treatmentModalLabel">{{'app.treatments' | translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeTreatmentModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                @if(isEdit){
+                <form [formGroup]="editTreatmentForm" class="row align-items-end" (ngSubmit)="updateTreatment()">
+                    <div class="col-5 mb-3">
+                        <label for="name" class="form-label">Name<sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                    <div class="col-5 mb-3">
+                        <label for="duration" class="form-label">{{'app.duration' | translate}}<sup class="text-danger">*</sup></label>
+                        <input type="number" min="0" class="form-control" formControlName="duration">
+                    </div>
+                    <div class="col-2 mb-3">
+                        <button type="submit" class="btn btn-dark" [disabled]="submitted || editTreatmentForm.invalid">
+                            <span *ngIf="!loading">
+                                <i class='ri-save-3-line'></i></span>
+                            <!-- Save Changes -->
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+                }@else {
+                <form [formGroup]="addTreatmentForm" class="row align-items-end" (ngSubmit)="saveTreatment()">
+                    <div class="col-5 mb-3">
+                        <label for="name" class="form-label">Name<sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" formControlName="name">
+                    </div>
+                    <div class="col-5 mb-3">
+                        <label for="duration" class="form-label text-nowrap">{{'app.duration' | translate}}<sup class="text-danger">*</sup></label>
+                        <input type="number" min="0" class="form-control" formControlName="duration">
+                    </div>
+                    <div class="col-2 mb-3">
+                        <button type="submit" class="btn btn-dark" [disabled]="submitted || addTreatmentForm.invalid">
+                            <span *ngIf="!loading">
+                                <i class='ri-save-3-line'></i></span>
+                            <!-- Save Changes -->
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+                }
+
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Bordered Tables -->
+                        @if (treatments_arr.length>0) {
+                        <table class="table table-bordered table-nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{'app.treatment' | translate}} {{'app.name' | translate}}</th>
+                                    <th scope="col">{{'app.action' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (treatment of treatments_arr; let j = $index; track treatment) {
+                                <tr>
+                                    <td>{{treatment?.name | titlecase}}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                (click)="editTreatment(j)"><i class="ri-edit-line"></i></button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                                (click)="deleteTreatment(treatment?._id)"><i
+                                                    class="ri-delete-bin-line"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        }@else {
+                        <div class="text-center text-danger mt-3">{{'app.no' | translate}} {{'app.treatment' |
+                            translate}} {{'app.found' | translate}}</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

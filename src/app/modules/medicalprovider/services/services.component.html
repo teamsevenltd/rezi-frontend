@@ -1,0 +1,507 @@
+<div class="container-fluid" style="margin-top: 77px;margin-bottom: 100px;"> <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">{{'app.services' | translate}}</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{'app.dashboard' | translate}} <i
+                                class='ri-arrow-right-double-line'></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> {{'app.services' | translate}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between gap-2">
+                        <div class="flex-grow-1">
+                            <input class="form-control" type="search" [(ngModel)]="search" (input)="resetsearch()"
+                                [placeholder]="'app.search' | translate" aria-label="Search">
+                        </div>
+                        <button type="button" class="btn btn-dark d-none d-md-flex align-items-center gap-2"
+                            data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                            <i class="ri-add-line"></i>
+                            {{'app.add' | translate}} {{'app.service' | translate}}</button>
+                        <button type="button" class="btn btn-dark d-block d-md-none" data-bs-toggle="modal"
+                            data-bs-target="#addServiceModal">
+                            <i class="ri-add-line"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (getLoader) {
+        @for (data of skeleton_arr; track $index) {
+        <div class="col-xxl-4 col-lg-6 col-12">
+            <div class="card">
+                <div class="card-header align-items-center d-flex border-0 pb-0">
+                    <div class="skeleton-card">Lorem ipsum dolor sit amet.</div>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush border-dashed">
+                        <li class="list-group-item pb-3">
+                            <div class="skeleton-card">Test</div>
+                            <br>
+                            <div class="skeleton-card">Test</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (!getLoader) {
+        @if (activeServices.length > 0 || inactiveServices.length > 0) {
+
+        @if (activeServices.length > 0) {
+        <h4 class="mb-3">{{'app.active_services' | translate}}</h4>
+        }
+        <div class="row">
+            @for (item of activeServices; track item; let i = $index) {
+            <div class="col-xxl-4 col-lg-6 col-12 mb-3">
+                <div class="card sameheight">
+                    <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
+                        <h4 class="card-title mb-0 flex-grow-1 text-truncate">
+                            {{ getServiceName(item) | titlecase }}
+                        </h4>
+
+                        <div class="form-check form-switch form-switch-dark ms-3">
+                            <input class="form-check-input" type="checkbox" role="switch" [checked]="item?.visibility"
+                                (change)="updateVisbility(item?._id, item?.service_name, item?.service_description, item?.visibility)"
+                                [disabled]="loading">
+                        </div>
+
+                        <div class="flex-shrink-0">
+                            <div class="dropdown card-header-dropdown">
+                                <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                    <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        (click)="addSteps(item?._id)">
+                                        <i class="ri-add-line text-success"></i>{{ 'app.steps' | translate }}
+                                    </a>
+
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        data-bs-toggle="modal" data-bs-target="#serviceVisibility"
+                                        (click)="editService(i)">
+                                        <i class="ri-eye-line text-dark"></i>{{ 'app.visibility' | translate }}
+                                    </a>
+
+                                    @if (!item?.is_predefined) {
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(i)">
+                                        <i class="ri-edit-line text-secondary"></i>{{ 'app.edit' | translate }}
+                                    </a>
+
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        (click)="deleteService(item?._id)">
+                                        <i class="ri-delete-bin-line text-danger"></i>{{ 'app.delete' | translate }}
+                                    </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush border-dashed">
+                            <li class="list-group-item pb-1">
+                                <p class="d-flex align-items-baseline gap-2">
+                                    <i class="ri-calendar-fill fs-16"></i>
+                                    {{ item?.updatedAt | date: 'dd.MM.yy':'UTC' }}
+                                </p>
+
+                                <p class="mb-0 d-flex align-items-baseline gap-2">
+                                    <i class="ri-article-fill fs-16"></i>
+                                    <span class="text-length" [title]="item?.service_description">
+                                        {{ item?.service_description }}
+                                    </span>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+        @if (inactiveServices.length > 0) {
+            <h4 class="mb-3 mt-4">{{'app.inactive_services' | translate}}</h4>
+        }
+        <div class="row">
+            @for (item of inactiveServices; track item; let i = $index) {
+            <div class="col-xxl-4 col-lg-6 col-12 mb-3">
+                <div class="card sameheight">
+                    <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
+                        <h4 class="card-title mb-0 flex-grow-1 text-truncate">
+                            {{ getServiceName(item) | titlecase }}
+                        </h4>
+
+                        <div class="form-check form-switch form-switch-dark ms-3">
+                            <input class="form-check-input" type="checkbox" role="switch" [checked]="item?.visibility"
+                                (change)="updateVisbility(item?._id, item?.service_name, item?.service_description, item?.visibility)"
+                                [disabled]="loading">
+                        </div>
+
+                        <div class="flex-shrink-0">
+                            <div class="dropdown card-header-dropdown">
+                                <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                    <span class="fs-18"><i class="ri-more-2-fill"></i></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        (click)="addSteps(item?._id)">
+                                        <i class="ri-add-line text-success"></i>{{ 'app.steps' | translate }}
+                                    </a>
+
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        data-bs-toggle="modal" data-bs-target="#serviceVisibility"
+                                        (click)="editService(i)">
+                                        <i class="ri-eye-line text-dark"></i>{{ 'app.visibility' | translate }}
+                                    </a>
+
+                                    @if (!item?.is_predefined) {
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(i)">
+                                        <i class="ri-edit-line text-secondary"></i>{{ 'app.edit' | translate }}
+                                    </a>
+
+                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                        (click)="deleteService(item?._id)">
+                                        <i class="ri-delete-bin-line text-danger"></i>{{ 'app.delete' | translate }}
+                                    </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush border-dashed">
+                            <li class="list-group-item pb-1">
+                                <p class="d-flex align-items-baseline gap-2">
+                                    <i class="ri-calendar-fill fs-16"></i>
+                                    {{ item?.updatedAt | date: 'dd.MM.yy':'UTC' }}
+                                </p>
+
+                                <p class="mb-0 d-flex align-items-baseline gap-2">
+                                    <i class="ri-article-fill fs-16"></i>
+                                    <span class="text-length" [title]="item?.service_description">
+                                        {{ item?.service_description }}
+                                    </span>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+        } @else {
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="text-danger">
+                        {{ 'app.no' | translate }} {{ 'app.service' | translate }} {{ 'app.found' | translate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+
+        @if (loadmore) {
+        <div class="col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-dark d-flex align-items-center gap-2" (click)="getServices()">
+                <i class="ri-add-line"></i>
+                <span>{{'app.load_more' | translate}}</span>
+            </button>
+        </div>
+        }
+        }
+
+    </div>
+</div>
+
+<!-- choose location modal -->
+<div id="selectLocation" class="modal fade" tabindex="-1" aria-labelledby="selectLocationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content text-center" style="background-color: #f3f3f9;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectLocationLabel">{{'app.select' | translate}} {{'app.location' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeViewModal aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @if(locationLoader){
+                    @for (loader of skeleton_arr; track $index) {
+                    <div class="col-xl-4 col md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="skeleton-card">Test</p>
+                                <p class="skeleton-card mb-0">Test</p>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+                    @else {
+                    @for (location of location_arr; track location) {
+                    <div class="col-xl-4 col md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>{{location?.location_name | titlecase}}</h5>
+                                <button type="button" class="btn btn-dark w-100 mt-2"
+                                    (click)="selectLocation(location)">{{'app.choose' | translate}}
+                                    {{'app.location' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add service modal -->
+<div id="addServiceModal" class="modal fade" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addServiceModalLabel">{{'app.add' | translate}} {{'app.service' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addServiceForm" class="row" (ngSubmit)="submitAddForm()">
+                    <div class="col-12">
+                        <div class="accordion custom-accordionwithicon accordion-fill-dark" id="accordionFill">
+                            <div class="accordion-item material-shadow">
+                                <h2 class="accordion-header" id="accordionFillExample1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#accor_fill1" aria-expanded="true" aria-controls="accor_fill1">
+                                        {{'app.information' | translate}}
+                                    </button>
+                                </h2>
+                                <div id="accor_fill1" class="accordion-collapse collapse show"
+                                    aria-labelledby="accordionFillExample1" data-bs-parent="#accordionFill">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label for="service_name" class="form-label">{{'app.name' |
+                                                translate}}<sup class="text-danger">*</sup></label>
+                                            <input type="text" class="form-control" formControlName="service_name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="service_description" class="form-label">{{'app.description' |
+                                                translate}}<sup class="text-danger">*</sup></label>
+                                            <textarea class="form-control" rows="2"
+                                                formControlName="service_description"
+                                                [placeholder]="'app.service_description_placeholder' | translate"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="icon_class" class="form-label">Icons</label>
+                                            <div>
+                                                @for (icons of iconArray; track icons) {
+                                                <button type="button" class="btn btn-dark btn-sm m-1"
+                                                    [ngClass]="{ 'selected': selectedIcon === icons?.value }"
+                                                    (click)="selectIcon(icons?.value)">
+                                                    <i class="ri-lg" [ngClass]="icons?.value"></i>
+                                                </button>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="icon_color" class="form-label">{{'app.icon_color' |
+                                                translate}}</label>
+                                            <input type="color" class="form-control" role="button"
+                                                formControlName="icon_color" (change)="selectColor($event)">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="accordionFillExample2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#accor_fill2" aria-expanded="false" aria-controls="accor_fill2">
+                                        {{'app.visibility' | translate}}
+                                    </button>
+                                </h2>
+                                <div id="accor_fill2" class="accordion-collapse collapse"
+                                    aria-labelledby="accordionFillExample2" data-bs-parent="#accordionFill">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            @for (loc of location_arr; track loc) {
+                                            <div class="col-12">
+                                                <div class="card custom-card mb-2">
+                                                    <div
+                                                        class="card-body d-flex justify-content-between align-items-center">
+                                                        <span>{{loc?.location_name | titlecase}}</span>
+                                                        <div class="form-check form-switch form-switch-dark">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                (change)="locationsChecked($event)" [value]="loc?._id"
+                                                                role="switch" [checked]="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="addServiceForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit service modal -->
+<div id="editService" class="modal fade" tabindex="-1" aria-labelledby="editServiceLabel" data-bs-backdrop="static"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editServiceLabel">{{'app.edit' | translate}} {{'app.service' | translate}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="mb-2">{{'app.disable_service_location' | translate}}</div> -->
+                <form [formGroup]="editServiceForm" (ngSubmit)="updateService()">
+                    <div class="row">
+                        <!-- <div class="col-12">
+                            <div class="card custom-card mb-3">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <span>{{location_obj?.location_name | titlecase}}</span>
+                                    <div class="form-check form-switch form-switch-dark">
+                                        <input class="form-check-input" type="checkbox" role="switch" [value]="true"
+                                            formControlName="visibility" [checked]="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- @if(!isPredefined){ -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="service_name" class="form-label">{{'app.name' |
+                                    translate}}</label>
+                                <input type="text" class="form-control" formControlName="service_name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="service_description" class="form-label">{{'app.description' |
+                                    translate}}</label>
+                                <textarea class="form-control" rows="2" formControlName="service_description"
+                                    placeholder="How should this process be titled for patients?"></textarea>
+                            </div>
+                        </div>
+                        <!-- } -->
+                        <div class="col-12 modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                                translate}}</button>
+                            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                                [disabled]="editServiceForm.invalid || submitted">
+                                <span *ngIf="!loading" class="d-flex align-items-center">
+                                    <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+                                <span *ngIf="loading">
+                                    <div class="spinner-border spinner-border-sm text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary ">Save Changes</button>
+            </div> -->
+
+        </div>
+    </div>
+</div>
+
+<!-- visibility service modal -->
+<div id="serviceVisibility" class="modal fade" tabindex="-1" aria-labelledby="serviceVisibilityLabel"
+    data-bs-backdrop="static" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serviceVisibilityLabel">{{'app.edit' | translate}} {{'app.visibility' |
+                    translate}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeVisibilityModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2">{{'app.disable_service_location' | translate}}</div>
+                <form [formGroup]="editServiceForm" (ngSubmit)="updateService()">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card custom-card mb-3">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <span>{{location_obj?.location_name | titlecase}}</span>
+                                    <div class="form-check form-switch form-switch-dark">
+                                        <input class="form-check-input" type="checkbox" role="switch" [value]="true"
+                                            formControlName="visibility" [checked]="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                                translate}}</button>
+                            <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                                [disabled]="submitted">
+                                <span *ngIf="!loading" class="d-flex align-items-center">
+                                    <i class='ri-save-3-line me-2'></i>{{'app.update' | translate}}</span>
+                                <span *ngIf="loading">
+                                    <div class="spinner-border spinner-border-sm text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary ">Save Changes</button>
+            </div> -->
+
+        </div>
+    </div>
+</div>

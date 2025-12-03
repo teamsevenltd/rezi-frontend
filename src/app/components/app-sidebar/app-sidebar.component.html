@@ -1,0 +1,155 @@
+<div class="app-menu navbar-menu scrollable">
+    <div class="navbar-brand-box">
+        <!-- Dark Logo-->
+        <!-- <a routerLink="/admin" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="./assets/images/rez-icon.png" alt="" height="40">
+            </span>
+            <span class="logo-lg">
+                <img src="assets/images/logo.jpg" style="max-width: 150px; " height="auto" routerLink="/" alt="321 MED">
+            </span>
+        </a> -->
+
+        <!-- Light Logo-->
+        <a routerLink="/" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="./assets/images/rez-icon.png" alt="" height="40">
+            </span>
+            <span class="logo-lg">
+                <img src="../../../assets/images/logo.jpg" style="max-width: 150px; " height="auto" alt="321 MED">
+            </span>
+        </a>
+
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+            id="vertical-hover">
+            <i class="ri-record-circle-line"></i>
+        </button>
+    </div>
+
+    <div id="scrollbar">
+        <div class="container-fluid">
+            <ul class="navbar-nav" id="navbar-nav">
+                <li class="menu-title"><span>{{ 'app.menu' | translate | uppercase }}</span></li>
+                @if (role == 'superadmin') {
+                <li class="nav-item cursor-pointer" [routerLink]="['/']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-user-3-line"></i> {{'app.facility' | translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/superadmin/gallery']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-gallery-line"></i> {{'app.avatar' | translate}}
+                        {{'app.gallery' | translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/superadmin/settings']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-settings-2-line"></i> {{'app.settings' |
+                        translate}}
+                    </a>
+                </li>
+                }
+                @if (role == 'medicalprovider') {
+                <li class="nav-item cursor-pointer active" [routerLink]="['/medicalprovider']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-server-line"></i> {{'app.services' | translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/locations']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-map-pin-2-line"></i> {{'app.locations' |
+                        translate}}
+                    </a>
+                </li>
+                <!-- <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/departments']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-building-4-line"></i> {{'app.departments' |
+                        translate}}
+                    </a>
+                </li> -->
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/chat']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-discuss-line"></i> {{'app.chat' | translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/configuration']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-equalizer-line"></i> {{'app.configuration' |
+                        translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/treatments']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-capsule-fill"></i> {{'app.treatments' |
+                        translate}}
+                    </a>
+                </li>
+                @if (patient) {
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/patients']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-user-3-line"></i> {{'app.patients' | translate}}
+                    </a>
+                </li>
+                }
+                @if (appointment) {
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/appointments']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-calendar-2-line"></i> {{'app.appointments' |
+                        translate}}
+                    </a>
+                </li>
+                }
+                
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/feedback']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-feedback-line"></i> {{'app.feedback' |
+                        translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/news']" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-news-line"></i> {{'app.news' | translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/subscription']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-price-tag-line"></i> {{'app.subscription_plans' |
+                        translate}}
+                    </a>
+                </li>
+                <li class="nav-item cursor-pointer" [routerLink]="['/medicalprovider/settings']"
+                    routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link menu-link">
+                        <i class="ri-settings-2-line"></i> {{'app.settings' |
+                        translate}}
+                    </a>
+                </li>
+                }
+                <li class="nav-item cursor-pointer" (click)="logout()">
+                    <a class="nav-link menu-link text-danger">
+                        <i class="ri-logout-box-line"></i> {{'app.log_out' |
+                        translate}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="sidebar-background"></div>
+</div>
+
+<div class="vertical-overlay "></div>

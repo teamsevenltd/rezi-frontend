@@ -1,0 +1,134 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label {
+    color: #000000 !important;
+}
+
+input {
+    border-color: #ced4da;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+
+.breadcrumb .breadcrumb-item a {
+    color: rgb(199, 193, 212) !important;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: none !important;
+}
+
+.dropdown-toggle::after {
+    content: none !important;
+}
+
+.main-content {
+    @media screen and (max-width: 992px) {
+        padding-top: 0px !important;
+    }
+}
+
+.timeline {
+    max-width: 200% !important;
+}
+
+.timeline .timeline-icon a {
+    color: #3ec9d6 !important;
+}
+
+input:focus {
+    box-shadow: none;
+    outline: none;
+    border: 2px solid #000000 !important;
+}
+
+.form-select:focus {
+    border: 2px solid #000000 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+.lightgray {
+    background-color: #f0f2f8 !important;
+}
+
+a {
+    color: #3ec9d6;
+
+    &:hover {
+        text-decoration-color: #3ec9d6;
+    }
+}
+
+.no-underline,
+.no-underline:hover,
+.no-underline:focus {
+    text-decoration: none !important;
+}
+
+@keyframes loading {
+    0% {
+        background-position: -100% 0;
+    }
+
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+.loading {
+    position: relative;
+}
+
+.bar {
+    background-color: #e7e7e7;
+    height: 20px;
+    border-radius: 7px;
+    width: 80%;
+    background-image: linear-gradient(90deg, #e7e7e7 0%, #e0e0e0 50%, #e7e7e7 100%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite linear;
+}
+
+td {
+    border: 1px solid #f3f6f9 !important;
+}
+
+// accordian down button icon
+.custom-accordionwithicon .accordion-button::after {
+    font-family: "remixicon" !important;
+    content: "\EA4E" !important;
+}
+
+// full-calendar buttons
+.fc .fc-button-primary {
+    background-color: #000000 !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #595959 !important;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: transparent !important;
+}
+
+.fc-h-event .fc-event-title-container {
+    flex-grow: 0;
+}
+
+.map-container {
+    width: 100% !important;
+}

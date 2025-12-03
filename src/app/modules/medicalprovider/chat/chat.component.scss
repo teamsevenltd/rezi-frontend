@@ -1,0 +1,53 @@
+.container-fluid {
+    margin-inline: 0;
+    min-height: calc(100vh - 8rem);
+}
+.tab-style-2 .nav-item .nav-link.active:before,
+.main-chart-wrapper .main-chat-area .chat-content .chat-item-end .main-chat-msg div {
+    background-color: rgba(35, 183, 229, 0.1);
+}
+a:hover {
+    background-color: rgba(35, 183, 229, 0.1) !important;
+    color: rgb(35, 183, 229) !important;
+}
+
+.main-chart-wrapper .chat-info .nav-link.active {
+    background-color: rgb(57, 190, 232) !important;
+    color: #ffffff;
+    i {
+        color: rgb(0, 0, 0);
+    }
+}
+.main-chat-area {
+    a[_ngcontent-ng-c3236369495] {
+        color: rgb(0, 0, 0) !important;
+        background-color: transparent !important;
+    }
+}
+.dropdown-item:hover {
+    background-color: transparent !important;
+}
+
+.chat-footer .btn.btn-primary {
+    background-color: #6db5ff !important;
+    border-color: #6db5ff !important;
+    color: #ffffff !important;
+}
+.chat-info {
+    a {
+        box-shadow: none !important;
+        color: #ffffff !important;
+        border: none !important;
+        background-color: rgb(0, 0, 0) !important;
+    }
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chat-conversation .conversation-list .ctext-wrap-content {
+    max-width: 225px;
+}

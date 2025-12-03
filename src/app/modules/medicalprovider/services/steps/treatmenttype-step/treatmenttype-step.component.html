@@ -1,0 +1,25 @@
+<!-- <form class="row" [formGroup]="treatmentForm">
+    <div class="small form-label">Enter services and set what should happen depending on the corresponding selection
+    </div>
+    <div formArrayName="treatments" cdkDropList (cdkDropListDropped)="drop($event)">
+        @for (treatment of treatmentsArray.controls; let i = $index; track treatment) {
+        <div [formGroupName]="i" cdkDrag>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Title" aria-label="Title" formControlName="name"
+                    aria-describedby="basic-addon2">
+                <button class="input-group-text text-primary" id="basic-addon2"><i
+                        class="ri-expand-up-down-fill"></i></button>
+                <button class="input-group-text text-secondary" id="basic-addon2"><i class="ri-edit-fill"></i></button>
+                <button type="button" class="input-group-text text-danger" id="basic-addon2"
+                    (click)="deleteTreatment(i)"><i class="ri-delete-bin-fill"></i></button>
+            </div>
+        </div>
+        }
+    </div>
+    <button type="button" class="btn btn-dark w-75 mx-auto" (click)="addTreatments()"><i
+            class="ri-add-line me-2"></i>Add Treatment</button>
+</form> -->
+
+<div class="text-center">
+    <a class="small" [routerLink]="['/medicalprovider/treatments']">{{'app.to_add_treatments' | translate}}</a>
+</div>

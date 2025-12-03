@@ -1,0 +1,736 @@
+<div class="container-fluid" style="margin-top: 77px;"> <!-- Page Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="chat-wrapper d-lg-flex gap-1">
+                <div class="chat-leftsidebar minimal-border">
+                    <div class="px-4 pt-4 mb-3">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-2">{{'app.chat' | translate}}</h5>
+                        </div>
+                        <div class="search-box">
+                            <input type="text" class="form-control bg-light border-light" [(ngModel)]="search"
+                                (input)="resetsearch()" [placeholder]="'app.search' | translate">
+                            <i class="ri-search-2-line search-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="chat-room-list" data-simplebar>
+                        <div class="d-flex align-items-center px-4 mb-2">
+                            <div class="flex-grow-1">
+                                <h4 class="mb-0 fs-11 text-muted text-uppercase">{{'app.direct_messages' | translate}}
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="chat-message-list" style="max-height: calc(100vh - 260px)">
+                            @if (getLoader) {
+                            <ul class="list-unstyled chat-list chat-user-list" id="userList">
+                                @for (test of skeleton_arr; track $index) {
+                                <li data-name="direct-message" class="">
+                                    <a href="javascript: void(0);" class="unread-msg-user">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <div class="skeleton-card">Test</div>
+                                            </div>
+                                            <!-- <div class="ms-2">
+                                                    <span
+                                                        class="badge bg-dark-subtle text-body rounded p-1">8</span>
+                                                </div> -->
+                                        </div>
+                                    </a>
+                                </li>
+                                }
+                            </ul>
+                            }
+
+                            @else {
+                            <ul class="list-unstyled chat-list chat-user-list"
+                                style="max-height: calc(100vh - 260px); overflow-y: auto;" id="userList">
+                                @for (chat of chats_arr; track chat) {
+                                <li [id]="'contact-id'+chat._id" data-name="direct-message"
+                                    (click)="getChatbyId(chat?._id, chat)">
+                                    <!-- make id dynamic -->
+                                    <a href="javascript: void(0);" class="unread-msg-user">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 chat-user-box overflow-hidden">
+                                                <h5 class="fs-13 text-truncate mb-0 chatlist-user-name">
+                                                    {{chat?.patient_data?.first_name | titlecase}}
+                                                    {{chat?.patient_data?.last_name | titlecase}}
+                                                </h5>
+                                                <small class="text-muted text-truncate mb-0">
+                                                    @if (chat?.chat?.message_type == 'text') {
+                                                    <div>{{chat?.chat?.message}}</div>
+                                                    }
+                                                    @else if (chat?.chat?.message_type == 'requestData') {
+                                                    <div>{{'app.sent_request' | translate}}</div>
+                                                    }
+                                                    @else {
+                                                    <div>{{'app.appointment_sent' | translate}}</div>
+                                                    }
+                                                </small>
+                                            </div>
+                                            <!-- <div class="ms-auto"><span
+                                                            class="badge bg-dark-subtle text-body rounded p-1">8</span>
+                                                    </div> -->
+                                        </div>
+                                    </a>
+                                </li>
+                                }@empty {
+                                <div class="text-center text-danger">{{'app.no_chat_found' | translate}}</div>
+                                }
+                                @if(loadmore){
+                                <div class="d-flex justify-content-center mt-2">
+                                    <button type="button" class="btn btn-sm btn-dark d-flex align-items-center gap-2"
+                                        (click)="getChats()">
+                                        <i class="ri-loader-2-line"></i>
+                                        <span>{{'app.more' | translate}}</span>
+                                    </button>
+                                </div>
+                                }
+                            </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!-- end chat leftsidebar -->
+
+                <!-- Start User chat -->
+                @if (showChat) {
+                <div class="user-chat w-100 overflow-hidden minimal-border">
+                    <div class="chat-content d-lg-flex">
+                        <div class="w-100 overflow-hidden position-relative">
+                            <div class="position-relative">
+                                <div class="position-relative" id="users-chat">
+                                    <div class="p-3 user-chat-topbar">
+                                        <div class="row align-items-center">
+                                            <div class="col-sm-4 col-8">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 d-block d-lg-none me-3">
+                                                        <a href="javascript: void(0);"
+                                                            class="user-chat-remove fs-18 p-1"><i
+                                                                class="ri-arrow-left-s-line align-bottom"></i></a>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <h5 class="text-truncate mb-0 fs-16">
+                                                            <a class="text-reset username">
+                                                                {{user_details?.patient_data?.first_name | titlecase}}
+                                                                {{user_details?.patient_data?.last_name | titlecase}}
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8 col-4">
+                                                <ul class="list-inline user-chat-nav text-end mb-0">
+                                                    <li class="list-inline-item m-0 text-info fs-3" role="button"
+                                                        data-bs-toggle="offcanvas"
+                                                        [attr.data-bs-target]="'#offcanvas-' + user_details?._id"
+                                                        [attr.aria-controls]="'offcanvas-' + user_details?._id">
+                                                        <i class="ri-information-line"></i>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- end chat user head -->
+                                    <div class="chat-conversation p-3 p-lg-4 overflow-y-auto" #scrollChat
+                                        id="chat-conversation" data-simplebar>
+                                        <!-- simplebar-scrollable-y -->
+                                        <ul class="list-unstyled chat-conversation-list" id="users-conversation">
+                                            @for (conversation of chat_details; track conversation) {
+                                            <li class="chat-list "
+                                                [ngClass]="conversation?.facility_id == conversation.from ? 'right' : 'left'"
+                                                [id]="conversation?._id">
+                                                <div class="conversation-list">
+                                                    <div class="user-chat-content">
+                                                        @if (conversation.message_type == 'text') {
+                                                        <div class="ctext-wrap">
+                                                            <div class="ctext-wrap-content" [id]="conversation?._id">
+                                                                <p class="mb-0 ctext-content">{{conversation?.message}}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        }
+
+                                                        @else if(conversation.message_type == 'requestData'){
+                                                        <div class="ctext-wrap mb-2">
+                                                            <div class="ctext-wrap-content">
+                                                                <div class="d-flex align-items-center gap-2 mb-2">
+                                                                    <div class="fw-bold">
+                                                                        <!-- {{conversation?.message_data?.service_data?.service_name
+                                                                        | titlecase}} -->
+                                                                        {{getServiceName(conversation?.message_data?.service_data)
+                                                                        | titlecase}}
+                                                                    </div>
+                                                                    <div class="badge"
+                                                                        [ngClass]=" conversation?.message_data?.meta?.insurance === 'public' ? 'bg-light-red' : conversation?.message_data?.meta?.insurance === 'private' ? 'bg-light-green' : conversation?.message_data?.meta?.insurance === 'self-payer' ? 'bg-info' : ''">
+                                                                        {{conversation?.message_data?.meta?.insurance
+                                                                        === 'public' ? 'GKV' :
+                                                                        conversation?.message_data?.meta?.insurance ===
+                                                                        'private' ? 'PKV' :
+                                                                        conversation?.message_data?.meta?.insurance ===
+                                                                        'self-payer' ?
+                                                                        'Selbstzahler' : ''}}
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="d-grid small mb-2">
+                                                                    <div class="fw-medium">{{'app.department' |
+                                                                        translate}}</div>
+                                                                    <small>{{conversation?.message_data?.department_data?.name
+                                                                        | titlecase}}</small>
+                                                                </div> -->
+                                                                <!-- <div class="mb-2">
+                                                                    @if
+                                                                    (conversation?.message_data?.meta.hasOwnProperty("is_new"))
+                                                                    {
+                                                                    <small>
+                                                                        {{conversation?.message_data?.meta?.is_new
+                                                                        ? 'New Patient' : 'Existing Patient'}}
+                                                                    </small>
+                                                                    }
+                                                                </div> -->
+                                                                @if
+                                                                (conversation?.message_data?.meta.hasOwnProperty("is_new")
+                                                                || conversation?.message_data.meta?.insurance) {
+                                                                <div class="d-grid gap-1 small mb-2">
+                                                                    @if
+                                                                    (conversation?.message_data?.meta?.is_new === true
+                                                                    || conversation?.message_data?.meta?.is_new ===
+                                                                    false)
+                                                                    {
+                                                                    <small>
+                                                                        {{conversation?.message_data?.meta?.is_new
+                                                                        ? ('app.new_patient' | translate)
+                                                                        : ('app.existing_patient' | translate)}}
+                                                                    </small>
+                                                                    }
+                                                                    @if (conversation?.message_data.meta?.insurance) {
+                                                                    <small>{{'app.insurance' | translate}}:
+                                                                        {{conversation?.message_data.meta?.insurance
+                                                                        | titlecase}}</small>
+                                                                    }
+                                                                </div>
+                                                                }
+
+                                                                @if (conversation?.message_data?.meta?.custom?.length) {
+                                                                @for (custom of
+                                                                conversation?.message_data?.meta?.custom; track
+                                                                custom) {
+                                                                @if (custom?.junction_type == 'text' ||
+                                                                custom?.junction_type == 'answers') {
+                                                                <div class="d-grid small mb-1">
+                                                                    <div class="fw-medium">{{custom?.step_description}}
+                                                                    </div>
+                                                                    <small>{{custom?.answer_array[0]?.value}}
+                                                                    </small>
+                                                                </div>
+                                                                }
+                                                                @else if (custom?.junction_type ==
+                                                                'multi_answers') {
+                                                                <div class="small fw-medium">
+                                                                    {{custom?.step_description}}
+                                                                </div>
+                                                                <div class="d-flex flex-wrap small mb-1">
+                                                                    @for (answers of custom?.answer_array; track
+                                                                    answers; let last = $last) {
+                                                                    <small>{{answers?.value}}</small>
+                                                                    @if (!last) {
+                                                                    <small class="me-1">,</small>
+                                                                    }
+                                                                    }
+                                                                </div>
+                                                                }
+                                                                @else if (custom?.junction_type ==
+                                                                'slider_small') {
+                                                                <div class="small fw-medium">
+                                                                    {{custom?.step_description}}
+                                                                </div>
+                                                                <div class="d-flex flex-wrap small mb-1">
+                                                                    <ng-container *ngFor="let star of [1, 2, 3]">
+                                                                        <i
+                                                                            [ngClass]="{'ri-star-fill text-warning': star <= (custom?.answer_array?.[0]?.value || 0), 'ri-star-line': star > (custom?.answer_array?.[0]?.value || 0)}"></i>
+                                                                    </ng-container>
+                                                                </div>
+                                                                }
+                                                                @else if (custom?.junction_type ==
+                                                                'slider_large') {
+                                                                <div class="small fw-medium">
+                                                                    {{custom?.step_description}}
+                                                                </div>
+                                                                <div class="d-flex flex-wrap small mb-1">
+                                                                    <ng-container
+                                                                        *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+                                                                        <i
+                                                                            [ngClass]="{'ri-star-fill text-warning': star <= (custom?.answer_array?.[0]?.value || 0), 'ri-star-line': star > (custom?.answer_array?.[0]?.value || 0)}"></i>
+                                                                    </ng-container>
+                                                                </div>
+                                                                }
+                                                                @else if (custom?.junction_type ==
+                                                                'slider_emotion') {
+                                                                <div class="small fw-medium">
+                                                                    {{custom?.step_description}}
+                                                                </div>
+                                                                <div class="mb-1">{{
+                                                                    getIconForValue(custom?.answer_array[0]?.value) }}
+                                                                </div>
+                                                                }
+                                                                @else if (custom?.junction_type ==
+                                                                'slider_consent') {
+                                                                <div class="small fw-medium">
+                                                                    {{custom?.step_description}}
+                                                                </div>
+                                                                <div class="small mb-1">{{
+                                                                    custom?.answer_array[0]?.value | titlecase}}</div>
+                                                                }
+                                                                @else if (custom?.junction_type ==
+                                                                'signature') {
+                                                                <div class="small fw-medium">
+                                                                    {{custom?.step_description}}
+                                                                </div>
+                                                                <img [src]="custom?.answer_array[0]?.value"
+                                                                    class="mb-1 w-100">
+                                                                }
+
+                                                                }
+                                                                }
+
+                                                                @if
+                                                                (conversation?.message_data?.meta?.treatments?.length) {
+                                                                <div class="d-grid small my-2">
+                                                                    <div class="fw-medium">{{'app.treatment' |
+                                                                        translate}}</div>
+                                                                    @for (treatment of
+                                                                    conversation?.message_data?.meta?.treatments;
+                                                                    track treatment) {
+                                                                    <small class="d-grid gap-1">
+                                                                        {{ treatment?.treatment_name | titlecase
+                                                                        }}
+                                                                    </small>
+                                                                    }
+                                                                </div>
+                                                                }
+
+                                                                @if
+                                                                (conversation?.message_data?.meta?.preffered_selected_time?.date)
+                                                                {
+                                                                <div class="d-grid small mb-2">
+                                                                    <div class="fw-medium">{{'app.date' | translate}}
+                                                                    </div>
+                                                                    <small>{{
+                                                                        conversation?.message_data?.meta?.preffered_selected_time?.date
+                                                                        | date : "dd.MM.yy"
+                                                                        }}</small>
+                                                                </div>
+                                                                }
+                                                                @if
+                                                                (conversation?.message_data?.meta?.preffered_selected_time?.start_time
+                                                                &&
+                                                                conversation?.message_data?.meta?.preffered_selected_time?.end_time)
+                                                                {
+                                                                <div class="d-grid small mb-2">
+                                                                    <div class="fw-medium">{{'app.time' | translate}}
+                                                                    </div>
+                                                                    <small>{{conversation?.message_data?.meta?.preffered_selected_time?.start_time}}
+                                                                        -
+                                                                        {{conversation?.message_data?.meta?.preffered_selected_time?.end_time}}</small>
+                                                                </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        }
+
+                                                        @else if(conversation.message_type == 'appointmentData'){
+                                                        <div class="ctext-wrap mb-2">
+                                                            <div class="ctext-wrap-content text-dark text-start">
+                                                                <div class="fw-bold mb-2">
+                                                                    <!-- {{conversation?.message_data?.service_data?.service_name
+                                                                    | titlecase}} -->
+                                                                    {{getServiceName(conversation?.message_data?.service_data)
+                                                                    | titlecase}}
+                                                                </div>
+                                                                <!-- @if
+                                                                (conversation?.message_data?.service_data?.meta?.is_new
+                                                                || conversation?.message_data.meta?.insurance) {
+                                                                <div class="d-grid gap-1 small mb-2">
+                                                                    <small>
+                                                                        {{conversation?.message_data?.service_data?.meta?.is_new
+                                                                        ? 'New Patient' : 'Existing Patient'}}
+                                                                    </small>
+                                                                    <small>Insurance:
+                                                                        {{conversation?.message_data.meta?.insurance
+                                                                        | titlecase}}</small>
+                                                                </div>
+                                                                } -->
+                                                                <!-- <div class="d-grid small mb-2">
+                                                                    <div class="fw-medium">{{'app.department' |
+                                                                        translate}}</div>
+                                                                    <small>{{conversation?.message_data?.department_data?.name
+                                                                        | titlecase}}</small>
+                                                                </div> -->
+                                                                <div class="d-grid small mb-2">
+                                                                    <div class="fw-medium">{{'app.treatment' |
+                                                                        translate}}</div>
+                                                                    @for (treatment of
+                                                                    conversation?.message_data?.treatment_data;
+                                                                    track treatment) {
+                                                                    <small class="d-grid gap-1">
+                                                                        {{ treatment?.name | titlecase
+                                                                        }}
+                                                                    </small>
+                                                                    }
+                                                                </div>
+                                                                @if (conversation?.message_data?.start_date &&
+                                                                conversation?.message_data?.end_date) {
+                                                                <div class="d-grid small mb-2">
+                                                                    <div class="fw-medium">{{'app.date' | translate}}
+                                                                    </div>
+                                                                    <small>{{conversation?.message_data?.createdAt |
+                                                                        date:'dd.MM.yy':'UTC'}}</small>
+                                                                </div>
+                                                                }
+                                                                @if (conversation?.message_data?.start_date &&
+                                                                conversation?.message_data?.end_date) {
+                                                                <div class="d-grid small">
+                                                                    <div class="fw-medium">{{'app.time' | translate}}
+                                                                    </div>
+                                                                    <small>{{splitTime(conversation?.message_data?.start_date)}}
+                                                                        -
+                                                                        {{splitTime(conversation?.message_data?.end_date)}}</small>
+                                                                </div>
+                                                                }
+                                                                <!-- <div class="d-grid gap-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-outline-success d-flex align-items-center gap-2">
+                                                                        <i class="ri-check-line"></i>
+                                                                        <div>Accept appointment</div>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2">
+                                                                        <i class="ri-close-fill"></i>
+                                                                        <div>Decline appointment</div>
+                                                                    </button>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                        <div class="conversation-name">
+                                                            <!-- <span class="d-none name">
+                                                                Lisa Parker</span> -->
+                                                            <small class="text-muted time">
+                                                                {{ conversation.createdAt | date:'dd.MM.yy HH:mm' }}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            }
+                                        </ul>
+                                        <!-- end chat-conversation-list -->
+                                    </div>
+                                    <!-- <div class="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade show "
+                                            id="copyClipBoard" role="alert">
+                                            Message copied
+                                        </div> -->
+                                </div>
+
+                                <!-- end chat-conversation -->
+
+                                <div class="chat-input-section p-3 p-lg-4">
+                                    <form [formGroup]="chatForm" enctype="multipart/form-data"
+                                        (ngSubmit)="sendMessage()">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col-auto">
+                                                <div class="chat-input-links me-2">
+                                                    <div class="links-list-item">
+                                                        <div class="btn-group dropup">
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-dark dropdown-toggle"
+                                                                data-bs-toggle="dropdown" aria-expanded="true">
+                                                                <i class="ri-add-line fs-5"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu"
+                                                                style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(0px, -39.2px, 0px);"
+                                                                data-popper-placement="top-start">
+                                                                <li role="button" (click)="sendReminder()">
+                                                                    <a class="dropdown-item">
+                                                                        <i class="ri-mail-send-line"></i>
+                                                                        {{'app.reminder' | translate}} {{'app.email' |
+                                                                        translate}}
+                                                                    </a>
+                                                                </li>
+                                                                <li data-bs-toggle="modal"
+                                                                    data-bs-target="#addAppointment" role="button"
+                                                                    (click)="createAppointment()">
+                                                                    <a class="dropdown-item">
+                                                                        <i class="ri-calendar-schedule-line"></i>
+                                                                        {{'app.make_appointment' | translate}}
+                                                                    </a>
+                                                                </li>
+
+                                                                <!-- <li><a class="dropdown-item" href="#">Menu item</a></li> -->
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control chat-input bg-light border-light"
+                                                    [placeholder]="'app.type' | translate" autocomplete="off"
+                                                    formControlName="message">
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="chat-input-links ms-2">
+                                                    <div class="links-list-item">
+                                                        <button type="submit"
+                                                            class="btn btn-success chat-send waves-effect waves-light"
+                                                            [disabled]="chatForm.invalid || submitted">
+                                                            <i class="ri-send-plane-2-fill align-bottom"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="replyCard">
+                                    <div class="card mb-0">
+                                        <div class="card-body py-3">
+                                            <div class="replymessage-block mb-0 d-flex align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="conversation-name"></h5>
+                                                    <p class="mb-0"></p>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <button type="button" id="close_toggle"
+                                                        class="btn btn-sm btn-link mt-n2 me-n3 fs-18">
+                                                        <i class="bx bx-x align-middle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add appointment modal -->
+<div id="addAppointment" class="modal fade" tabindex="-1" aria-labelledby="addAppointmentLabel"
+    data-bs-backdrop="static" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAppointmentLabel">{{'app.new' | translate}} {{'app.appointment' |
+                    translate}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAddModal
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addAppointmentForm" class="row" (ngSubmit)="saveAppointment()">
+                    <div class="col-12 mb-3">
+                        <label for="patient_id" class="form-label">{{'app.patients' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="patient_id" role="button">
+                            <option value="" selected>Select a patient</option>
+                            @for (patient of patient_arr; track patient) {
+                            <option [value]="patient?._id">{{patient?.first_name}} {{patient?.last_name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                        <label for="start_date" class="form-label">{{'app.date' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="date" class="form-control" formControlName="start_date">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                        <label for="start_time" class="form-label">{{'app.start_time' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="time" class="form-control" formControlName="start_time">
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                        <label for="end_time" class="form-label">{{'app.end_time' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="time" class="form-control" formControlName="end_time">
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="location_id" class="form-label">{{'app.locations' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="location_id" role="button"
+                            (change)="onSelectLocation($event)">
+                            <option value="" selected>{{'app.select' | translate}} a {{'app.location' | translate}}
+                            </option>
+                            @for (location of location_arr; track location) {
+                            <option [value]="location?._id">{{location?.location_name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="department_id" class="form-label">{{'app.department' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="department_id" role="button"
+                            (change)="onSelectDepartment($event)">
+                            <option value="" selected>{{'app.select' | translate}} a {{'app.department' | translate}}
+                            </option>
+                            @for (department of departments_arr; track department) {
+                            <option [value]="department?._id">{{department?.name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label for="service_id" class="form-label">{{'app.services' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" formControlName="service_id" role="button">
+                            <option value="" selected>{{'app.select' | translate}} a {{'app.service' | translate}}
+                            </option>
+                            @for (service of services_arr; track service) {
+                            <option [value]="service?._id">{{service?.service_name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <label class="form-label">{{'app.treatments' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <select class="form-select" role="button" (change)="onSelect($event)">
+                            <option value="" selected>{{'app.select' | translate}} a {{'app.treatment' | translate}}
+                            </option>
+                            @for (treatment of treatments_arr; track treatment) {
+                            <option [value]="treatment?.name + ',' + treatment?._id">
+                                {{treatment?.name}}
+                            </option>
+                            }
+                        </select>
+
+                        @for (selected of selected_treatment; let i = $index; track selected) {
+                        <div class="badge bg-success mt-1 me-2">
+                            <span class="d-flex align-items-center gap-1">
+                                <i class="ri-close-line" role="button" (click)="removeSelection(i)"></i>{{selected}}
+                            </span>
+                        </div>
+                        }
+                    </div>
+                    <div class="col-12 modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{'app.close' |
+                            translate}}</button>
+                        <button type="submit" class="btn btn-dark d-flex align-items-center justify-content-center"
+                            [disabled]="submitted || addAppointmentForm.invalid">
+                            <span *ngIf="!loading" class="d-flex align-items-center">
+                                <i class='ri-save-3-line me-2'></i>{{'app.save' | translate}}</span>
+                            <span *ngIf="loading">
+                                <div class="spinner-border spinner-border-sm text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- patient info -->
+<div class="offcanvas offcanvas-end" tabindex="-1" [id]="'offcanvas-' + user_details?._id"
+    aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasExampleLabel" class="mb-0">{{'app.chat' | translate}} {{'app.info' | translate}}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body profile-offcanvas p-0">
+        <div class="p-3 text-center">
+            <h5 class="fs-16 mb-3">
+                {{user_details?.patient_data?.first_name}} {{user_details?.patient_data?.last_name}}
+            </h5>
+            <div class="d-flex gap-2 justify-content-center">
+                <button type="button" class="btn avatar-xs p-0">
+                    <span class="avatar-title rounded bg-light text-body">
+                        <i class="ri-phone-line"></i>
+                    </span>
+                </button>
+
+                <button type="button" class="btn avatar-xs p-0">
+                    <span class="avatar-title rounded bg-light text-body">
+                        <i class="ri-mail-line"></i>
+                    </span>
+                </button>
+
+                <!-- <button type="button" class="btn avatar-xs p-0">
+                    <span class="avatar-title rounded bg-light text-body">
+                        <i class="ri-map-pin-2-line"></i>
+                    </span>
+                </button> -->
+
+                <div class="dropdown">
+                    <button class="btn avatar-xs p-0" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="avatar-title bg-light text-body rounded">
+                            <i class="ri-more-fill"></i>
+                        </span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="ri-inbox-archive-line align-bottom text-muted me-2"></i>Archive</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="ri-mic-off-line align-bottom text-muted me-2"></i>Muted</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="ri-delete-bin-5-line align-bottom text-muted me-2"></i>Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top border-top-dashed p-3">
+            <h5 class="fs-15 mb-3">{{'app.personal_details' | translate}}</h5>
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.phone' | translate}}</p>
+                <h6>{{user_details?.patient_data?.phone}}</h6>
+            </div>
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.email' | translate}}</p>
+                <h6>{{user_details?.patient_data?.email}}</h6>
+            </div>
+        </div>
+
+        <div class="border-top border-top-dashed p-3">
+            <div class="mb-3 d-flex align-items-center gap-3">
+                <div class="h5 mb-0">{{'app.request_details' | translate}}</div>
+                <div class="badge bg-dark text-white">
+                    {{user_details?.meta?.is_new ? ('app.new_patient' | translate)
+                    : ('app.existing_patient' | translate)}}</div>
+            </div>
+            <!-- <div class="mb-3">
+                <h6 class="badge" [ngClass]="user_details?.meta?.is_new ? 'bg-dark' : 'bg-info'">{{user_details?.meta?.is_new ? 'New Patient' : 'Existing Patient'}}</h6>
+            </div> -->
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.insurance' | translate}}</p>
+                <div class="badge" [ngClass]="user_details?.meta?.insurance === 'public' ? 'bg-light-red' :
+                user_details?.meta?.insurance === 'private' ? 'bg-light-green' :
+                user_details?.meta?.insurance === 'self-payer' ? 'bg-info' : 'bg-dark'">
+                    {{ user_details?.meta?.insurance === 'public' ? 'GKV' :
+                    user_details?.meta?.insurance === 'private' ? 'PKV' :
+                    user_details?.meta?.insurance === 'self-payer' ? 'Selbstzahler' : '--' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.department' | translate}}</p>
+                <h6 class="mb-0">{{user_details?.department_data?.name}}</h6>
+            </div>
+            <div>
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.treatment' | translate}}</p>
+                @for (treatment of user_details?.meta?.treatments; track treatment) {
+                <h6>{{treatment?.treatment_name}}</h6>
+                }
+            </div>
+        </div>
+    </div>
+</div>

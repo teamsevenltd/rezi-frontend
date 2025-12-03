@@ -1,0 +1,127 @@
+<form [formGroup]="insuranceForm">
+    <div class="small form-label">{{'app.would_you_like_to_deactivate' | translate}}</div>
+    <div class="card custom-card mb-4">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <span>{{'app.deactivate_query' | translate}}</span>
+            <div class="form-check form-switch form-switch-dark">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                    formControlName="show_insurance">
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-3 mb-4">
+        <small>{{'app.appointment_process_new' | translate}}</small>
+        <div class="d-grid gap-2">
+            <span class="small text-muted">{{'app.legally' | translate}}</span>
+            <select class="form-select" role="button" formControlName="legal_new_patient_action_type">
+                <!-- @for (action of action_list; track action) {
+                <option [value]="action.value" selected="">{{action.label}}</option>
+                } -->
+                <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+                <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' |
+                    translate}}</option>
+                <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                    translate}}</option>
+                <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' |
+                    translate}}</option>
+            </select>
+            @if (insuranceForm.value.legal_new_patient_action_type != '') {
+            <textarea class="form-control" rows="2" formControlName="legal_new_patient_action_value"></textarea>
+            }
+        </div>
+        <div class="d-grid gap-2">
+            <span class="small text-muted">{{'app.private' | translate}}</span>
+            <select class="form-select" role="button" formControlName="private_new_patient_action_type">
+                <!-- @for (action of action_list; track action) {
+                <option [value]="action.value" selected="">{{action.label}}</option>
+                } -->
+                <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+                <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' |
+                    translate}}</option>
+                <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                    translate}}</option>
+                <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' |
+                    translate}}</option>
+            </select>
+            @if (insuranceForm.value.private_new_patient_action_type != '') {
+            <textarea class="form-control" rows="2" formControlName="private_new_patient_action_value"></textarea>
+            }
+        </div>
+        <div class="d-grid gap-2">
+            <span class="small text-muted">{{'app.self_payers' | translate}}</span>
+            <select class="form-select" role="button" formControlName="self_new_patient_action_type">
+                <!-- @for (action of action_list; track action) {
+                <option [value]="action.value" selected="">{{action.label}}</option>
+                } -->
+                <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+                <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' |
+                    translate}}</option>
+                <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                    translate}}</option>
+                <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' |
+                    translate}}</option>
+            </select>
+            @if (insuranceForm.value.self_new_patient_action_type != '') {
+            <textarea class="form-control" rows="2" formControlName="self_new_patient_action_value"></textarea>
+            }
+        </div>
+    </div>
+
+    <div class="d-grid gap-3">
+        <small>{{'app.appointment_process_existing' | translate}}</small>
+        <div class="d-grid gap-2">
+            <span class="small text-muted">{{'app.legally' | translate}}</span>
+            <select class="form-select" role="button" formControlName="legal_old_patient_action_type">
+                <!-- @for (action of action_list; track action) {
+                <option [value]="action.value" selected="">{{action.label}}</option>
+                } -->
+                <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+                <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' |
+                    translate}}</option>
+                <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                    translate}}</option>
+                <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' |
+                    translate}}</option>
+            </select>
+            @if (insuranceForm.value.legal_old_patient_action_type != '') {
+            <textarea class="form-control" rows="2" formControlName="legal_old_patient_action_value"></textarea>
+            }
+        </div>
+        <div class="d-grid gap-2">
+            <span class="small text-muted">{{'app.private' | translate}}</span>
+            <select class="form-select" role="button" formControlName="private_old_patient_action_type">
+                <!-- @for (action of action_list; track action) {
+                <option [value]="action.value" selected="">{{action.label}}</option>
+                } -->
+                <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+                <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' |
+                    translate}}</option>
+                <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                    translate}}</option>
+                <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' |
+                    translate}}</option>
+            </select>
+            @if (insuranceForm.value.private_old_patient_action_type != '') {
+            <textarea class="form-control" rows="2" formControlName="private_old_patient_action_value"></textarea>
+            }
+        </div>
+        <div class="d-grid gap-2">
+            <span class="small text-muted">{{'app.self_payers' | translate}}</span>
+            <select class="form-select" role="button" formControlName="self_old_patient_action_type">
+                <!-- @for (action of action_list; track action) {
+                <option [value]="action.value" selected="">{{action.label}}</option>
+                } -->
+                <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+                <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' |
+                    translate}}</option>
+                <option value="patients will be directed to external service">{{'app.predefined_click_option_3' |
+                    translate}}</option>
+                <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' |
+                    translate}}</option>
+            </select>
+            @if (insuranceForm.value.self_old_patient_action_type != '') {
+            <textarea class="form-control" rows="2" formControlName="self_old_patient_action_value"></textarea>
+            }
+        </div>
+    </div>
+</form>

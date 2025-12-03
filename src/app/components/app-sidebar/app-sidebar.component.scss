@@ -1,0 +1,48 @@
+.scrollable {
+    overflow: auto !important;
+    scrollbar-width: none;
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 0em;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.scrollable::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.navbar-brand-box {
+    // height: 90px;
+    -webkit-transition: all 0.1s ease-out;
+    transition: all 0.1s ease-out;
+}
+
+.nav-item {
+    width: 95%;
+    margin: auto;
+
+    a {
+        &:hover {
+            color: #000000 !important;
+            text-decoration-line: none;
+            border-radius: 6px;
+            background: rgba(109, 181, 255, 0.1);
+            margin: auto;
+        }
+    }
+
+    &.active {
+        background: rgba(109, 181, 255, 0.3);
+        border-radius: 6px;
+    }
+}
+
+.nav-link {
+    i {
+        margin-right: 10px;
+    }
+}

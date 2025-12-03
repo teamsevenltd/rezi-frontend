@@ -1,0 +1,31 @@
+<div class="small mb-2">{{step_details?.step_meta?.click_label_text}}
+</div>
+<form [formGroup]="clickForm" class="d-grid gap-2" >
+    <!-- (ngSubmit)="saveForm()" -->
+    <select class="form-select" role="button" formControlName="action_type" (change)="onChoose()">
+        <!-- @for (action of action_list; track action) {
+        <option [value]="action.value" selected="">{{action.label}}</option>
+        } -->
+        <option value="" selected>{{'app.predefined_click_option_1' | translate}}</option>
+        <option value="patients will receive an automatic message">{{'app.predefined_click_option_2' | translate}}
+        </option>
+        <option value="patients will be directed to external service">{{'app.predefined_click_option_3' | translate}}
+        </option>
+        <option value="an external service is displayed to patients">{{'app.predefined_click_option_4' | translate}}
+        </option>
+    </select>
+    @if (clickForm.value.action_type == 'patients will receive an automatic message') {
+    <textarea class="form-control" rows="2" formControlName="action_value"></textarea>
+    <!-- <div class="mt-2 ms-auto">
+        <button type="submit" class="btn btn-dark btn-sm d-flex align-items-center"><i
+                class="ri-save-3-line me-2"></i>Save</button>
+    </div> -->
+    }@else if(clickForm.value.action_type == 'patients will be directed to external service' ||
+    clickForm.value.action_type == 'an external service is displayed to patients'){
+    <input type="text" class="form-control" formControlName="action_value">
+    <!-- <div class="mt-2 ms-auto">
+        <button type="submit" class="btn btn-dark btn-sm d-flex align-items-center"><i
+                class="ri-save-3-line me-2"></i>Save</button>
+    </div> -->
+    }
+</form>

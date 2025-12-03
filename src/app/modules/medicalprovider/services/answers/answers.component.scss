@@ -1,0 +1,56 @@
+.card{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.container-fluid{
+    margin-inline: 0;   
+    min-height: calc(100vh - 8rem);
+}
+
+h1{
+    height: 30px !important;
+    width: 30px !important;
+}
+
+h4{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 23px;  
+    
+}
+.accordion-button:not(.collapsed) {
+    box-shadow: none !important;
+}
+
+
+.accordion-button {
+    padding: none !important;
+    transition: none !important;
+}
+
+.gray{
+    background-color: rgb(242, 242, 242);
+    border-radius: 6px;
+}
+.timeline::after{
+    background-color: transparent;
+}
+@media  screen and (max-width: 500px) {
+    .container-fluid{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    p,input{
+        font-size: 12px !important;
+    }
+    button{
+        font-size: 10px !important;
+        i{
+            font-size: 13px !important;
+        }
+    }
+   
+    
+}

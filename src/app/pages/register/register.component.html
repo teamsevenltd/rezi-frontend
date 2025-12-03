@@ -1,0 +1,184 @@
+<div class="row authentication mx-0">
+    <div class="col-xxl-7 col-xl-7 col-lg-7 col-12 bg-white">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-7 col-lg-8 col-10 mx-auto">
+                <div class="text-center">
+                    <img src="./assets/images/rezi24-public.png" class="company-logo" routerLink="/"
+                        alt="REZI24?">
+                </div>
+                <div class="mb-3">
+                    <h3 class="fw-bolder fs-24">{{'app.register_your_account' | translate}}</h3>
+                </div>
+
+                <form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+                    <div>
+                        <label class="form-label" for="first_name">{{'app.first' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control mb-1"
+                            [ngClass]="{ 'is-invalid': submitted && error['first_name'].errors}"
+                            [placeholder]="'app.enter_your_first' | translate" formControlName="first_name">
+                        <div class="invalid-feedback">
+                            @if (submitted && error['first_name'].errors) {
+                            @if (submitted && error['first_name'].errors['required']) {
+                            <div>{{'app.first_name_required' | translate}}</div>
+                            }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label" for="last_name">{{'app.last' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="text" class="form-control mb-1"
+                            [ngClass]="{ 'is-invalid': submitted && error['last_name'].errors}"
+                            [placeholder]="'app.enter_your_last' | translate" formControlName="last_name">
+                        <div class="invalid-feedback">
+                            @if (submitted && error['last_name'].errors) {
+                            @if (submitted && error['last_name'].errors['required']) {
+                            <div>{{'app.last_name_required' | translate}}</div>
+                            }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label" for="title">{{'app.title' | translate}}<sup
+                                class="text-danger">*</sup> {{'app.eg' | translate}}</label>
+                        <input type="text" class="form-control mb-1"
+                            [ngClass]="{ 'is-invalid': submitted && error['title'].errors}"
+                            [placeholder]="'app.enter_title' | translate" formControlName="title">
+                        <div class="invalid-feedback">
+                            @if (submitted && error['title'].errors) {
+                            @if (submitted && error['title'].errors['required']) {
+                            <div>{{'app.title_required' | translate}}</div>
+                            }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label" for="email">{{'app.email' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <input type="email" class="form-control mb-1"
+                            [ngClass]="{ 'is-invalid': submitted && error['email'].errors}"
+                            [placeholder]="'app.enter_your_email' | translate" formControlName="email">
+                        <div class="invalid-feedback">
+                            @if (submitted && error['email'].errors) {
+                            @if (submitted && error['email'].errors['required']) {
+                            <div>{{'app.email_required' | translate}}</div>
+                            }
+                            @if (submitted && error['email'].errors['email']) {
+                            <div>{{'app.valid_email_required' | translate}}</div>
+                            }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label" for="password">{{'app.password' | translate}}<sup
+                                class="text-danger">*</sup></label>
+                        <div class="input-group">
+                            <input [type]="hidePassword ? 'text' : 'password'" class="form-control"
+                                placeholder="********"
+                                [ngClass]="{ 'is-invalid': submitted && error['password'].errors}"
+                                formControlName="password">
+                            <span class="input-group-text rounded-end" (click)="togglePassword()" role="button">
+                                <i [ngClass]="hidePassword ? 'ri-eye-line' : 'ri-eye-off-line'"></i>
+                            </span>
+                            <div class="invalid-feedback">
+                                @if (submitted && error['password'].errors) {
+                                @if (submitted && error['password'].errors['required']) {
+                                <div>{{'app.password_required' | translate}}</div>
+                                }
+                                @if (submitted && error['password'].errors['minlength']) {
+                                <div>{{'app.password_min_length' | translate}}</div>
+                                }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label" for="confpass">{{'app.confirm_password' | translate}}</label>
+                        <div class="input-group">
+                            <input [type]="hideconfPassword ? 'text' : 'password'" class="form-control"
+                                placeholder="********"
+                                [ngClass]="{ 'is-invalid': submitted && error['confpass'].errors}"
+                                formControlName="confpass">
+                            <span class="input-group-text rounded-end" (click)="toggleConfPassword()" role="button">
+                                <i [ngClass]="hideconfPassword ? 'ri-eye-line' : 'ri-eye-off-line'"></i>
+
+                            </span>
+                            <div class="invalid-feedback">
+                                @if (submitted && error['confpass'].errors) {
+                                @if (submitted && error['confpass'].errors['required']) {
+                                <div>{{'app.password_required' | translate}}</div>
+                                }
+                                @if (error['confpass'].errors['confirmedValidator']) {
+                                <div>{{'app.passwords_not_match' | translate}}</div>
+                                }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label" for="phone_number">{{'app.phone' | translate}}</label>
+                        <input type="tel" class="form-control mb-1" [placeholder]="'app.enter_your_phone' | translate"
+                            formControlName="phone_number">
+                    </div>
+
+                    <button type="submit"
+                        class="btn btn-dark w-100 d-flex align-items-center justify-content-center fw-medium fs-15 mt-4"
+                        [disabled]="loading">
+                        <span *ngIf="!loading" class="d-flex align-items-center"><i
+                                class='ri-login-box-line fs-18 mx-2'></i>{{'app.register' | translate}}</span>
+                        <span *ngIf="loading">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </button>
+                </form>
+
+                <p class="text-center mt-4 fw-medium">{{'app.or' | translate}}</p>
+                <p class="text-center">{{'app.already_have_account' | translate}}
+                    <a [routerLink]="['/']" class="text-primary fw-medium">
+                        {{'app.login_here' | translate}}
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-5 col-xl-5 col-lg-5 d-lg-block d-none px-0 bg-cover">
+        <div class="text-center">
+            <img src="./assets/images/team.svg" class="min-vh-100 w-75" alt="REZI24">
+        </div>
+    </div>
+</div>
+
+
+<div class="dropdown">
+    <button class="btn btn-dark dropdown-toggle public-dropdown" type="button" id="dropdownMenu"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="d-flex align-items-center gap-2" (click)="switchLanguage(selectedLang)">
+            <img [src]="'./assets/images/flags/' + (selectedLang === 'en' ? 'us' : 'germany') + '.svg'" class="rounded"
+                alt="" style="height: 1rem; width: 1rem;">
+            {{ selectedLang === 'en' ? 'English' : 'German' }}
+        </div>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1" role="button" style="min-width: auto !important;">
+        <a class="dropdown-item" (click)="switchLanguage('de')">
+            <div class="d-flex align-items-center gap-2">
+                <img src="./assets/images/flags/germany.svg" class="rounded" alt="" style="height: 1rem; width: 1rem;">
+                Deutsch
+            </div>
+        </a>
+        <a class="dropdown-item" (click)="switchLanguage('en')">
+            <div class="d-flex align-items-center gap-2">
+                <img src="./assets/images/flags/us.svg" class="rounded" alt="" style="height: 1rem; width: 1rem;">
+                English
+            </div>
+        </a>
+    </div>
+</div>

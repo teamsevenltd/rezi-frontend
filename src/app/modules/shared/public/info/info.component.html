@@ -1,0 +1,30 @@
+<form [formGroup]="infoForm" class="row">
+    <div class="col-lg-4 col-md-6 mb-3">
+        <label for="first_name" class="form-label">{{'app.first' | translate}}</label>
+        <input type="text" class="form-control" [placeholder]="'app.enter_your_first' | translate" formControlName="first_name">
+    </div>
+    <div class="col-lg-4 col-md-6 mb-3">
+        <label for="last_name" class="form-label">{{'app.last' | translate}}</label>
+        <input type="text" class="form-control" [placeholder]="'app.enter_your_last' | translate" formControlName="last_name">
+    </div>
+    <div class="col-lg-4 col-md-6 mb-3">
+        <label for="date_of_birth" class="form-label">{{'app.date_of_birth' | translate}}</label>
+        <input type="date" class="form-control" formControlName="date_of_birth">
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="phone" class="form-label">{{'public.phone' | translate}}<sup
+                class="text-danger">*</sup></label>
+        <input type="tel" class="form-control" [placeholder]="'app.enter_your_phone' | translate" formControlName="phone">
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="email" class="form-label">{{'app.email' | translate}}<sup class="text-danger">*</sup></label>
+        <input type="email" class="form-control" [placeholder]="'app.enter_your_email' | translate" formControlName="email">
+    </div>
+    <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+        <button type="button" class="btn btn-danger" (click)="reset()"><i class="ri-eraser-line me-2"></i>{{'public.clear'
+            | translate}}</button>
+        <button type="button" class="btn btn-dark" [disabled]="infoForm.invalid" (click)="submitForm()"><i
+                class='ri-save-3-line me-2'></i>{{'public.save' | translate}}</button>
+    </div>
+    <!-- <div class="col-lg-4 col-md-6 mb-3"></div> -->
+</form>
