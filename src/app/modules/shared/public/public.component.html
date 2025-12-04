@@ -346,8 +346,8 @@
                                 @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
                                 'external_link') {
                                 <div class="text-center mb-3">
-                                    <a class="btn btn-dark no-underline" [href]="steps_arr[counter - 1]?.step_meta?.media"
-                                        target="_blank">
+                                    <a class="btn btn-dark no-underline"
+                                        [href]="steps_arr[counter - 1]?.step_meta?.media" target="_blank">
                                         {{ steps_arr[counter - 1]?.step_description }}
                                     </a>
                                 </div>
@@ -523,7 +523,7 @@
     <app-chat></app-chat>
     }
     @else if (tab_name == 'info') {
-    <app-info (updateTab)="onUpdateTab($event)"></app-info>
+    <app-info [steps]="steps_arr" [counter]="counter" [allowAutoSkip]="allowInfoAutoSkip" (updateTab)="onUpdateTab($event)"></app-info>
     }
     @else if (tab_name == 'news') {
     <app-news></app-news>

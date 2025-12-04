@@ -2,25 +2,45 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 import { GeneralServiceService } from '../../../services/general-service.service';
-import { AngularSignaturePadModule, SignaturePadComponent } from '@almothafar/angular-signature-pad';
+import {
+  AngularSignaturePadModule,
+  SignaturePadComponent,
+} from '@almothafar/angular-signature-pad';
 
-import { InfoComponent } from "./info/info.component";
+import { InfoComponent } from './info/info.component';
 import { ChatComponent } from './chat/chat.component';
 import { NewsComponent } from './news/news.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { CdkDropList } from "@angular/cdk/drag-drop";
+import { CdkDropList } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-public',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSignaturePadModule, TranslateModule, InfoComponent, ChatComponent, NewsComponent, FeedbackComponent, CdkDropList],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AngularSignaturePadModule,
+    TranslateModule,
+    InfoComponent,
+    ChatComponent,
+    NewsComponent,
+    FeedbackComponent,
+    CdkDropList,
+  ],
   templateUrl: './public.component.html',
-  styleUrl: './public.component.scss'
+  styleUrl: './public.component.scss',
 })
 export class PublicComponent implements OnInit {
   clientForm!: FormGroup;
@@ -44,6 +64,8 @@ export class PublicComponent implements OnInit {
   isNews = false;
   isInfo = false;
 
+  allowInfoAutoSkip = false;
+
   facility_details: any;
   location_arr: any = [];
   department_arr: any = [];
@@ -64,8 +86,8 @@ export class PublicComponent implements OnInit {
   predefinedServices: any = {
     termin: {
       en: 'Appointment Service',
-      de: 'Termin Standardeinstellung'
-    }
+      de: 'Termin Standardeinstellung',
+    },
   };
 
   @ViewChild('customer_signature') customer_signature!: SignaturePadComponent;
@@ -93,14 +115,62 @@ export class PublicComponent implements OnInit {
     backgroundColor: 'white',
   };
 
-  constructor(private auth: AuthService, private route: ActivatedRoute, private shared: GeneralServiceService, private fb: FormBuilder, private router: Router, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {
+  constructor(
+    private auth: AuthService,
+    private route: ActivatedRoute,
+    private shared: GeneralServiceService,
+    private fb: FormBuilder,
+    private router: Router,
+    private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef
+  ) {
     this.shared.tabsRoute$.subscribe((name: any) => {
       this.tab_name = name;
+      // When navigating to menu tab, completely reset everything
+      if (name === 'menu') {
+        this.resetMenuState();
+      }
+      // When user explicitly clicks info button in footer, don't allow auto-skip
+      if (name === 'info') {
+        this.allowInfoAutoSkip = false;
+      }
     });
     this.shared.userLanguage$.subscribe((lang: string) => {
       this.selectedLang = lang.replace(/"/g, '');
       this.cdr.detectChanges();
     });
+  }
+
+  resetMenuState() {
+    // Reset to initial state - show location selection
+    this.isMenuLocation = true;
+    this.isMenuDepartment = false;
+    this.isMenuService = false;
+    this.isMenuSteps = false;
+
+    // Reset counter to start from beginning
+    this.counter = 1;
+    this.customStepCounter = 0;
+
+    // Clear selected data
+    this.selected_date = null;
+    this.selected_slot = null;
+    this.selectedTreatments = [];
+    this.treatments_time = [];
+    this.total_treatment_time = null;
+    this.client_type = '';
+    this.selectedInsuranceType = '';
+    this.selectedAnswerId = null;
+    this.selectedSmileyLabel = '';
+
+    // Reset arrays
+    this.steps_arr = [];
+    this.availability_arr = [];
+
+    // Re-fetch locations to start fresh
+    if (this.facility_details?._id) {
+      this.getLocations(this.facility_details._id);
+    }
   }
 
   ngOnInit(): void {
@@ -110,13 +180,11 @@ export class PublicComponent implements OnInit {
     if (this.route.snapshot?.url.length == 2) {
       this.tab_name = 'menu';
       this.id = this.route.snapshot.params['id'];
-    }
-    else {
+    } else {
       this.tab_name = 'chat';
       if (this.route.snapshot.url.length > 2) {
-        this.id = this.route.snapshot?.url[1].path
-      }
-      else {
+        this.id = this.route.snapshot?.url[1].path;
+      } else {
         this.id = this.route.snapshot.params['id'];
       }
     }
@@ -154,6 +222,8 @@ export class PublicComponent implements OnInit {
 
   onUpdateTab(event: any) {
     if (event == true) {
+      // After info submission, show the steps instead of going back to menu
+      this.isMenuSteps = true;
       this.tab_name = 'menu';
     }
   }
@@ -168,7 +238,7 @@ export class PublicComponent implements OnInit {
       insurance: [''],
       custom: this.fb.array([]),
       treatments: this.fb.array([]),
-      preffered_selected_time: ['']
+      preffered_selected_time: [''],
       // this.createCustom()
     });
   }
@@ -184,7 +254,10 @@ export class PublicComponent implements OnInit {
             let storedData = JSON.parse(localStorage.getItem('myKey') || '{}'); // Fallback to '{}' if null
             storedData['facilityId'] = this.facility_details?._id;
             localStorage.setItem('myKey', JSON.stringify(storedData));
-            localStorage.setItem('facilityObj', JSON.stringify(this.facility_details));
+            localStorage.setItem(
+              'facilityObj',
+              JSON.stringify(this.facility_details)
+            );
             this.shared.getDetails(this.facility_details);
             this.shared.updateStep({ previous: 'Menu', next: 'Location' });
             this.getLocations(this.facility_details?._id);
@@ -194,10 +267,9 @@ export class PublicComponent implements OnInit {
         error: (err) => {
           this.loading = false;
           resolve(false);
-        }
-      })
-    })
-
+        },
+      });
+    });
   }
 
   getLocations(id: any) {
@@ -214,8 +286,8 @@ export class PublicComponent implements OnInit {
       },
       error: (err) => {
         this.getLoader = false;
-      }
-    })
+      },
+    });
   }
 
   location_id: any;
@@ -224,27 +296,32 @@ export class PublicComponent implements OnInit {
     this.isMenuLocation = false;
     this.isMenuDepartment = true;
     this.getLoader = true;
-    this.auth.get('department/public/' + this.id + '?location=' + id).subscribe({
-      next: (res: any) => {
-        if (res.status == 200) {
-          this.getLoader = false;
-          let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
-          storedData['locationId'] = id;
-          localStorage.setItem('myKey', JSON.stringify(storedData));
-          this.shared.updateStep({ previous: 'Location', next: 'Department' });
-          this.department_arr = res.data?.data;
-          if (this.department_arr.length == 1) {
-            this.getDepartmentId(this.department_arr[0]?._id);
+    this.auth
+      .get('department/public/' + this.id + '?location=' + id)
+      .subscribe({
+        next: (res: any) => {
+          if (res.status == 200) {
+            this.getLoader = false;
+            let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
+            storedData['locationId'] = id;
+            localStorage.setItem('myKey', JSON.stringify(storedData));
+            this.shared.updateStep({
+              previous: 'Location',
+              next: 'Department',
+            });
+            this.department_arr = res.data?.data;
+            if (this.department_arr.length == 1) {
+              this.getDepartmentId(this.department_arr[0]?._id);
+            }
           }
-        }
-      },
-      error: (err) => {
-        this.getLoader = false;
-        this.isMenuLocation = true;
-        this.isMenuDepartment = false;
-        this.shared.showAlert('error', 'Error', err.error.message);
-      }
-    })
+        },
+        error: (err) => {
+          this.getLoader = false;
+          this.isMenuLocation = true;
+          this.isMenuDepartment = false;
+          this.shared.showAlert('error', 'Error', err.error.message);
+        },
+      });
   }
 
   department_id: any;
@@ -277,13 +354,16 @@ export class PublicComponent implements OnInit {
         this.isMenuLocation = true;
         this.isMenuService = false;
         this.shared.showAlert('error', 'Error', err.error.message);
-      }
-    })
+      },
+    });
   }
 
   getServiceName(item: any): string {
     if (item?.is_predefined && this.predefinedServices[item.service_name]) {
-      return this.predefinedServices[item.service_name][this.selectedLang] || item.service_name;
+      return (
+        this.predefinedServices[item.service_name][this.selectedLang] ||
+        item.service_name
+      );
     }
     return item?.service_name;
   }
@@ -291,21 +371,27 @@ export class PublicComponent implements OnInit {
   getTreatments() {
     this.getLoader = true;
     let treatment = [];
-    this.auth.get('treatment/public/' + this.id + '?location=' + this.location_id).subscribe({
-      next: (res: any) => {
-        if (res.status == 200) {
+    this.auth
+      .get('treatment/public/' + this.id + '?location=' + this.location_id)
+      .subscribe({
+        next: (res: any) => {
+          if (res.status == 200) {
+            this.getLoader = false;
+            treatment = res.data?.data;
+            let matching = treatment.filter(
+              (item: any) => item.department_id === this.department_id
+            );
+            let nonMatching = treatment.filter(
+              (item: any) => item.department_id !== this.department_id
+            );
+            this.treatment_arr = [...matching, ...nonMatching];
+          }
+        },
+        error: (err) => {
           this.getLoader = false;
-          treatment = res.data?.data;
-          let matching = treatment.filter((item: any) => item.department_id === this.department_id);
-          let nonMatching = treatment.filter((item: any) => item.department_id !== this.department_id);
-          this.treatment_arr = [...matching, ...nonMatching];
-        }
-      },
-      error: (err) => {
-        this.getLoader = false;
-        this.treatment_arr = [];
-      }
-    })
+          this.treatment_arr = [];
+        },
+      });
   }
 
   selected_date: any;
@@ -315,24 +401,33 @@ export class PublicComponent implements OnInit {
     }
   }
   getAvailableSlots() {
-    this.auth.get('availability/durationSlots?date=' + this.selected_date + '&location_id=' + this.location_id + '&facility_id=' + this.id).subscribe({
-      next: (res: any) => {
-        if (res.status == 200) {
-          this.availability_arr = res.data;
-        }
-      },
-      error: (err) => {
-        this.availability_arr = [];
-        // this.shared.showAlert('error', 'Error', err.error.message);
-      }
-    })
+    this.auth
+      .get(
+        'availability/durationSlots?date=' +
+          this.selected_date +
+          '&location_id=' +
+          this.location_id +
+          '&facility_id=' +
+          this.id
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res.status == 200) {
+            this.availability_arr = res.data;
+          }
+        },
+        error: (err) => {
+          this.availability_arr = [];
+          // this.shared.showAlert('error', 'Error', err.error.message);
+        },
+      });
   }
   formatTime(start: any) {
     const date = new Date(start);
     const hours = String(date.getUTCHours()).padStart(2, '0');
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
     const formatted = `${hours}:${minutes}`;
-    return formatted
+    return formatted;
   }
 
   selected_slot: any;
@@ -342,12 +437,21 @@ export class PublicComponent implements OnInit {
     this.start_time = this.formatTime(startTime);
     let endTime;
     if (this.total_treatment_time) {
-      endTime = this.calculateEndTime(this.start_time, this.total_treatment_time);
+      endTime = this.calculateEndTime(
+        this.start_time,
+        this.total_treatment_time
+      );
     }
-    this.appointmentForm.patchValue({ preffered_selected_time: { date: this.selected_date, start_time: this.start_time, end_time: endTime } });
+    this.appointmentForm.patchValue({
+      preffered_selected_time: {
+        date: this.selected_date,
+        start_time: this.start_time,
+        end_time: endTime,
+      },
+    });
   }
 
-  customStepCounter = 0
+  customStepCounter = 0;
   service_name: any;
   getStepsbyServiceId(id: any, name: any) {
     this.service_name = name;
@@ -361,8 +465,10 @@ export class PublicComponent implements OnInit {
           localStorage.setItem('myKey', JSON.stringify(storedData));
           let info = localStorage.getItem('info');
           if (!info) {
-            localStorage.setItem('info', '{}')
+            localStorage.setItem('info', '{}');
           }
+          // Allow auto-skip when coming from service selection flow
+          this.allowInfoAutoSkip = true;
           this.tab_name = 'info';
           this.shared.updateStep({ previous: 'Service', next: 'Info' });
           this.steps_arr = res.data?.data;
@@ -374,15 +480,14 @@ export class PublicComponent implements OnInit {
               this.counter++;
             }
           }
-
         }
       },
       error: (err) => {
         this.isMenuService = true;
         this.isMenuSteps = false;
         this.shared.showAlert('error', 'Error', err.error.message);
-      }
-    })
+      },
+    });
   }
 
   get customArray(): FormArray {
@@ -393,25 +498,24 @@ export class PublicComponent implements OnInit {
     let step;
     if (this.steps_arr[this.counter]) {
       step = this.steps_arr[this.counter];
-    }
-    else {
+    } else {
       step = this.steps_arr[0];
     }
     return this.fb.group({
       step_id: step?._id,
       step_description: step?.step_description,
       junction_type: step?.step_meta?.junction_type,
-      answer_array: this.fb.array([])
+      answer_array: this.fb.array([]),
     });
   }
 
   initializeCustomFormArray() {
-    this.customArray.push(this.createCustom())
+    this.customArray.push(this.createCustom());
   }
 
   createAnswer(value: any): FormGroup {
     return this.fb.group({
-      value: [value]
+      value: [value],
     });
   }
 
@@ -443,7 +547,7 @@ export class PublicComponent implements OnInit {
       case 'multi_answers':
         if (answer?.answer_text) {
           const existingIndex = answerArray.controls.findIndex(
-            ctrl => ctrl.value.value === answer.answer_text
+            (ctrl) => ctrl.value.value === answer.answer_text
           );
 
           existingIndex > -1
@@ -487,7 +591,7 @@ export class PublicComponent implements OnInit {
           reader.readAsDataURL(files[0]);
         }
 
-        let formData = new FormData()
+        let formData = new FormData();
         formData.append('file', files[0]);
         this.auth.post('media/public', formData).subscribe({
           next: (res: any) => {
@@ -498,8 +602,8 @@ export class PublicComponent implements OnInit {
           },
           error: (err) => {
             this.shared.showAlert('error', 'Error', err.error.message);
-          }
-        })
+          },
+        });
         break;
 
       case 'signature':
@@ -512,7 +616,7 @@ export class PublicComponent implements OnInit {
 
   isAnswerSelected(answerId: string, index: number): boolean {
     return this.getAnswerArray(index).controls.some(
-      ctrl => ctrl.value.value === answerId
+      (ctrl) => ctrl.value.value === answerId
     );
   }
 
@@ -522,13 +626,16 @@ export class PublicComponent implements OnInit {
 
   treatmentsCheckbox(treatmentId: string, treatment: any) {
     const treatmentArray = this.appointmentForm.get('treatments') as FormArray;
-    const index = treatmentArray.controls.findIndex(group => group.value.treatment_id === treatmentId);
+    const index = treatmentArray.controls.findIndex(
+      (group) => group.value.treatment_id === treatmentId
+    );
 
     if (index === -1) {
-      treatmentArray.push(this.fb.group({
-        treatment_id: treatmentId,
-        treatment_name: treatment.name
-      })
+      treatmentArray.push(
+        this.fb.group({
+          treatment_id: treatmentId,
+          treatment_name: treatment.name,
+        })
       );
       this.selectedTreatments.push(treatmentId);
       if (treatment?.duration) {
@@ -542,15 +649,21 @@ export class PublicComponent implements OnInit {
         this.treatments_time.splice(idIndex, 1);
       }
     }
-    this.total_treatment_time = this.treatments_time.reduce((total, duration) => total + duration, 0);
+    this.total_treatment_time = this.treatments_time.reduce(
+      (total, duration) => total + duration,
+      0
+    );
     if (this.start_time) {
       let endTime;
-      endTime = this.calculateEndTime(this.start_time, this.total_treatment_time);
+      endTime = this.calculateEndTime(
+        this.start_time,
+        this.total_treatment_time
+      );
       this.appointmentForm.patchValue({
         preffered_selected_time: {
           ...this.appointmentForm.value.preffered_selected_time,
-          end_time: endTime
-        }
+          end_time: endTime,
+        },
       });
     }
   }
@@ -576,19 +689,17 @@ export class PublicComponent implements OnInit {
   clientInformation(type: string, insurance: string, treatment: any) {
     if (type && this.counter == 2) {
       if (type == 'new') {
-        this.appointmentForm.patchValue({ is_new: true })
+        this.appointmentForm.patchValue({ is_new: true });
       } else {
-        this.appointmentForm.patchValue({ is_new: false })
+        this.appointmentForm.patchValue({ is_new: false });
       }
       this.client_type = type;
       this.counter++;
-    }
-    else if (type && insurance && this.counter == 3) {
+    } else if (type && insurance && this.counter == 3) {
       this.selectedInsuranceType = insurance;
       this.appointmentForm.patchValue({ insurance: insurance });
       // this.counter++;
-    }
-    else if (treatment) {
+    } else if (treatment) {
       // this.appointmentForm.patchValue({ treatment_id: treatment?._id, treatment_name: treatment?.name });
     }
 
@@ -602,7 +713,7 @@ export class PublicComponent implements OnInit {
   }
 
   openLink(doc: any) {
-    window.open(doc)
+    window.open(doc);
   }
 
   drawSignature(event: MouseEvent | Touch) {
@@ -613,19 +724,22 @@ export class PublicComponent implements OnInit {
     const canvas = this.customer_signature.getCanvas();
     canvas.width = 600;
     canvas.height = 275;
-    this.sign = ''
+    this.sign = '';
   }
 
   isLastStep(): boolean {
     return this.counter === this.steps_arr.length;
   }
 
-
   toNext() {
     // if (this.steps_arr.length == this.counter) {
     //   this.saveAppointment();
     // }
-    if (this.steps_arr[this.counter]?.step_meta?.junction_type == 'external_link') {
+
+    // Open external link if next step is external_link
+    if (
+      this.steps_arr[this.counter]?.step_meta?.junction_type == 'external_link'
+    ) {
       let url = this.steps_arr[this.counter]?.step_meta?.media;
       if (url) {
         window.open(url, '_blank');
@@ -635,8 +749,7 @@ export class PublicComponent implements OnInit {
       this.initializeCustomFormArray();
       this.customStepCounter++;
       this.counter++;
-    }
-    else if (this.counter < this.steps_arr.length) {
+    } else if (this.counter < this.steps_arr.length) {
       this.counter++;
     }
   }
@@ -651,7 +764,6 @@ export class PublicComponent implements OnInit {
     if (this.counter > 1) {
       this.counter--;
     }
-
   }
 
   saveAppointment() {
@@ -668,22 +780,29 @@ export class PublicComponent implements OnInit {
       id: info?.facilityId,
       location_id: info?.locationId,
       department_id: info?.departmentId,
-      service_id: info?.serviceId
+      service_id: info?.serviceId,
     });
-    this.auth.post('request', { service: this.appointmentForm.value, info: this.clientForm.value }).subscribe({
-      next: (res: any) => {
-        if (res.status == 201) {
-          this.shared.showAlert('success', 'Successful', res.message);
-          this.tab_name = 'chat';
-          this.router.navigate([`/public/${res.data.facility}/${res.data?.request}`], {
-            queryParams: { patient_id: res.data.patient }
-          });
-        }
-      },
-      error: (err) => {
-        this.shared.showAlert('error', 'Error', err.error.message);
-      }
-    })
+    this.auth
+      .post('request', {
+        service: this.appointmentForm.value,
+        info: this.clientForm.value,
+      })
+      .subscribe({
+        next: (res: any) => {
+          if (res.status == 201) {
+            this.shared.showAlert('success', 'Successful', res.message);
+            this.tab_name = 'chat';
+            this.router.navigate(
+              [`/public/${res.data.facility}/${res.data?.request}`],
+              {
+                queryParams: { patient_id: res.data.patient },
+              }
+            );
+          }
+        },
+        error: (err) => {
+          this.shared.showAlert('error', 'Error', err.error.message);
+        },
+      });
   }
-
 }

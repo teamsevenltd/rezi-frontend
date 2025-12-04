@@ -29,7 +29,7 @@ export class GeneralServiceService {
   private userLanguageSubject = new Subject<any>();
   userLanguage$ = this.userLanguageSubject.asObservable();
 
-  private stepChangeSource = new BehaviorSubject<{ previous: string; next: string } | null>(null);
+  private stepChangeSource = new BehaviorSubject<{ previous: string; next: string; isExternalLink?: boolean } | null>(null);
   stepChange$ = this.stepChangeSource.asObservable();
 
   chosenLocation: string = '';
@@ -64,7 +64,7 @@ export class GeneralServiceService {
     this.facilityDetailsSubject.next(data);
   }
 
-  updateStep(data: { previous: string; next: string }) {
+  updateStep(data: { previous: string; next: string; isExternalLink?: boolean }) {
     this.stepChangeSource.next(data);
   }
 
