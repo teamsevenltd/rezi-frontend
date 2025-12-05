@@ -9,11 +9,11 @@
   border-radius: 100px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
 }
 
 .rezi-icon {
@@ -27,16 +27,29 @@
   position: fixed;
   bottom: 0;
   right: 15px;
-  z-index: 9;
+  z-index: 2147483647;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   padding: 0.5rem 0 0 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  width: 450px;
+}
+
+@media only screen and (max-width: 450px) {
+  .rezi-form-popup{
+  	width: 100%;
+	right: 0;
+  }
+
+  .rezi-form-container {
+  	vertical-align: bottom;
+	height: 90vh !important;
+  }
 }
 
 /* Add styles to the form container */
 .rezi-form-container {
-  width: 450px;
+  width: 100%;
   background-color: white;
   height: 600px;
 }
