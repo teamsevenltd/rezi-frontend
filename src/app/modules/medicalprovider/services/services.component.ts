@@ -281,7 +281,11 @@ export class ServicesComponent {
   predefinedServices: any = {
     termin: {
       en: 'Appointment Service',
-      de: 'Termin Standardeinstellung'
+      de: 'Termin Standardeinstellung',
+      description: {
+        en: 'Predefined appointment service',
+        de: 'Vordefinierter Terminservice'
+      }
     }
   };
 
@@ -471,6 +475,13 @@ export class ServicesComponent {
       return this.predefinedServices[item.service_name][this.selectedLang] || item.service_name;
     }
     return item?.service_name;
+  }
+  getServiceDescription(item: any): string {
+    if (item?.is_predefined && this.predefinedServices[item.service_name]) {
+      const descObj = this.predefinedServices[item.service_name].description;
+      return descObj?.[this.selectedLang] || item.service_description;
+    }
+    return item?.service_description;
   }
 
   resetsearch() {

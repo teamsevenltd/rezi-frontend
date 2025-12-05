@@ -120,8 +120,8 @@
 
                                 <p class="mb-0 d-flex align-items-baseline gap-2">
                                     <i class="ri-article-fill fs-16"></i>
-                                    <span class="text-length" [title]="item?.service_description">
-                                        {{ item?.service_description }}
+                                    <span class="text-length" [title]="getServiceDescription(item)">
+                                        {{ getServiceDescription(item) }}
                                     </span>
                                 </p>
                             </li>
@@ -194,8 +194,8 @@
 
                                 <p class="mb-0 d-flex align-items-baseline gap-2">
                                     <i class="ri-article-fill fs-16"></i>
-                                    <span class="text-length" [title]="item?.service_description">
-                                        {{ item?.service_description }}
+                                     <span class="text-length" [title]="getServiceDescription(item)">
+                                        {{ getServiceDescription(item) }}
                                     </span>
                                 </p>
                             </li>
