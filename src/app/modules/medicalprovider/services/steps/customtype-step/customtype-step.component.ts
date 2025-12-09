@@ -5,7 +5,7 @@ import { AuthService } from '../../../../../auth/auth.service';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { GeneralServiceService } from '../../../../../services/general-service.service';
 import { take } from 'rxjs/operators';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customtype-step',
@@ -56,7 +56,7 @@ export class CustomtypeStepComponent implements OnInit, OnDestroy {
 
   @ViewChild('closeCustomModal') closeCustomModal!: ElementRef;
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private shared: GeneralServiceService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private shared: GeneralServiceService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.id = this.step_details?._id;
@@ -94,11 +94,36 @@ export class CustomtypeStepComponent implements OnInit, OnDestroy {
     })
   }
 
+  // addStepsRow(): void {
+  //   let custom_arr = this.step_arr.filter((step: { step_type: string; }) => step?.step_type === 'custom');
+  //   this.step_details = custom_arr[custom_arr.length - 1];
+  //   console.log(this.step_details);
+
+  //   this.customForm.patchValue({ service_id: this.step_details?.service_id, prev_step_id: this.step_details?._id, step_description: this.step_details?.step_description });
+  //   this.auth.post('step', this.customForm.value).subscribe({
+  //     next: (res: any) => {
+  //       if (res.status == 201) {
+  //         this.updateSteps.emit(true);
+  //       }
+  //     },
+  //     error: (err) => {
+  //       this.shared.showAlert('error', 'Error', err.error.message);
+  //     }
+  //   })
+  // }
+
   addStepsRow(): void {
     let custom_arr = this.step_arr.filter((step: { step_type: string; }) => step?.step_type === 'custom');
     this.step_details = custom_arr[custom_arr.length - 1];
-    this.customForm.patchValue({ service_id: this.step_details?.service_id, prev_step_id: this.step_details?._id, step_description: this.step_details?.step_description });
-    this.auth.post('step', this.customForm.value).subscribe({
+    const customStepTitle = this.translate.instant('app.custom_step_title');
+
+    const newStepData = {
+      service_id: this.step_details?.service_id,
+      prev_step_id: this.step_details?._id,
+      step_description: customStepTitle
+    };
+
+    this.auth.post('step', newStepData).subscribe({
       next: (res: any) => {
         if (res.status == 201) {
           this.updateSteps.emit(true);

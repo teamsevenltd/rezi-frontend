@@ -313,7 +313,8 @@
                                                 [placeholder]="'app.service_description_placeholder' | translate"></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="icon_class" class="form-label">Icons</label>
+                                            <label for="icon_class" class="form-label">{{'app.icons' |
+                                                translate}}</label>
                                             <div>
                                                 @for (icons of iconArray; track icons) {
                                                 <button type="button" class="btn btn-dark btn-sm m-1"

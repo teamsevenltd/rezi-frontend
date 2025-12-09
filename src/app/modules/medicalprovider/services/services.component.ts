@@ -275,7 +275,38 @@ export class ServicesComponent {
     },
     {
       "value": "ri-dna-fill",
-    }
+    },
+    {
+      "value": "ri-facebook-line",
+    },
+    {
+      "value": "ri-facebook-fill",
+    },
+    {
+      "value": "ri-facebook-circle-line",
+    },
+    {
+      "value": "ri-facebook-circle-fill",
+    },
+    {
+      "value": "ri-instagram-line",
+    },
+    {
+      "value": "ri-instagram-fill",
+    },
+    {
+      "value": "ri-linkedin-line",
+    },
+    {
+      "value": "ri-linkedin-fill",
+    },
+    {
+      "value": "ri-twitter-line",
+    },
+    {
+      "value": "ri-twitter-fill",
+    },
+
   ]
 
   predefinedServices: any = {

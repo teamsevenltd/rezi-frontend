@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { GeneralServiceService } from '../../services/general-service.service';
 import { AuthService } from '../../auth/auth.service';
 import { TranslateService } from '@ngx-translate/core';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,16 @@ export class HeaderComponent implements OnInit {
   flagSrc: string = '';
 
   constructor(private shared: GeneralServiceService, public auth: AuthService, private translate: TranslateService) {
-    this.shared.stepChange$.subscribe((info: any) => {
+    // this.shared.stepChange$.subscribe((info: any) => {
+    //   if (info) {
+    //     this.breadcrumb_info = this.translateBreadcrumb(info);
+    //   }
+    // });
+
+    combineLatest([
+      this.shared.stepChange$,
+      this.translate.onLangChange
+    ]).subscribe(([info, _]) => {
       if (info) {
         this.breadcrumb_info = this.translateBreadcrumb(info);
       }

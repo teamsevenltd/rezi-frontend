@@ -6,7 +6,7 @@ import { AuthService } from '../../auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Customvalidators } from '../../services/custom-validators.service';
 import { GeneralServiceService } from '../../services/general-service.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
@@ -26,7 +26,9 @@ export class ResetPasswordComponent {
 
   auth_token: any;
 
-  constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router, private route: ActivatedRoute, private shared: GeneralServiceService) { }
+  selectedLang: string = 'en';
+
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router, private route: ActivatedRoute, private shared: GeneralServiceService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.auth_token = this.route.snapshot?.queryParams['key'];
@@ -78,5 +80,12 @@ export class ResetPasswordComponent {
 
   get error(): { [key: string]: AbstractControl } {
     return this.resetForm.controls;
+  }
+
+  switchLanguage(lang: string) {
+    this.selectedLang = lang;
+    this.shared.setLanguage(lang);
+    this.translate.use(lang);
+    localStorage.setItem('system_lang', JSON.stringify(lang));
   }
 }

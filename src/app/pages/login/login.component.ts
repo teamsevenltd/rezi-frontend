@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators, } from '@angular/forms';
 import { Router, RouterLink, RouterModule } from '@angular/router';
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   hidePassword = false;
 
-  selectedLang: string = 'en';
+  selectedLang: string = '';
 
   constructor(private fb: FormBuilder, private auth: AuthService, private shared: GeneralServiceService, private router: Router, private translate: TranslateService) { }
 
@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
-    
-    const savedLang = JSON.parse(localStorage.getItem('system_lang') || '"en"');
-    this.selectedLang = savedLang;
+
+    const savedLang = JSON.parse(localStorage.getItem('system_lang') || '"de"');
+    this.switchLanguage(savedLang)
   }
 
   togglePassword() {

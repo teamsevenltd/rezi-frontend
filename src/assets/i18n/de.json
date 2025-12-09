@@ -98,10 +98,12 @@
         "title": "Praxisname",
         "description": "Beschreibung",
         "service_description_placeholder": "Wie soll dieser prozess für patienten benannt werden?",
+        "icons": "Symbole",
         "icon_color": "Icon Farbe",
         "position": "Position & Verfügbarkeit",
         "disable_service_location": "Dienst für diesen Standort deaktivieren?",
         "add_step": "Schritt hinzufügen",
+        "custom_step_title": "Benutzerdefinierter Schritttitel",
         "step": "Schritt",
         "steps": "Schritte",
         "edit_steps": "Schritt bearbeiten",
@@ -231,7 +233,7 @@
         "logo": "Seitenlogo",
         "logo_header": "Logo für Kopfzeile",
 
-        "news": "Nachricht",
+        "news": "Nachrichten",
         "text_placeholder": "Geben Sie hier Text ein",
 
         "feedback": "Rückmeldung",
