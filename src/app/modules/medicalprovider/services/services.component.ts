@@ -295,16 +295,124 @@ export class ServicesComponent {
       "value": "ri-instagram-fill",
     },
     {
+      "value": "ri-invision-line",
+    },
+    {
+      "value": "ri-invision-fill",
+    },
+    {
+      "value": "ri-kakao-talk-line",
+    },
+    {
+      "value": "ri-kakao-talk-fill",
+    },
+    {
+      "value": "ri-line-line",
+    },
+    {
+      "value": "ri-line-fill",
+    },
+    {
       "value": "ri-linkedin-line",
     },
     {
       "value": "ri-linkedin-fill",
     },
     {
+      "value": "ri-messenger-line",
+    },
+    {
+      "value": "ri-messenger-fill",
+    },
+    {
+      "value": "ri-skype-line",
+    },
+    {
+      "value": "ri-skype-fill",
+    },
+    {
+      "value": "ri-snapchat-line",
+    },
+    {
+      "value": "ri-snapchat-fill",
+    },
+    {
+      "value": "ri-telegram-line",
+    },
+    {
+      "value": "ri-telegram-fill",
+    },
+    {
+      "value": "ri-telegram-2-line",
+    },
+    {
+      "value": "ri-telegram-2-fill",
+    },
+    {
+      "value": "ri-threads-line",
+    },
+    {
+      "value": "ri-threads-fill",
+    },
+    {
+      "value": "ri-tiktok-line",
+    },
+    {
+      "value": "ri-tiktok-fill",
+    },
+    {
+      "value": "ri-twitch-line",
+    },
+    {
+      "value": "ri-twitch-fill",
+    },
+    {
       "value": "ri-twitter-line",
     },
     {
       "value": "ri-twitter-fill",
+    },
+    {
+      "value": "ri-twitter-x-line",
+    },
+    {
+      "value": "ri-twitter-x-fill",
+    },
+    {
+      "value": "ri-vimeo-line",
+    },
+    {
+      "value": "ri-vimeo-fill",
+    },
+    {
+      "value": "ri-vk-line",
+    },
+    {
+      "value": "ri-vk-fill",
+    },
+    {
+      "value": "ri-wechat-line",
+    },
+    {
+      "value": "ri-wechat-fill",
+    },
+    {
+      "value": "ri-wechat-2-line",
+    },
+    {
+      "value": "ri-wechat-2-fill",
+    },
+    {
+      "value": "ri-whatsapp-line",
+    },
+    {
+      "value": "ri-whatsapp-fill",
+    },
+    {
+      "value": "ri-youtube-line",
+    },
+    {
+      "value": "ri-youtube-fill",
     },
 
   ]
