@@ -641,8 +641,7 @@ export class ServicesComponent {
   }
 
   isPredefined: boolean = false;
-  editService(index: number) {
-    let service = this.service_arr[index];
+  editService(service: any) {
     this.isPredefined = service?.is_predefined;
     this.editServiceForm.patchValue({
       id: service?._id,

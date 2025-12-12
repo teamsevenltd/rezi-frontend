@@ -67,7 +67,7 @@
                 <div class="card sameheight">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
                         <h4 class="card-title mb-0 flex-grow-1 text-truncate">
-                            {{ getServiceName(item) | titlecase }}
+                            {{ getServiceName(item) }}
                         </h4>
 
                         <div class="form-check form-switch form-switch-dark ms-3">
@@ -88,15 +88,15 @@
                                         <i class="ri-add-line text-success"></i>{{ 'app.steps' | translate }}
                                     </a>
 
-                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    <!-- <a class="dropdown-item d-flex align-items-center gap-2" role="button"
                                         data-bs-toggle="modal" data-bs-target="#serviceVisibility"
-                                        (click)="editService(i)">
+                                        (click)="editService(item)">
                                         <i class="ri-eye-line text-dark"></i>{{ 'app.visibility' | translate }}
-                                    </a>
+                                    </a> -->
 
                                     @if (!item?.is_predefined) {
                                     <a class="dropdown-item d-flex align-items-center gap-2" role="button"
-                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(i)">
+                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(item)">
                                         <i class="ri-edit-line text-secondary"></i>{{ 'app.edit' | translate }}
                                     </a>
 
@@ -133,7 +133,7 @@
         </div>
 
         @if (inactiveServices.length > 0) {
-            <h4 class="mb-3 mt-4">{{'app.inactive_services' | translate}}</h4>
+        <h4 class="mb-3 mt-4">{{'app.inactive_services' | translate}}</h4>
         }
         <div class="row">
             @for (item of inactiveServices; track item; let i = $index) {
@@ -141,7 +141,7 @@
                 <div class="card sameheight">
                     <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
                         <h4 class="card-title mb-0 flex-grow-1 text-truncate">
-                            {{ getServiceName(item) | titlecase }}
+                            {{ getServiceName(item) }}
                         </h4>
 
                         <div class="form-check form-switch form-switch-dark ms-3">
@@ -162,15 +162,15 @@
                                         <i class="ri-add-line text-success"></i>{{ 'app.steps' | translate }}
                                     </a>
 
-                                    <a class="dropdown-item d-flex align-items-center gap-2" role="button"
+                                    <!-- <a class="dropdown-item d-flex align-items-center gap-2" role="button"
                                         data-bs-toggle="modal" data-bs-target="#serviceVisibility"
-                                        (click)="editService(i)">
+                                        (click)="editService(item)">
                                         <i class="ri-eye-line text-dark"></i>{{ 'app.visibility' | translate }}
-                                    </a>
+                                    </a> -->
 
                                     @if (!item?.is_predefined) {
                                     <a class="dropdown-item d-flex align-items-center gap-2" role="button"
-                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(i)">
+                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(item)">
                                         <i class="ri-edit-line text-secondary"></i>{{ 'app.edit' | translate }}
                                     </a>
 
@@ -194,7 +194,7 @@
 
                                 <p class="mb-0 d-flex align-items-baseline gap-2">
                                     <i class="ri-article-fill fs-16"></i>
-                                     <span class="text-length" [title]="getServiceDescription(item)">
+                                    <span class="text-length" [title]="getServiceDescription(item)">
                                         {{ getServiceDescription(item) }}
                                     </span>
                                 </p>
@@ -262,8 +262,7 @@
                             <div class="card-body">
                                 <h5>{{location?.location_name | titlecase}}</h5>
                                 <button type="button" class="btn btn-dark w-100 mt-2"
-                                    (click)="selectLocation(location)">{{'app.choose' | translate}}
-                                    {{'app.location' | translate}}</button>
+                                    (click)="selectLocation(location)">{{'app.choose_location' | translate}}</button>
                             </div>
                         </div>
                     </div>
