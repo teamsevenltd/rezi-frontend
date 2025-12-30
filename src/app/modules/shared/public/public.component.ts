@@ -54,6 +54,7 @@ export class PublicComponent implements OnInit {
   getLoader = false;
   skeleton_arr = new Array(6);
 
+  current_date: any;
   tab_name: string = '';
 
   isMenuLocation = true;
@@ -176,6 +177,9 @@ export class PublicComponent implements OnInit {
   ngOnInit(): void {
     let lang = localStorage.getItem('user_lang') || 'de';
     this.selectedLang = lang.replace(/"/g, '');
+
+    let today = new Date();
+    this.current_date = today.toISOString().split('T')[0];
 
     if (this.route.snapshot?.url.length == 2) {
       this.tab_name = 'menu';
@@ -404,11 +408,11 @@ export class PublicComponent implements OnInit {
     this.auth
       .get(
         'availability/durationSlots?date=' +
-          this.selected_date +
-          '&location_id=' +
-          this.location_id +
-          '&facility_id=' +
-          this.id
+        this.selected_date +
+        '&location_id=' +
+        this.location_id +
+        '&facility_id=' +
+        this.id
       )
       .subscribe({
         next: (res: any) => {

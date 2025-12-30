@@ -369,7 +369,7 @@
     "step_deleted_successfully": "Step deleted successfully",
     "patient_created_successfully": "Patient added successfully",
     "patient_updated_successfully": "Patient updated successfully",
-    "patient_deleted_successfully": "Patient deleted successfully",
+    "patient_deleted_successfully": "Patient and associated data deleted successfully",
     "appointment_created_successfully": "Appointment added successfully",
     "appointment_cancelled_successfully": "Appointment cancelled successfully",
     "message_sent_successfully": "Message sent successfully",

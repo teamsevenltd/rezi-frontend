@@ -370,7 +370,7 @@
     "step_deleted_successfully": "Schritt wurde erfolgreich gelöscht",
     "patient_created_successfully": "Patient erfolgreich hinzugefügt",
     "patient_updated_successfully": "Patient erfolgreich aktualisiert",
-    "patient_deleted_successfully": "Patient erfolgreich gelöscht",
+    "patient_deleted_successfully": "Patient und zugehörige daten",
     "appointment_created_successfully": "Termin erfolgreich erstellt",
     "appointment_cancelled_successfully": "Termin erfolgreich storniert",
     "message_sent_successfully": "Nachricht erfolgreich gesendet",

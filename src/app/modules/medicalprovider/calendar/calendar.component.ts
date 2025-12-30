@@ -136,7 +136,6 @@ export class CalendarComponent implements OnInit {
     });
     this.getPatients();
     this.getLocations();
-    this.getDepartmentbyLocationId(this.location_id);
     this.getServicebyLocationId(this.location_id);
     this.getTreatmentbyLocationtId(this.location_id);
   }
@@ -144,6 +143,7 @@ export class CalendarComponent implements OnInit {
   openModal() {
     this.addAppointmentForm.get('location_id')?.disable();
     this.addAppointmentForm.patchValue({ location_id: this.location_id });
+    this.getDepartmentbyLocationId(this.location_id);
   }
 
   getPatients() {
@@ -154,7 +154,9 @@ export class CalendarComponent implements OnInit {
           this.required_patient = [{
             options: this.patient_arr.map((mem: any) => ({
               value: mem._id,
-              label: `${mem.first_name} ${mem.last_name}`
+              label: mem.last_name
+                ? `${mem.first_name} ${mem.last_name}`
+                : mem.first_name,
             })
             )
           }]
@@ -290,7 +292,10 @@ export class CalendarComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 200) {
             this.services_arr = res.data?.data;
-            const appointmentService = this.services_arr.find((service: { service_name: string; }) => service.service_name === 'appointment');
+            const appointmentService = this.services_arr.find((service: { service_name: string; }) =>
+              ['appointment', 'termin'].includes(service.service_name?.toLowerCase())
+            );
+
             if (appointmentService) {
               this.addAppointmentForm.patchValue({
                 service_id: appointmentService._id
@@ -377,6 +382,8 @@ export class CalendarComponent implements OnInit {
     this.addAppointmentForm.patchValue({ location_id: this.location_id });
     this.loading = true;
     this.submitted = true;
+    console.log(this.addAppointmentForm.value);
+    
     if (this.addAppointmentForm.invalid) {
       this.loading = false;
     }

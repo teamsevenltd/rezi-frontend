@@ -433,7 +433,8 @@
                 <div class="row">
                     <div class="col-12">
                         <label for="" class="form-label">{{'public.select_appointment_date' | translate}}</label>
-                        <input type="date" class="form-control" [(ngModel)]="selected_date" (change)="selectDate()">
+                        <input type="date" class="form-control" [min]="current_date" [(ngModel)]="selected_date"
+                            (change)="selectDate()">
                     </div>
                 </div>
                 @if (availability_arr.length > 0) {
@@ -523,7 +524,8 @@
     <app-chat></app-chat>
     }
     @else if (tab_name == 'info') {
-    <app-info [steps]="steps_arr" [counter]="counter" [allowAutoSkip]="allowInfoAutoSkip" (updateTab)="onUpdateTab($event)"></app-info>
+    <app-info [steps]="steps_arr" [counter]="counter" [allowAutoSkip]="allowInfoAutoSkip"
+        (updateTab)="onUpdateTab($event)"></app-info>
     }
     @else if (tab_name == 'news') {
     <app-news></app-news>
