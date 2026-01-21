@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
 .rezi-popup-btn {
   background-color: #f3f3f9;
   color: #000;
@@ -5,22 +11,22 @@
   cursor: pointer;
   position: fixed;
   bottom: 23px;
-  right: 28px;
+  right: 39px;
   border-radius: 100px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   font-weight: 700;
-  font-size: 1.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 16px 24px;
   z-index: 3;
+  font-size: 22px;
 }
 
 .rezi-icon {
   width: 30px;
   height: auto;
-  margin-right: 0.5rem;
+  margin-right: 8px;
 }
 
 /* The popup form - hidden by default */
@@ -31,7 +37,7 @@
   right: 15px;
   z-index: 2147483647;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 0.25rem 0 0 0;
+  padding: 4px 0 0 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   width: 450px;
@@ -79,19 +85,23 @@
 .rezi-info-box {
   position: fixed;
   bottom: 100px;
-  right: 28px;
-  width: 315px;
-  background-color: white;
+  right: 40px;
+  width: 270px;
+  /* background-color: white; */
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px;
+  /* box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px; */
   z-index: 2;
   overflow: hidden;
+  margin: 0 auto;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .rezi-info-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 0;
   background-color: #000;
   color: #fff;
   width: 25px;
@@ -107,29 +117,29 @@
 
 .rezi-info-header {
   background-color: white;
-  padding: 1.5rem;
+  padding: 12px;
   text-align: center;
+  border-radius: 10px;
 }
 
 .rezi-info-pretitle {
-  font-size: 0.9rem;
+  font-size: 12px;
   font-weight: 600;
-  color: #666;
-  margin-bottom: 0.25rem;
+  color: #6666668a;
   letter-spacing: 0.5px;
 }
 
 .rezi-info-title {
-  font-size: 1.75rem;
+  font-size: 18px;
   font-weight: 700;
   color: #000;
 }
 
 .rezi-info-buttons {
-  padding: 0 1.5rem 1rem 1.5rem;
+  padding: 10px 0 10px 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 10px;
 }
 
 .rezi-info-btn {
@@ -137,16 +147,16 @@
   color: #fff;
   border: none;
   cursor: pointer;
-  padding: 0.875rem 1.25rem;
-  border-radius: 5px;
+  padding: 12px 16px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 12px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 10px;
   transition: background-color 0.3s ease;
   position: relative;
-  padding-left: 3rem;
+  padding-left: 48px;
 }
 
 .rezi-info-btn:hover {
@@ -155,8 +165,8 @@
 
 .rezi-info-btn::before {
   content: '';
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   position: absolute;
   left: 1.25rem;
   background-size: contain;
@@ -175,15 +185,30 @@
 }
 
 .rezi-info-privacy {
+  position: relative;
   background-color: white;
-  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  padding: 10px 10px 10px 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.rezi-info-privacy::after {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 44%;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 18px solid #ffffff;
 }
 
 .rezi-privacy-text {
-  font-size: 0.75rem;
-  line-height: 1.5;
+  font-size: 10px;
+  line-height: 1.4;
   color: #666;
-  text-align: center;
+  text-align: start;
   margin: 0;
 }
 
