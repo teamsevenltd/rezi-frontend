@@ -107,13 +107,17 @@ export class StepsComponent implements OnInit, AfterViewInit {
 
   getTranslatedText(germanText: string): string {
     const translation = this.translations[germanText];
-
+    
     if (translation) {
+      // console.log(translation);
       const lang = this.currentLanguage || 'de'; // fallback to 'de' if empty
       const result = translation[lang as 'de' | 'en'];
+      console.log(translation[lang as 'de' | 'en']);
+      
       return result;
     }
-
+    // console.log(germanText);
+    
     return germanText;
   }
 

@@ -7145,7 +7145,8 @@ code {
     --vz-card-logo-light: none;
     --vz-vertical-menu-width: 250px;
     --vz-vertical-menu-width-md: 180px;
-    --vz-vertical-menu-width-sm: 70px;
+    --vz-vertical-menu-width-sm: 55px; 
+    /* changed -vz-vertical-menu-width-sm from 70 to 55 */
     --vz-vertical-menu-item-font-family: var(--vz-font-family-primary);
     --vz-vertical-menu-sub-item-font-family: var(--vz-font-family-primary);
     --vz-topnav-bg: #fff;

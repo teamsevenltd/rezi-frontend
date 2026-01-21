@@ -76,9 +76,15 @@ export class RegisterComponent implements OnInit {
           }
         },
         error: (err) => {
+          let translatedMsg;
           this.loading = false;
           this.submitted = false;
-          this.shared.showAlert('error', 'Error', err.error.message);
+          if (err.error.status == 400) {
+            translatedMsg = this.translate.instant('responses.user_already_exist_email');
+          } else if (err.error.status == 404) {
+            translatedMsg = this.translate.instant('responses.health_care_name_already_registered');
+          }
+          this.shared.showAlert('error', 'Error', translatedMsg);
         }
       })
     }

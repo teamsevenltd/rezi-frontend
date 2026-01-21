@@ -1,10 +1,9 @@
-<div class="row authentication mx-0">
+<div class="row authentication mx-0 vh-100">
     <div class="col-xxl-7 col-xl-7 col-lg-7 col-12 bg-white">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-md-7 col-lg-8 col-10 mx-auto">
                 <div class="text-center">
-                    <img src="./assets/images/rezi24-public.png" class="company-logo" routerLink="/"
-                        alt="REZI24?">
+                    <img src="./assets/images/rezi24-public.png" class="company-logo" routerLink="/" alt="REZI24?">
                 </div>
                 <div class="mb-3">
                     <h3 class="fw-bolder fs-24">{{'app.login_to_account' | translate}}</h3>
@@ -69,10 +68,16 @@
                     </div>
                 </form>
 
-                <p class="text-center">{{'app.new_to' | translate}}
+                <p class="text-center mb-1">{{'app.new_to' | translate}}
                     <a routerLink="/register" class="text-primary fw-medium">{{'app.register_here' | translate}}
                     </a>
                 </p>
+
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <a href="https://rezi24.de" target="_blank" class="underline">Rezi24</a>
+                    <span class="lh-1"><i class="ri-circle-fill ri-xxs"></i></span>
+                    <a href="https://rezi24.de/datenschutz-app" target="_blank" class="underline">Datenschutz</a>
+                </div>
             </div>
         </div>
     </div>
@@ -107,7 +112,8 @@
     <button class="btn btn-dark dropdown-toggle public-dropdown" type="button" id="dropdownMenu"
         data-bs-toggle="dropdown" aria-expanded="false">
         <div class="d-flex align-items-center gap-2" (click)="switchLanguage(selectedLang)">
-            <img [src]="'./assets/images/flags/' + (selectedLang === 'en' ? 'us' : 'germany') + '.svg'" class="rounded" alt="" style="height: 1rem; width: 1rem;">
+            <img [src]="'./assets/images/flags/' + (selectedLang === 'en' ? 'us' : 'germany') + '.svg'" class="rounded"
+                alt="" style="height: 1rem; width: 1rem;">
             {{ selectedLang === 'en' ? 'English' : 'German' }}
         </div>
     </button>

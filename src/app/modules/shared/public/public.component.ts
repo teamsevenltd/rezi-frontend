@@ -545,6 +545,7 @@ export class PublicComponent implements OnInit {
         if (answer?.answer_text) {
           answerArray.push(this.createAnswer(answer.answer_text));
           this.selectedAnswerId = answer.answer_text;
+          this.goNextIfNotLast();
         }
         break;
 
@@ -576,12 +577,14 @@ export class PublicComponent implements OnInit {
         if (answer) {
           this.selectedSmileyLabel = answer?.label;
           answerArray.push(this.createAnswer(answer.label));
+          this.goNextIfNotLast();
         }
         break;
 
       case 'slider_consent':
         if (answer) {
           answerArray.push(this.createAnswer(answer.value));
+          this.goNextIfNotLast();
         }
         break;
 
@@ -622,6 +625,12 @@ export class PublicComponent implements OnInit {
     return this.getAnswerArray(index).controls.some(
       (ctrl) => ctrl.value.value === answerId
     );
+  }
+
+  goNextIfNotLast() {
+    if (!this.isLastStep()) {
+      this.counter++;
+    }
   }
 
   selectedTreatments: string[] = [];
@@ -702,7 +711,7 @@ export class PublicComponent implements OnInit {
     } else if (type && insurance && this.counter == 3) {
       this.selectedInsuranceType = insurance;
       this.appointmentForm.patchValue({ insurance: insurance });
-      // this.counter++;
+      this.counter++;
     } else if (treatment) {
       // this.appointmentForm.patchValue({ treatment_id: treatment?._id, treatment_name: treatment?.name });
     }

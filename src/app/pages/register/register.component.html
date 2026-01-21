@@ -142,11 +142,17 @@
                 </form>
 
                 <p class="text-center mt-4 fw-medium">{{'app.or' | translate}}</p>
-                <p class="text-center">{{'app.already_have_account' | translate}}
+                <p class="text-center mb-1">{{'app.already_have_account' | translate}}
                     <a [routerLink]="['/']" class="text-primary fw-medium">
                         {{'app.login_here' | translate}}
                     </a>
                 </p>
+
+                <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                    <a href="https://rezi24.de" target="_blank" class="underline">Rezi24</a>
+                    <span class="lh-1"><i class="ri-circle-fill ri-xxs"></i></span>
+                    <a href="https://rezi24.de/datenschutz-app" target="_blank" class="underline">Datenschutz</a>
+                </div>
             </div>
         </div>
     </div>

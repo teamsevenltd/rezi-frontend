@@ -21,6 +21,10 @@
     transition: all 0.1s ease-out;
 }
 
+.navbar-menu .navbar-nav .nav-link {
+    padding: .625rem 1rem !important;
+}
+
 .nav-item {
     width: 95%;
     margin: auto;

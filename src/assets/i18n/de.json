@@ -351,6 +351,13 @@
   },
 
   "responses": {
+    "invalid_credentials": "Ungültige Anmeldedaten",
+    "user_already_exist_email": "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits",
+    "health_care_name_already_registered": "Eine Gesundheitseinrichtung mit diesem Namen ist bereits registriert",
+    "user_not_found": "Benutzer nicht gefunden",
+    "enter_new_password": "Bitte geben Sie ein neues Passwort ein",
+    "password_reset_successfully": "Passwort erfolgreich zurückgesetzt",
+
     "service_created_successfully": "Dienst erfolgreich erstellt",
     "service_updated_successfully": "Dienst erfolgreich aktualisiert",
     "service_deleted_successfully": "Dienst und zugehörige Standorte erfolgreich gelöscht",

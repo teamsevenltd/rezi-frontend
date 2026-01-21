@@ -42,7 +42,8 @@ export class ForgotPasswordComponent implements OnInit {
           if (res.status == 200) {
             this.loading = false;
             this.passwordForm.reset();
-            this.shared.showAlert('success', 'Successful', res.message);
+            const translatedMsg = this.translate.instant('responses.email_sent_successfully');
+            this.shared.showAlert('success', 'Successful', translatedMsg);
             this.submitted = false;
             this.router.navigate(['/']);
           }
@@ -50,7 +51,12 @@ export class ForgotPasswordComponent implements OnInit {
         error: (err) => {
           this.loading = false;
           this.submitted = false;
-          this.shared.showAlert('error', 'Error', err.error.message);
+          if (err.error.status == 404) {
+            const errorTranslateMsg = this.translate.instant('responses.user_not_found');
+            this.shared.showAlert('error', 'Error', errorTranslateMsg);
+          } else {
+            this.shared.showAlert('error', 'Error', err.error.message);
+          }
         }
       })
     }

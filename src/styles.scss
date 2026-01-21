@@ -71,6 +71,16 @@ a {
     }
 }
 
+.underline {
+    color: rgba(30, 34, 39, 0.3);
+}
+a.underline {
+    &:hover {
+        color: #000000;
+        text-decoration: underline;
+    }
+}
+
 .no-underline,
 .no-underline:hover,
 .no-underline:focus {

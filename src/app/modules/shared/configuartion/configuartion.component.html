@@ -14,9 +14,9 @@
                 data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
                 aria-selected="false"> <i class="ri-image-line mx-3 fs-20"></i>{{'app.logo' |
                 translate}}</button>
-              <button class="nav-link d-flex align-items-center" id="v-pills-department-tab"
-                data-bs-toggle="pill" data-bs-target="#v-pills-department" type="button" role="tab"
-                aria-controls="v-pills-department" aria-selected="true">
+              <button class="nav-link d-flex align-items-center" id="v-pills-department-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-department" type="button" role="tab" aria-controls="v-pills-department"
+                aria-selected="true">
                 <i class="ri-building-4-line mx-3 fs-20"></i> {{'app.departments' | translate}}
               </button>
             </div>
@@ -38,7 +38,8 @@
                   </div>
                   <div class="col-12 mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-1">
-                      <label class="form-label" for="domain">{{'app.domain' | translate}} (z.B. direkten verlinkung auf die Online Rezeption)</label>
+                      <label class="form-label" for="domain">{{'app.domain' | translate}} (z.B. direkten verlinkung auf
+                        die Online Rezeption)</label>
                       <button type="button" class="btn btn-dark btn-sm p-1 px-2" data-bs-toggle="modal"
                         data-bs-target="#codePreview"><i class="ri-information-line ri-lg me-2"></i>{{'app.source_info'
                         |
@@ -119,6 +120,36 @@
   </div>
 </div>
 
+<!-- <script type="text/JavaScript">
+                  document.addEventListener("DOMContentLoaded", function () {
+                    let src = "{{url?.origin}}/public/{{user_data?.facility_id?._id}}";
+                    // Create button element
+                    const button = document.createElement("button");
+                    button.className = "rezi-popup-btn";
+                    button.onclick = openForm;
+                    button.innerHTML = `<img class="rezi-icon" src="{{url?.origin}}/assets/images/rez-icon.png"> Online Rezeption`;
+
+                    // Create popup container
+                    const popupDiv = document.createElement("div");
+                    popupDiv.className = "rezi-form-popup";
+                    popupDiv.id = "rezi-form";
+                    popupDiv.innerHTML = `<iframe class="rezi-form-container" src="${src}" frameborder="0"></iframe><div class="cancel" onclick="closeForm()">&times;</div>`;
+
+                    // Append elements to the body (or another desired parent element)
+                    document.body.appendChild(button);
+                    document.body.appendChild(popupDiv);
+                  });
+
+                  // Optional: Define the openForm and closeForm functions if not already present
+                  function openForm() {
+                    document.getElementById("rezi-form").style.display = "block";
+                  }
+
+                  function closeForm() {
+                    document.getElementById("rezi-form").style.display = "none";
+                  }
+                </script> -->
+
 <!-- company styling  modal-->
 <div id="codePreview" class="modal fade" tabindex="-1" aria-labelledby="codePreviewLabel" aria-hidden="true"
   style="display: none;">
@@ -163,35 +194,77 @@
                     class="ri-file-copy-line lh-0"></i></button>
               </div>
 
-              <textarea #scriptTextarea class="form-control" rows="25" style="white-space: pre-line;" readonly><script type="text/JavaScript">
-                  document.addEventListener("DOMContentLoaded", function () {
-                    let src = "{{url?.origin}}/public/{{user_data?.facility_id?._id}}";
-                    // Create button element
-                    const button = document.createElement("button");
-                    button.className = "rezi-popup-btn";
-                    button.onclick = openForm;
-                    button.innerHTML = `<img class="rezi-icon" src="{{url?.origin}}/assets/images/rez-icon.png"> Online Rezeption`;
+              <textarea #scriptTextarea class="form-control" rows="25" style="white-space: pre-line;" readonly>
+              <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function () {
+                  let src = "{{url?.origin}}/public/{{user_data?.facility_id?._id}}";
 
-                    // Create popup container
-                    const popupDiv = document.createElement("div");
-                    popupDiv.className = "rezi-form-popup";
-                    popupDiv.id = "rezi-form";
-                    popupDiv.innerHTML = `<iframe class="rezi-form-container" src="${src}" frameborder="0"></iframe><div class="cancel" onclick="closeForm()">&times;</div>`;
+                  // Create button element
+                  const button = document.createElement("button");
+                  button.className = "rezi-popup-btn";
+                  button.onclick = openForm;
+                  button.innerHTML = `<img class="rezi-icon" src="{{url?.origin}}/assets/images/rez-icon.png"> Online Rezeption`;
 
-                    // Append elements to the body (or another desired parent element)
-                    document.body.appendChild(button);
-                    document.body.appendChild(popupDiv);
-                  });
+                  // Create popup container
+                  const popupDiv = document.createElement("div");
+                  popupDiv.className = "rezi-form-popup";
+                  popupDiv.id = "rezi-form";
+                  popupDiv.innerHTML = `<iframe class="rezi-form-container" src="${src}" frameborder="0"></iframe><div class="cancel" onclick="closeForm()">&times;</div>`;
 
-                  // Optional: Define the openForm and closeForm functions if not already present
-                  function openForm() {
-                    document.getElementById("rezi-form").style.display = "block";
-                  }
+                  // Create info box container
+                  const infoBox = document.createElement("div");
+                  infoBox.className = "rezi-info-box";
+                  infoBox.id = "rezi-info-box";
+                  infoBox.innerHTML = `
+            <div class="rezi-info-close" onclick="closeInfoBox()">&times;</div>
 
-                  function closeForm() {
-                    document.getElementById("rezi-form").style.display = "none";
-                  }
-                </script></textarea>
+            <div class="rezi-info-header">
+              <div class="rezi-info-pretitle">NUTZEN SIE UNSER</div>
+              <div class="rezi-info-title">Online-Portal</div>
+            </div>
+
+            <div class="rezi-info-buttons">
+              <button onClick="openForm()" class="rezi-info-btn">
+                Termin buchen
+                </button>
+  
+                <button onClick="openForm()" class="rezi-info-btn">
+                  Mehr
+                </button>
+            </div>
+            
+
+            <div class="rezi-info-privacy">
+              <p class="rezi-privacy-text"> 
+                Dieses System verwendet ausschließlich technisch notwendige <a href="https://rezi24.de/datenschutz-app" target="_blank">Cookies</a>.<br> 
+                Durch die weitere Nutzung stimmen Sie der Verarbeitung personenbezogener Daten gemäß unserer <a href="https://rezi24.de/datenschutz-app" target="_blank">Datenschutzerklärung</a> sowie der Verwendung erforderlicher <a href="https://rezi24.de/datenschutz-app" target="_blank">Cookies</a> zu. 
+              </p>
+            </div>
+            `;
+
+                  // Append elements to the body
+                  document.body.appendChild(button);
+                  document.body.appendChild(popupDiv);
+                  document.body.appendChild(infoBox);
+                });
+
+                // Function to open the iframe form
+                function openForm() {
+                  document.getElementById("rezi-form").style.display = "block";
+                }
+
+                // Function to close the iframe form
+                function closeForm() {
+                  document.getElementById("rezi-form").style.display = "none";
+                }
+
+                // Function to close the info box
+                function closeInfoBox() {
+                  document.getElementById("rezi-info-box").style.display = "none";
+                }
+              </script>
+
+              </textarea>
             </div>
 
           </div>

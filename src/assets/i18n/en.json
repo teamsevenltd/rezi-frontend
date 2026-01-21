@@ -350,6 +350,13 @@
   },
 
   "responses": {
+    "invalid_credentials": "Invalid Credentials",
+    "user_already_exist_email": "User already exists with this email",
+    "health_care_name_already_registered": "A health care for this name is already registered",
+    "user_not_found": "User not found",
+    "enter_new_password": "Please enter a new password",
+
+    "password_reset_successfully": "Password reset successfully",
     "service_created_successfully": "Service added successfully",
     "service_updated_successfully": "Service updated successfully",
     "service_deleted_successfully": "Service deleted successfully along with its associated locations",

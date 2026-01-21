@@ -8,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './appfooter.component.scss'
 })
 export class AppfooterComponent {
+  currentYear:any;
+
+  constructor() {
+    const currentDate = new Date();
+    this.currentYear = currentDate.getFullYear();
+  }
 
 }

@@ -62,7 +62,8 @@ export class ResetPasswordComponent {
           if (res.status == 200) {
             this.loading = false;
             this.resetForm.reset();
-            this.shared.showAlert('success', 'Successful', res.message);
+            const translatedMsg = this.translate.instant('responses.password_reset_successfully');
+            this.shared.showAlert('success', 'Successful', translatedMsg);
             this.submitted = false;
             setTimeout(() => {
               window.close();
@@ -70,9 +71,17 @@ export class ResetPasswordComponent {
           }
         },
         error: (err) => {
+          let errorTranslateMsg;
           this.loading = false;
           this.submitted = false;
-          this.shared.showAlert('error', 'Error', err.error.message);
+          if (err.error.status == 403) {
+            errorTranslateMsg = this.translate.instant('responses.enter_new_password');
+          } else if (err.error.status == 404) {
+            errorTranslateMsg = this.translate.instant('responses.user_not_found');
+          } else {
+            errorTranslateMsg = err.error.message
+          }
+          this.shared.showAlert('error', 'Error', errorTranslateMsg);
         }
       })
     }

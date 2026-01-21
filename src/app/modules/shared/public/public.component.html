@@ -1,4 +1,5 @@
-<div class="container" style="margin-bottom: 2.5rem;">
+<div class="container" style="padding-top: 7.5rem;">
+    <!-- margin-bottom: 2.5rem;  -->
     @if (tab_name == 'menu') {
     @if (isMenuLocation) {
     <div class="row">
@@ -200,7 +201,7 @@
                     </div>
                 </div>
                 }
-                <div class="d-flex justify-content-between align-items-center">
+                <!-- <div class="d-flex justify-content-between align-items-center">
                     <button type="button"
                         class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
                         (click)="toPrevious()"><i class="ri-arrow-left-line"></i>{{'public.previous' |
@@ -208,7 +209,7 @@
                     <button type="button"
                         class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
                         (click)="toNext()">{{'public.next' | translate}}<i class="ri-arrow-right-line"></i></button>
-                </div>
+                </div> -->
                 }
                 @else if (steps_arr[counter - 1]?.step_type == 'custom') {
                 <div class="row">
@@ -416,6 +417,11 @@
                             <div></div>
                             }
 
+                            <!-- @if (steps_arr[counter - 1]?.step_meta?.junction_type === 'answers' || steps_arr[counter -
+                            1]?.step_meta?.junction_type === 'slider_emotion' || steps_arr[counter -
+                            1]?.step_meta?.junction_type === 'slider_consent') {
+
+                            }@else {
                             <button type="button"
                                 class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
                                 (click)="isLastStep() ? saveAppointment() : toNext()">
@@ -423,6 +429,30 @@
                                 {{ isLastStep() ? ('public.submit' | translate) : ('public.next' | translate) }}
                                 <i *ngIf="!isLastStep()" class="ri-arrow-right-double-line"></i>
                             </button>
+                            } -->
+
+                            @if (
+                            isLastStep() ||
+                            (
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'answers' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_emotion' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_consent'
+                            )
+                            ) {
+                            <button type="button"
+                                class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
+                                (click)="isLastStep() ? saveAppointment() : toNext()">
+                                <i [ngClass]="isLastStep() ? 'ri-save-3-line' : ''"></i>
+
+                                {{ isLastStep()
+                                ? ('public.submit' | translate)
+                                : ('public.next' | translate)
+                                }}
+
+                                <i *ngIf="!isLastStep()" class="ri-arrow-right-double-line"></i>
+                            </button>
+                            }
+
                         </div>
                     </div>
                 </div>

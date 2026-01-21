@@ -92,7 +92,8 @@ export class LoginComponent implements OnInit {
         error: (err) => {
           this.loading = false;
           this.submitted = false;
-          this.shared.showAlert('error', 'Error', err.error.message);
+          const translatedMsg = this.translate.instant('responses.invalid_credentials');
+          this.shared.showAlert('error', 'Error', translatedMsg);
         }
       })
     }

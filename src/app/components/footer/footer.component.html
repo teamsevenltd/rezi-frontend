@@ -1,23 +1,38 @@
-<div class="btn-group w-100 position-absolute bottom-0 overflow-x-auto" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 rounded-0"
-        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
-        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('menu')">
-        <i class="ri-home-2-line"></i><span class="d-none d-md-block">{{'app.menu' | translate}}</span></button>
-    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
-        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
-        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('chat')">
-        <i class="ri-chat-2-line"></i><span class="d-none d-md-block">{{'app.chat' | translate}}</span></button>
-    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
-        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
-        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('news')">
-        <i class="ri-news-line"></i><span class="d-none d-md-block">{{'app.news' | translate}}</span></button>
-    <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
-        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
-        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('feedback')">
-        <i class="ri-feedback-line"></i><span class="d-none d-md-block">{{'app.feedback' | translate}}</span></button>
-    <button type="button"
-        class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start rounded-0"
-        [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
-        [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('info')">
-        <i class="ri-user-3-line"></i><span class="d-none d-md-block">{{'app.info' | translate}}</span></button>
+<div class="w-100 overflow-x-auto">
+    <div class="btn-group w-100" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-success d-flex justify-content-center align-items-center gap-2 rounded-0"
+            [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+            [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('menu')">
+            <i class="ri-home-2-line"></i><span class="d-none d-md-block">{{'app.menu' | translate}}</span></button>
+        <button type="button"
+            class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
+            [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+            [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('chat')">
+            <i class="ri-chat-2-line"></i><span class="d-none d-md-block">{{'app.chat' | translate}}</span></button>
+        <button type="button"
+            class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
+            [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+            [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('news')">
+            <i class="ri-news-line"></i><span class="d-none d-md-block">{{'app.news' | translate}}</span></button>
+        <button type="button"
+            class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start"
+            [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+            [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('feedback')">
+            <i class="ri-feedback-line"></i><span class="d-none d-md-block">{{'app.feedback' |
+                translate}}</span></button>
+        <button type="button"
+            class="btn btn-success d-flex justify-content-center align-items-center gap-2 border-start rounded-0"
+            [style.background-color]="facility_details ? facility_details?.background_color : '#23b7e5'"
+            [style.color]="facility_details ? facility_details?.text_color : '#fff'" (click)="getTabName('info')">
+            <i class="ri-user-3-line"></i><span class="d-none d-md-block">{{'app.info' | translate}}</span></button>
+    </div>
+    <div class="last-footer">
+        <div class="d-flex justify-content-center gap-4 py-2 small">
+            <a href="https://rezi24.de" target="_blank" class="underline">Rezi24</a>
+            <span class="lh-1"><i class="ri-circle-fill ri-xxs"></i></span>
+            <a href="https://rezi24.de/datenschutz-app" target="_blank" class="underline">Datenschutz</a>
+            <span class="lh-1"><i class="ri-circle-fill ri-xxs"></i></span>
+            <a href="https://app.rezi24.de" target="_blank" class="underline">Login</a>
+        </div>
+    </div>
 </div>
