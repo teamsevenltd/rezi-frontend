@@ -11,20 +11,20 @@
   cursor: pointer;
   position: fixed;
   bottom: 23px;
-  right: 39px;
+  right: 50px;
   border-radius: 100px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 24px;
+  padding: 14px 20px;
   z-index: 3;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .rezi-icon {
-  width: 30px;
+  width: 20px;
   height: auto;
   margin-right: 8px;
 }
@@ -84,9 +84,9 @@
 /* Info Box Styles */
 .rezi-info-box {
   position: fixed;
-  bottom: 100px;
+  bottom: 90px;
   right: 40px;
-  width: 270px;
+  width: 250px;
   /* background-color: white; */
   border-radius: 10px;
   /* box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px; */
@@ -219,7 +219,7 @@
 
 @media only screen and (max-width: 450px) {
   .rezi-info-box {
-    width: calc(100% - 56px);
+    /* width: calc(100% - 56px); */
     right: 28px;
   }
 }

@@ -23,7 +23,7 @@ export class InfoComponent implements OnInit {
   @Input() allowAutoSkip = false;
   @Output() updateTab = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private shared: GeneralServiceService) {}
+  constructor(private fb: FormBuilder, private shared: GeneralServiceService) { }
 
   ngOnInit(): void {
     let client_info = JSON.parse(localStorage.getItem('info') || '{}');
@@ -38,7 +38,6 @@ export class InfoComponent implements OnInit {
     // If client info already exists AND auto-skip is allowed, skip the info step and go to next
     // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
     if (this.allowAutoSkip && this.hasCompleteClientInfo(client_info)) {
-      console.log('Client info exists, skipping info step.');
       setTimeout(() => {
         const isExternalLink = this.checkIfNextStepIsExternalLink();
         this.shared.updateStep({
@@ -48,7 +47,6 @@ export class InfoComponent implements OnInit {
         });
         this.updateTab.emit(true);
         if (isExternalLink) {
-          console.log('Next step is external link, opening it.');
           this.openExternalLink();
         }
       });
@@ -105,5 +103,9 @@ export class InfoComponent implements OnInit {
         this.openExternalLink();
       }
     }
+  }
+
+  getTabName(name: string) {
+    this.shared.getTab(name);
   }
 }
