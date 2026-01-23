@@ -111,8 +111,8 @@ export class PublicComponent implements OnInit {
 
   signaturePadOptions = {
     minWidth: 5,
-    canvasWidth: 500,
-    canvasHeight: 275,
+    canvasWidth: 480,
+    canvasHeight: 215,
     backgroundColor: 'white',
   };
 
@@ -229,6 +229,13 @@ export class PublicComponent implements OnInit {
       // After info submission, show the steps instead of going back to menu
       this.isMenuSteps = true;
       this.tab_name = 'menu';
+
+      setTimeout(() => {
+        if (this.customer_signature &&
+          this.steps_arr[this.counter - 1]?.step_meta?.junction_type === 'signature') {
+          this.clearClientSignature();
+        }
+      }, 100);
     }
   }
 
@@ -745,10 +752,6 @@ export class PublicComponent implements OnInit {
   }
 
   toNext() {
-    // if (this.steps_arr.length == this.counter) {
-    //   this.saveAppointment();
-    // }
-
     // Open external link if next step is external_link
     if (
       this.steps_arr[this.counter]?.step_meta?.junction_type == 'external_link'
@@ -765,6 +768,13 @@ export class PublicComponent implements OnInit {
     } else if (this.counter < this.steps_arr.length) {
       this.counter++;
     }
+
+    setTimeout(() => {
+      if (this.customer_signature &&
+        this.steps_arr[this.counter - 1]?.step_meta?.junction_type === 'signature') {
+        this.clearClientSignature();
+      }
+    }, 100);
   }
 
   toPrevious() {

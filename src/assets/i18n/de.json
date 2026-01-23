@@ -40,7 +40,16 @@
         "already_have_account": "Bereits ein Konto?",
         "login_here": "Hier anmelden",
 
+        "otp_verification_title": "OTP-Verifizierung",
+        "otp_verification_code_title": "OTP-Bestätigungscode",
+        "otp_verification_description": "Bitte prüfen Sie Ihre Authenticator-App auf den Bestätigungscode. Geben Sie ihn unten ein, um fortzufahren.",
+        "verify_proceed": "Zur Fortsetzung bestätigen",
+
         "otp_to_reset_password": "Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen einen OTP, um Ihr Passwort zurückzusetzen.",
+
+        "two_fa_hint_prefix": "Um mehr Sicherheit zu erhalten, aktivieren Sie",
+        "two_fa_link_text": "die Zwei-Faktor-Authentifizierung",
+        "two_fa_hint_suffix": "",
 
         "enter_your_first": "Vornamen eingeben",
         "enter_your_last": "Nachname eingeben",
@@ -280,6 +289,21 @@
         "aware_text": "Teile dein Passwort niemals mit anderen.",
         "old_password": "Altes Passwort",
         "new_password": "Neues Passwort",
+
+        "two_factor_authentication": "Zwei-Faktor-Authentifizierung",
+        "enable_title": "Zwei-Faktor-Authentifizierung aktivieren",
+        "enable_description": "Schützen Sie Ihr Konto mit einer zusätzlichen Sicherheitsebene",
+
+        "scan_qr_title": "QR-Code scannen",
+        "scan_qr_description": "Verwenden Sie eine Authenticator-App, um diesen QR-Code zu scannen. Wir empfehlen Google Authenticator, Microsoft Authenticator oder Authy.",
+
+        "enter_code_title": "Bestätigungscode eingeben",
+        "enter_code_description": "Geben Sie nach dem Scannen den 6-stelligen Code aus Ihrer Authenticator-App ein, um die Einrichtung zu bestätigen.",
+
+        "verify_button": "2FA bestätigen und aktivieren",
+
+        "important_title": "Wichtig",
+        "backup_codes_note": "Bewahren Sie Ihre Wiederherstellungscodes an einem sicheren Ort auf. Sie benötigen diese, falls Sie den Zugriff auf Ihre Authenticator-App verlieren.",
         
         "set_pin":"T-Pin setzen",
         "generate_otp": "OTP generieren",
@@ -335,7 +359,12 @@
     "self_payer": "Selbstzahler",
     "select_appointment_date": "Wählen Sie ein Datum für den Termin",
     "available_slots": "Verfügbare Zeitfenster",
-    "treatment_required": "Welche Behandlung benötigen Sie?"
+    "treatment_required": "Welche Behandlung benötigen Sie?",
+
+    "consent_download_file": "Ich stimme dem Download der Datei zu",
+    "download": "Herunterladen",
+    "consent_text": "Ich stimme dem Text zu",
+    "signature": "Unterschrift"
   },
 
   "sweet_alert": {
@@ -394,6 +423,10 @@
     "availability_created_successfully": "Verfügbarkeit erfolgreich hinzugefügt",
     "availability_updated_successfully": "Verfügbarkeit erfolgreich aktualisiert",
     "availability_deleted_successfully": "Verfügbarkeit erfolgreich gelöscht",
+
+    "two_factor_disabled_success": "Zwei-Faktor-Authentifizierung erfolgreich deaktiviert",
+    "two_factor_enabled_success": "Zwei-Faktor-Authentifizierung erfolgreich eingerichtet",
+    "invalid_otp_error": "Ungültiger OTP",
 
     "please_select_location": "Bitte wählen sie zuerst den standort aus"
   }

@@ -1,9 +1,8 @@
-
 header {
     font-family: 'Inter';
     background-color: #fff;
     padding: 0;
-height: 58px;
+    height: 58px;
 
 
     .navbar {
@@ -13,8 +12,12 @@ height: 58px;
 
 }
 
+.nav-caution {
+    bottom: -8px;
+}
+
 .navbar-brand {
-    padding: .7rem ;
+    padding: .7rem;
     display: inline-block;
     width: 100%;
     background-color: #fff;
@@ -75,15 +78,17 @@ height: 58px;
 .profile-content {
     font-family: 'Inter';
     line-height: 1;
-    div{
+
+    div {
         font-size: 13px;
         font-weight: 600;
         line-height: 13px;
-        
+
         color: var(--text-color);
 
     }
-    span{
+
+    span {
         font-weight: 400;
         font-size: 11px;
         line-height: 17px;
@@ -160,7 +165,7 @@ aside {
 
 aside:hover {
     width: 16.6666666667rem;
- 
+
 
     .toggle-logo {
         display: none;
@@ -168,7 +173,7 @@ aside:hover {
 
     .desktop-logo {
         display: block;
-        
+
     }
 }
 
@@ -185,7 +190,7 @@ aside:hover {
 
 
     .collapsedBar {
-  
+
 
         &:hover {
             .expanded {
@@ -196,12 +201,28 @@ aside:hover {
 
 }
 
+@media (min-width:992px) {
+    .nav-caution {
+        transform: translateX(50%);
+    }
 
-.nav-link:hover{
+}
+
+@media (min-width:1200px) {
+    .nav-caution {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+}
+
+
+.nav-link:hover {
     background-color: var(--gray-color);
     border-radius: .4rem;
 }
-a{
+
+a {
     text-decoration: none;
 }
 
@@ -228,21 +249,21 @@ a{
 
             a {
 
-                
+
                 i {
                     padding: .5rem;
                 }
             }
-           
-          
+
+
         }
-      
+
 
     }
 }
 
 .sidebar {
-    
+
 
     .list-group {
         margin: 0 1.5rem;
@@ -254,7 +275,7 @@ a{
         color: var(--text-color);
         font-weight: 500;
         font-size: 14px;
-    font-family: 'Inter';
+        font-family: 'Inter';
 
 
         border: none;
@@ -262,7 +283,7 @@ a{
         a {
             display: flex;
             align-items: center;
-            gap:  1rem;
+            gap: 1rem;
         }
 
         i {
@@ -302,19 +323,17 @@ a{
     transform: rotate(90deg);
 }
 
-.accordion-body{
-    i{
+.accordion-body {
+    i {
         font-size: .3rem;
         font-weight: 700;
     }
-    span{
+
+    span {
         margin-left: -.8rem;
     }
 }
-.topbar-user{
+
+.topbar-user {
     background-color: transparent !important;
 }
-
-
-
-

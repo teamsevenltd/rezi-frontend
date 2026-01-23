@@ -40,6 +40,11 @@
         "already_have_account": "Already have an account?",
         "login_here": "Login here",
 
+        "otp_verification_title": "OTP Verification",
+        "otp_verification_code_title": "OTP Verification Code",
+        "otp_verification_description": "Please check your authenticator app for verification code. Enter it below to continue.",
+        "verify_proceed": "Verify to proceed",
+
         "otp_to_reset_password": "Enter your email and we will send you OTP to reset your password.",
 
         "enter_your_first": "Enter your first name",
@@ -76,6 +81,10 @@
 
         "menu": "Menu",
         "dashboard": "Dashboard",
+
+        "two_fa_hint_prefix": "To get more secured. Make",
+        "two_fa_link_text": "Two Factor Authentication",
+        "two_fa_hint_suffix": "enabled",
 
         "login_admin": "Login as Admin",
         "add_pin": "Add Pin",
@@ -280,6 +289,21 @@
         "old_password": "Old Password",
         "new_password": "New Password",
 
+        "two_factor_authentication": "Two Factor Authentication",
+        "enable_title": "Enable Two Factor Authentication",
+        "enable_description": "Protect your account with an additional security step",
+
+        "scan_qr_title": "Scan QR Code",
+        "scan_qr_description": "Use authenticator app to scan this QR code. We recommend Google Authenticator, Microsoft Authenticator, or Authy.",
+
+        "enter_code_title": "Enter Verification Code",
+        "enter_code_description": "After scanning, enter the 6-digit code from your authenticator app to verify the setup.",
+
+        "verify_button": "Verify and Enable 2FA",
+
+        "important_title": "Important",
+        "backup_codes_note": "Save your backup codes in a safe place. You'll need them if you lose access to your authenticator app.",
+
         "set_pin":"Set T-Pin",
         "generate_otp": "Generate OTP",
         "availability": "Availability",
@@ -334,7 +358,12 @@
     "self_payer": "Self-Payer",
     "select_appointment_date": "Select date for appointment",
     "available_slots": "Available Slots",
-    "treatment_required": "Which treatment do you need?"
+    "treatment_required": "Which treatment do you need?",
+
+    "consent_download_file": "I give consent to download the file",
+    "download": "Download",
+    "consent_text": "I give consent to the text",
+    "signature": "Signature"
   },
 
   "sweet_alert": {
@@ -393,6 +422,10 @@
     "availability_created_successfully": "Availability added successfully",
     "availability_updated_successfully": "Availability updated successfully",
     "availability_deleted_successfully": "Availability deleted successfully",
+
+    "two_factor_disabled_success": "Two Factor disabled successfully",
+    "two_factor_enabled_success": "Two Factor set up successfully",
+    "invalid_otp_error": "Invalid OTP",
 
     "availibility_not_found": "You have no availability on this date",
     "avatar_does_not_exist": "This avatar does not exist",

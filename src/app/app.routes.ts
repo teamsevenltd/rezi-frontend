@@ -10,6 +10,7 @@ import { authGuard } from './auth/auth.guard';
 import { PublicComponent } from './modules/shared/public/public.component';
 import { SuccessComponent } from './pages/success/success.component';
 import { DeclineComponent } from './pages/decline/decline.component';
+import { OTPVerificationComponent } from './pages/otp-verification/otp-verification.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,11 @@ export const routes: Routes = [
         path: 'register',
         component: RegisterComponent,
         data: { title: 'app.register' },
+      },
+      {
+        path: 'otp',
+        component: OTPVerificationComponent,
+        data: { title: 'app.two_factor_authentication' },
       },
       {
         path: 'forget-password',

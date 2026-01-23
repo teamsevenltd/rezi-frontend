@@ -1,6 +1,6 @@
 <header id="page-topbar" class="">
     <div class="layout-width">
-        <div class="navbar-header">
+        <div class="navbar-header position-relative">
             <div class="d-flex">
                 <button (click)="toggleSidebarSize()" type="button"
                     class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
@@ -107,6 +107,17 @@
                     </div>
                 </div>
             </div>
+            @if (!twoFA_enabled) {
+            <div class="position-absolute nav-caution">
+                <small class="bg-white px-3 py-1" style="border-end-end-radius: 6px;  border-end-start-radius: 6px;">
+                    {{ 'app.two_fa_hint_prefix' | translate }}
+                    <a class="link-danger text-decoration-underline" role="button" (click)="navigateToTwoFA()">
+                        {{ 'app.two_fa_link_text' | translate }}
+                    </a>
+                    {{ 'app.two_fa_hint_suffix' | translate }}
+                </small>
+            </div>
+            }
         </div>
     </div>
 </header>

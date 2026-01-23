@@ -108,12 +108,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="d-flex align-items-center gap-3">
-                    @if(counter>1){
-                    <i class="ri-arrow-left-s-line fs-3" role="button" (click)="toPrevious()"></i>
-                    }
-                    <h4 class="mb-0">Step {{counter}}</h4>
-                </div> -->
                 @if (steps_arr[counter - 1]?.step_type == 'patient') {
                 <div class="row">
                     <div class="col-12">
@@ -201,15 +195,6 @@
                     </div>
                 </div>
                 }
-                <!-- <div class="d-flex justify-content-between align-items-center">
-                    <button type="button"
-                        class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
-                        (click)="toPrevious()"><i class="ri-arrow-left-line"></i>{{'public.previous' |
-                        translate}}</button>
-                    <button type="button"
-                        class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
-                        (click)="toNext()">{{'public.next' | translate}}<i class="ri-arrow-right-line"></i></button>
-                </div> -->
                 }
                 @else if (steps_arr[counter - 1]?.step_type == 'custom') {
                 <div class="row">
@@ -321,7 +306,7 @@
                                     <input class="form-check-input border-dark" type="checkbox" id="fileDownload"
                                         [(ngModel)]="consent_for_file" [ngModelOptions]="{standalone: true}">
                                     <label class="form-check-label" for="fileDownload">
-                                        I give consent to download the file
+                                        {{ 'public.consent_download_file' | translate }}
                                     </label>
                                 </div>
                                 }
@@ -330,19 +315,9 @@
                                 <div>
                                     <button type="button" class="btn btn-dark d-flex align-items-center gap-3 mx-auto"
                                         (click)="openLink(steps_arr[counter - 1]?.step_meta?.media)"><i
-                                            class="ri-download-2-line"></i>Download</button>
+                                            class="ri-download-2-line"></i>{{ 'public.download' | translate }}</button>
                                 </div>
                                 }
-
-
-                                <!-- <div class="d-flex align-items-center gap-3">
-                                    <div class="flex-grow-1">
-                                        <a class="link-secondary"
-                                            [ngClass]="{'ms-2': steps_arr[counter - 1]?.step_meta?.junction_type === 'download_confirmation'}"
-                                            role="button" (click)="openLink(steps_arr[counter - 1]?.step_meta?.media)">
-                                            {{steps_arr[counter - 1]?.step_meta?.media}}</a>
-                                    </div>
-                                </div> -->
                                 }
                                 @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
                                 'external_link') {
@@ -352,14 +327,6 @@
                                         {{ steps_arr[counter - 1]?.step_description }}
                                     </a>
                                 </div>
-
-                                <!-- <div class="d-flex flex-wrap align-items-center mb-2">
-                                    <h5 class="me-2 mb-0">External Link:</h5>
-                                    <a [href]="steps_arr[counter - 1]?.step_meta?.media" target="_blank"
-                                        class="text-break text-dark" style="word-break: break-all;">
-                                        {{ steps_arr[counter - 1]?.step_meta?.media }}
-                                    </a>
-                                </div> -->
                                 }
                                 @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
                                 'content_no_confirmation'
@@ -375,7 +342,7 @@
                                 <div class="form-check mt-2">
                                     <input class="form-check-input border-dark" type="checkbox" id="text_consent">
                                     <label class="form-check-label" for="text_consent">
-                                        I give consent to the text
+                                        {{ 'public.consent_text' | translate }}
                                     </label>
                                 </div>
                                 }
@@ -391,8 +358,8 @@
                                 <div class="d-flex justify-content-end pe-0">
                                     <button type="button"
                                         class="btn btn-dark btn-sm d-flex align-items-center gap-2 mb-2"
-                                        (click)="clearClientSignature()"><i
-                                            class="ri-eraser-line"></i>Signature</button>
+                                        (click)="clearClientSignature()"><i class="ri-eraser-line"></i>{{
+                                        'public.signature' | translate }}</button>
                                 </div>
                                 <signature-pad #customer_signature [options]="signaturePadOptions"
                                     (drawEnd)="drawSignature($event)" class="bg-white"
@@ -417,23 +384,38 @@
                             <div></div>
                             }
 
-                            <!-- @if (steps_arr[counter - 1]?.step_meta?.junction_type === 'answers' || steps_arr[counter -
-                            1]?.step_meta?.junction_type === 'slider_emotion' || steps_arr[counter -
-                            1]?.step_meta?.junction_type === 'slider_consent') {
-
-                            }@else {
+                            <!-- @if (
+                            isLastStep() ||
+                            (
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'answers' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_emotion' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_consent'
+                            )
+                            ) {
                             <button type="button"
                                 class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
                                 (click)="isLastStep() ? saveAppointment() : toNext()">
                                 <i [ngClass]="isLastStep() ? 'ri-save-3-line' : ''"></i>
-                                {{ isLastStep() ? ('public.submit' | translate) : ('public.next' | translate) }}
+
+                                {{ isLastStep()
+                                ? ('public.submit' | translate)
+                                : ('public.next' | translate)
+                                }}
+
                                 <i *ngIf="!isLastStep()" class="ri-arrow-right-double-line"></i>
                             </button>
                             } -->
 
                             @if (
-                            isLastStep() ||
-                            (
+                            isLastStep()
+                            ? (
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'external_link' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'download_no_confirmation' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'download_confirmation' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'content_no_confirmation' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'video'
+                            )
+                            : (
                             steps_arr[counter - 1]?.step_meta?.junction_type !== 'answers' &&
                             steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_emotion' &&
                             steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_consent'

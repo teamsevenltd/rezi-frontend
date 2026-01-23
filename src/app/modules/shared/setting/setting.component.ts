@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Route, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/auth.service';
 import { GeneralServiceService } from '../../../services/general-service.service';
@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.scss']
 })
-export class SettingComponent implements OnInit {
+export class SettingComponent implements OnInit, AfterViewInit {
   profileForm!: FormGroup;
   addAvailability!: FormGroup;
   editAvailability!: FormGroup;
@@ -58,12 +58,18 @@ export class SettingComponent implements OnInit {
     { label: 'Sunday', value: 'sunday' },
   ]
 
+  otp_array = new Array(6);
+  two_factor_enable: boolean = false;
+  qr_image: string = '';
+
   @ViewChild('closeModal') closeModal!: ElementRef;
   @ViewChild('closeAvailability') closeAvailability!: ElementRef;
   @ViewChild('closeEditAvailable') closeEditAvailable!: ElementRef;
 
+  @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
+  @ViewChild('twoFATabButton') twoFATabButton!: ElementRef;
 
-  constructor(private fb: FormBuilder, private router: Router, public auth: AuthService, private shared: GeneralServiceService, private translate: TranslateService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, public auth: AuthService, private shared: GeneralServiceService, private translate: TranslateService) {
     this.role = this.auth.userRole();
     this.shared.location$.subscribe((location) => {
       this.location_id = location?._id;
@@ -120,6 +126,15 @@ export class SettingComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    this.route.queryParams.subscribe((params: any) => {
+      if (params['tab'] === 'two-fa' && this.twoFATabButton) {
+        const bsTab = new (window as any).bootstrap.Tab(this.twoFATabButton.nativeElement);
+        bsTab.show();
+      }
+    });
+  }
+
   getProfile() {
     this.loading = true;
     this.auth.get('user').subscribe({
@@ -140,6 +155,7 @@ export class SettingComponent implements OnInit {
               zip: this.user?.address?.zip,
             }
           });
+          this.two_factor_enable = this.user?.twoFA_enabled;
         }
       },
       error: (err) => {
@@ -497,5 +513,103 @@ export class SettingComponent implements OnInit {
         })
       }
     });
+  }
+
+
+  toggleSwitch() {
+    const newValue = !this.two_factor_enable;
+    this.two_factor_enable = newValue;
+
+    if (!newValue) {
+      this.qr_image = '';
+    }
+
+    this.auth.patch('enable2FA', { twoFA_enabled: newValue }).subscribe({
+      next: (res: any) => {
+        if (res.status === 200) {
+          this.qr_image = newValue ? res.data?.qrCode : '';
+          if (!this.two_factor_enable) {
+            const translatedMsg = this.translate.instant('responses.two_factor_disabled_success');
+            this.shared.showAlert('success', 'Successful', translatedMsg)
+            this.auth.validateToken();
+          }
+        }
+      },
+      error: (err) => {
+        this.two_factor_enable = !newValue;
+        this.shared.showAlert('error', '', err.error?.message);
+      }
+    });
+  }
+
+
+  onInput(event: Event, index: number) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+
+    if (/^[0-9a-zA-Z]$/.test(value)) {
+      this.otp_array[index] = value;
+      if (index < this.otp_array.length - 1) {
+        this.otpInputs.toArray()[index + 1].nativeElement.focus();
+      }
+    } else {
+      input.value = '';
+      this.otp_array[index] = '';
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent, index: number) {
+    const input = event.target as HTMLInputElement;
+
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      this.otp_array[index] = '';
+      input.value = '';
+
+      if (event.key === 'Backspace' && index > 0) {
+        setTimeout(() => {
+          this.otpInputs.toArray()[index - 1].nativeElement.focus();
+        });
+      }
+    }
+
+    if (event.key === 'Enter' && index === this.otp_array.length - 1) {
+      const otpString = this.otp_array.join('');
+      if (otpString.length === 6) {
+        this.validateOTP();
+      }
+      return;
+    }
+  }
+
+  resetOTPFields() {
+    this.otp_array = Array(6).fill('');
+    this.otpInputs.forEach(input => input.nativeElement.value = '');
+    const first = this.otpInputs.first;
+    if (first) first.nativeElement.focus();
+  }
+
+  validateOTP() {
+    this.loading = true;
+    this.submitted = true;
+    const otpString = this.otp_array.join('');
+    this.auth.patch('verify2FA', { otp: otpString }).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          this.loading = false;
+          const translatedMsg = this.translate.instant('responses.two_factor_enabled_success');
+          this.shared.showAlert('success', 'Successful', translatedMsg)
+          this.auth.validateToken();
+          this.resetOTPFields();
+          this.submitted = false;
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        this.submitted = false;
+        const errorTranslatedMsg = this.translate.instant('responses.invalid_otp_error');
+        this.shared.showAlert('error', 'Error', errorTranslatedMsg);
+        this.resetOTPFields();
+      }
+    })
   }
 }

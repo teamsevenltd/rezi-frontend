@@ -67,26 +67,33 @@ export class LoginComponent implements OnInit {
             this.loading = false;
             localStorage.clear();
             this.loginForm.reset();
-            localStorage.setItem('authtoken', JSON.stringify(res?.token));
-            localStorage.setItem('userdata', JSON.stringify(res.data));
-            this.auth.setLoginStatus(true);
-            this.auth.setuserRole(res.data?.role_id?.key);
-            this.submitted = false;
-          }
-          if (this.auth.isLogin()) {
-            if (this.auth.userRole() == res.data?.role_id?.key) {
-              if (this.auth.userRole() == 'medicalprovider') {
-                if (res.data?.subscription?.status) {
-                  this.router.navigate(['/' + res.data?.role_id?.key])
+
+            if (res.data.twoFA_enabled) {
+              localStorage.setItem('two_fa_token', res.token);
+              this.router.navigate(['/otp']);
+            } else {
+              localStorage.setItem('authtoken', JSON.stringify(res?.token));
+              localStorage.setItem('userdata', JSON.stringify(res.data));
+              this.auth.setLoginStatus(true);
+              this.auth.setuserRole(res.data?.role_id?.key);
+            }
+
+            if (this.auth.isLogin()) {
+              if (this.auth.userRole() == res.data?.role_id?.key) {
+                if (this.auth.userRole() == 'medicalprovider') {
+                  if (res.data?.subscription?.status) {
+                    this.router.navigate(['/' + res.data?.role_id?.key])
+                  }
+                  else {
+                    this.router.navigate(['/' + res.data?.role_id?.key + '/subscription']);
+                  }
                 }
                 else {
-                  this.router.navigate(['/' + res.data?.role_id?.key + '/subscription']);
+                  this.router.navigate(['/' + res.data?.role_id?.key]);
                 }
               }
-              else {
-                this.router.navigate(['/' + res.data?.role_id?.key]);
-              }
             }
+            this.submitted = false;
           }
         },
         error: (err) => {

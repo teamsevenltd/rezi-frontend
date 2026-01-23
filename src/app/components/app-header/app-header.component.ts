@@ -4,19 +4,23 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { GeneralServiceService } from '../../services/general-service.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CdkDropList } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-app-header',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, CdkDropList],
   templateUrl: './app-header.component.html',
   styleUrl: './app-header.component.scss'
 })
 export class AppHeaderComponent implements OnInit, AfterViewChecked {
+
+  
   firstname: any;
   name: any;
   picture: any;
   role: any;
+  twoFA_enabled:boolean = false;
 
   role_key: any;
 
@@ -65,6 +69,7 @@ export class AppHeaderComponent implements OnInit, AfterViewChecked {
     this.name = userforheader ? JSON.parse(userforheader)?.first_name + ' ' + JSON.parse(userforheader)?.last_name : '';
     this.role = userforheader ? JSON.parse(userforheader)?.role_id?.name : '';
     this.picture = userforheader ? (JSON.parse(userforheader)?.picture ? this.auth.getapi() + JSON.parse(userforheader)?.picture : './assets/images/users/avatar-3.jpg') : '';
+    this.twoFA_enabled = userforheader ? JSON.parse(userforheader)?.twoFA_enabled : false;
     this.cdRef.detectChanges();
   }
 
@@ -136,6 +141,12 @@ export class AppHeaderComponent implements OnInit, AfterViewChecked {
     this.location_id = obj?._id;
     this.getLocations();
     this.closeModal.nativeElement.click();
+  }
+
+  navigateToTwoFA() {
+    this.router.navigate(['/medicalprovider/settings'], {
+      queryParams: { tab: 'two-fa' }
+    });
   }
 
   gotoSettings() {
