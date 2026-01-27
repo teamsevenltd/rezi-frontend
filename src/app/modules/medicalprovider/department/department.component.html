@@ -133,7 +133,7 @@
                     <div class="col-12 mb-3">
                         <label for="name" class="form-label">{{'app.name' | translate}}<sup
                                 class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" placeholder="Enter Department Name"
+                        <input type="text" class="form-control" [placeholder]="'app.enter_department_name' | translate"
                             formControlName="name">
                     </div>
                     <div class="col-12 modal-footer">
@@ -172,7 +172,7 @@
                     <div class="col-12 mb-3">
                         <label for="name" class="form-label">{{'app.name' | translate}}<sup
                                 class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" placeholder="Enter Department Name"
+                        <input type="text" class="form-control" [placeholder]="'app.enter_department_name' | translate"
                             formControlName="name">
                     </div>
                     <div class="col-12 modal-footer">
@@ -213,7 +213,8 @@
                         <input type="text" class="form-control" formControlName="name">
                     </div>
                     <div class="col-5 mb-3">
-                        <label for="duration" class="form-label">{{'app.duration' | translate}}<sup class="text-danger">*</sup></label>
+                        <label for="duration" class="form-label">{{'app.duration' | translate}}<sup
+                                class="text-danger">*</sup></label>
                         <input type="number" min="0" class="form-control" formControlName="duration">
                     </div>
                     <div class="col-2 mb-3">
@@ -236,7 +237,8 @@
                         <input type="text" class="form-control" formControlName="name">
                     </div>
                     <div class="col-5 mb-3">
-                        <label for="duration" class="form-label text-nowrap">{{'app.duration' | translate}}<sup class="text-danger">*</sup></label>
+                        <label for="duration" class="form-label text-nowrap">{{'app.duration' | translate}}<sup
+                                class="text-danger">*</sup></label>
                         <input type="number" min="0" class="form-control" formControlName="duration">
                     </div>
                     <div class="col-2 mb-3">

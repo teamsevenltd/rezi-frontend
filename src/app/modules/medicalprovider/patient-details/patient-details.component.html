@@ -196,10 +196,11 @@
                                                                                     </div>
                                                                                     <div class="d-grid gap-1 small mb-2">
                                                                                         <small>
-                                                                                            {{conversation?.message_data?.service_data?.meta?.is_new
-                                                                                            ? 'New Patient' : 'Existing Patient'}}
+                                                                                            {{(conversation?.message_data?.service_data?.meta?.is_new 
+                                                                                            ? 'app.new_patient' 
+                                                                                            : 'app.existing_patient') | translate}}
                                                                                         </small>
-                                                                                        <small>Insurance:
+                                                                                        <small>{{'app.insurance' | translate}}:
                                                                                             {{conversation?.message_data.meta?.insurance
                                                                                             | titlecase}}</small>
                                                                                     </div>
@@ -240,10 +241,11 @@
                                                                                     </div>
                                                                                     <div class="d-grid gap-1 small mb-2">
                                                                                         <small>
-                                                                                            {{conversation?.message_data?.service_data?.meta?.is_new
-                                                                                            ? 'New Patient' : 'Existing Patient'}}
+                                                                                            {{(conversation?.message_data?.service_data?.meta?.is_new
+                                                                                            ? 'app.new_patient' 
+                                                                                            : 'app.existing_patient') | translate}}
                                                                                         </small>
-                                                                                        <small>Insurance:
+                                                                                        <small>{{'app.insurance' | translate}}:
                                                                                             {{conversation?.message_data.meta?.insurance
                                                                                             | titlecase}}</small>
                                                                                     </div>
@@ -443,11 +445,11 @@
 
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                    class="ri-inbox-archive-line align-bottom text-muted me-2"></i>Archive</a></li>
+                                    class="ri-inbox-archive-line align-bottom text-muted me-2"></i>{{'app.archive' | translate}}</a></li>
                         <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                    class="ri-mic-off-line align-bottom text-muted me-2"></i>Muted</a></li>
+                                    class="ri-mic-off-line align-bottom text-muted me-2"></i>{{'app.muted' | translate}}</a></li>
                         <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                    class="ri-delete-bin-5-line align-bottom text-muted me-2"></i>Delete</a></li>
+                                    class="ri-delete-bin-5-line align-bottom text-muted me-2"></i>{{'app.delete' | translate}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -469,13 +471,13 @@
             <div class="mb-3 d-flex align-items-center gap-3">
                 <div class="h5 mb-0">{{'app.request_details' | translate}}</div>
                 <div class="badge text-white" [ngClass]="user_details?.meta?.is_new ? 'bg-dark' : 'bg-info'">
-                    {{user_details?.meta?.is_new ? 'New Patient' : 'Existing Patient'}}</div>
+                    {{(user_details?.meta?.is_new ? 'app.new_patient' : 'app.existing_patient') | translate}}</div>
             </div>
             <!-- <div class="mb-3">
                 <h6 class="badge" [ngClass]="user_details?.meta?.is_new ? 'bg-dark' : 'bg-info'">{{user_details?.meta?.is_new ? 'New Patient' : 'Existing Patient'}}</h6>
             </div> -->
             <div class="mb-3">
-                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">Insurance</p>
+                <p class="text-muted text-uppercase fw-medium fs-12 mb-1">{{'app.insurance' | translate}}</p>
                 <h6>{{user_details?.meta?.insurance | titlecase}}</h6>
             </div>
             <div class="mb-3">

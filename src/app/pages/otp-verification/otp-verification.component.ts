@@ -149,8 +149,6 @@ export class OTPVerificationComponent implements OnInit, AfterViewInit, OnDestro
     if (localStorage.getItem('two_fa_token')) {
       token = localStorage.getItem('two_fa_token');
     }
-    console.log(token);
-
     const otpString = this.otp_array.join('');
     this.otpForm.patchValue({ token: token, otp: otpString });
     this.auth.post('loginOtp', this.otpForm.value).subscribe({

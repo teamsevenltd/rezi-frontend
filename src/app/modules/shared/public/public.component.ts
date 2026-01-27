@@ -125,11 +125,14 @@ export class PublicComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef
   ) {
-    this.shared.tabsRoute$.subscribe((name: any) => {
+    this.shared.tabsRoute$.subscribe((data: any) => {
+      const name = typeof data === 'string' ? data : data.name;
+      const options = typeof data === 'object' ? data.options : {};
+
       this.tab_name = name;
-      // When navigating to menu tab, completely reset everything
+      // When navigating to menu tab
       if (name === 'menu') {
-        this.resetMenuState();
+        this.resetMenuState(options?.goToService || false);
       }
       // When user explicitly clicks info button in footer, don't allow auto-skip
       if (name === 'info') {
@@ -142,12 +145,20 @@ export class PublicComponent implements OnInit {
     });
   }
 
-  resetMenuState() {
-    // Reset to initial state - show location selection
-    this.isMenuLocation = true;
-    this.isMenuDepartment = false;
-    this.isMenuService = false;
-    this.isMenuSteps = false;
+  resetMenuState(goToService: boolean = false) {
+    if (goToService) {
+      // Going back to service selection - preserve context
+      this.isMenuLocation = false;
+      this.isMenuDepartment = false;
+      this.isMenuService = true;
+      this.isMenuSteps = false;
+    } else {
+      // Complete reset - show location selection
+      this.isMenuLocation = true;
+      this.isMenuDepartment = false;
+      this.isMenuService = false;
+      this.isMenuSteps = false;
+    }
 
     // Reset counter to start from beginning
     this.counter = 1;
@@ -168,8 +179,8 @@ export class PublicComponent implements OnInit {
     this.steps_arr = [];
     this.availability_arr = [];
 
-    // Re-fetch locations to start fresh
-    if (this.facility_details?._id) {
+    // Only re-fetch locations if doing complete reset
+    if (!goToService && this.facility_details?._id) {
       this.getLocations(this.facility_details._id);
     }
   }
@@ -225,17 +236,16 @@ export class PublicComponent implements OnInit {
   }
 
   onUpdateTab(event: any) {
-    if (event == true) {
+    if (event == true || event?.shouldIncrementCounter !== undefined) {
       // After info submission, show the steps instead of going back to menu
       this.isMenuSteps = true;
       this.tab_name = 'menu';
 
-      setTimeout(() => {
-        if (this.customer_signature &&
-          this.steps_arr[this.counter - 1]?.step_meta?.junction_type === 'signature') {
-          this.clearClientSignature();
-        }
-      }, 100);
+      if (event?.shouldIncrementCounter === true) {
+        this.counter++;
+      }
+
+      this.setSignature();
     }
   }
 
@@ -343,7 +353,7 @@ export class PublicComponent implements OnInit {
     let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
     storedData['departmentId'] = id;
     localStorage.setItem('myKey', JSON.stringify(storedData));
-    this.shared.updateStep({ previous: 'Location', next: 'Service' });
+    this.shared.updateStep({ previous: 'Department', next: 'Service' });
     this.getServicebyLocationId(this.location_id);
   }
 
@@ -747,6 +757,15 @@ export class PublicComponent implements OnInit {
     this.sign = '';
   }
 
+  setSignature() {
+    setTimeout(() => {
+      if (this.customer_signature &&
+        this.steps_arr[this.counter - 1]?.step_meta?.junction_type === 'signature') {
+        this.clearClientSignature();
+      }
+    }, 100);
+  }
+
   isLastStep(): boolean {
     return this.counter === this.steps_arr.length;
   }
@@ -760,7 +779,9 @@ export class PublicComponent implements OnInit {
       if (url) {
         window.open(url, '_blank');
       }
+      this.counter++;
     }
+
     if (this.steps_arr[this.counter]?.step_type == 'custom') {
       this.initializeCustomFormArray();
       this.customStepCounter++;
@@ -769,23 +790,38 @@ export class PublicComponent implements OnInit {
       this.counter++;
     }
 
-    setTimeout(() => {
-      if (this.customer_signature &&
-        this.steps_arr[this.counter - 1]?.step_meta?.junction_type === 'signature') {
-        this.clearClientSignature();
-      }
-    }, 100);
+    this.setSignature();
   }
 
   toPrevious() {
+    if (this.counter == 1) {
+      this.counter--;
+      this.shared.updateStep({
+        previous: 'Departments',
+        next: 'Service'
+      });
+      this.resetMenuState(true);
+      this.tab_name = 'menu';
+    } else if (this.counter > 1) {
+      this.counter--;
+    }
+
     if (this.steps_arr[this.counter - 1]?.step_type == 'custom') {
       const array = this.appointmentForm.get('custom') as FormArray;
       array.removeAt(this.customStepCounter);
       this.customStepCounter--;
     }
 
-    if (this.counter > 1) {
-      this.counter--;
+
+
+    if (
+      this.steps_arr[this.counter - 1]?.step_meta?.junction_type == 'external_link'
+    ) {
+      let url = this.steps_arr[this.counter - 1]?.step_meta?.media;
+      if (url) {
+        window.open(url, '_blank');
+        this.counter--;
+      }
     }
   }
 

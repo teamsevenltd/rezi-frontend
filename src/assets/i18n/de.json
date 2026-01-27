@@ -175,12 +175,14 @@
         "do_not_display_appointments": "Keine Termine an Feiertagen anzeigen",
         "secondary_email": "Sekundäre E-Mail-Benachrichtigungen",
         "secondary_email_notification": "Sekundäre E-Mail-Benachrichtigungen",
+        "select_location_from_options": "Standort aus den Optionen auswählen",
 
         "department": "Abteilung",
         "departments": "Abteilungen",
         "treatment": "Behandlung",
         "action": "Aktion",
         "duration": "Dauer (in Minuten)",
+        "enter_department_name": "Abteilungsnamen eingeben",
 
         "patient": "Patient",
         "patients": "Patienten",
@@ -193,6 +195,9 @@
         "state_insurance": "Versichert",
         "private_insurance": "Privatverscihert",
         "self_payer_insurance": "Selbstzahler",
+        "placeholder_enter_first_name": "Vornamen eingeben",
+        "placeholder_enter_last_name": "Nachnamen eingeben",
+        "placeholder_enter_phone_number": "Telefonnummer eingeben",
 
         "requests": "Anfragen",
 
@@ -228,6 +233,8 @@
         "personal_details": "Persönliche Daten",
         "request_details": "Anfrageinformationen",
         "no_chat_found": "Keinen Verlauf gefunden",
+        "muted": "Stummgeschaltet",
+        "archive": "Archivieren",
 
         "configuration": "Konfiguration",
         "site": "Seite",
@@ -247,6 +254,7 @@
         "text_placeholder": "Geben Sie hier Text ein",
 
         "feedback": "Rückmeldung",
+        "enter_feedback": "Feedback eingeben",
         "rating": "Bewertung",
 
         "subscription_plans": "Abonnements",
@@ -314,6 +322,12 @@
         "hours": "Arbeitsstunden",
         "starting_hours": "Beginn der Arbeitszeit",
         "ending_hours": "Ende der Arbeitszeit",
+        
+        "sendgrid_instructions": "Bitte geben Sie Ihre SendGrid ein, um E-Mails zu senden",
+        "sendgrid_email_label": "SendGrid E-Mail",
+        "sendgrid_api_key_label": "API-Schlüssel",
+        "stripe_instructions": "Bitte geben Sie Ihre Stripe-Daten für Zahlungen ein",
+        "stripe_key_label": "Stripe-Schlüssel",
 
         "log_out": "Abmelden"
     },
@@ -364,7 +378,21 @@
     "consent_download_file": "Ich stimme dem Download der Datei zu",
     "download": "Herunterladen",
     "consent_text": "Ich stimme dem Text zu",
-    "signature": "Unterschrift"
+    "signature": "Unterschrift",
+
+    "name_label": "Name",
+    "phone_label": "Telefonnummer",
+    "email_label": "E-Mail",
+    "rating_label": "Bewertung",
+    "feedback_label": "Feedback",
+    "placeholder_enter_name": "Name eingeben",
+    "placeholder_enter_phone": "Telefonnummer eingeben",
+    "placeholder_enter_email": "E-Mail-Adresse eingeben",
+    "placeholder_enter_feedback": "Feedback eingeben",
+    "save_changes": "Änderungen speichern",
+
+    "read_more": "Mehr lesen",
+    "no_news_found": "Keine Neuigkeiten gefunden"
   },
 
   "sweet_alert": {

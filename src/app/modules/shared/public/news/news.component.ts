@@ -2,17 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../../auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GeneralServiceService } from '../../../../services/general-service.service';
+import { PortalModule } from "@angular/cdk/portal";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-news',
   standalone: true,
-  imports: [],
+  imports: [PortalModule, TranslateModule],
   templateUrl: './news.component.html',
   styleUrl: './news.component.scss'
 })
 export class NewsComponent implements OnInit {
   id: any;
   news_arr: any = [];
+  selectedNews: any;
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private shared: GeneralServiceService) { }
 
@@ -32,5 +35,9 @@ export class NewsComponent implements OnInit {
         this.shared.showAlert('error', 'Error', err.error.message);
       }
     })
+  }
+
+  openNewsModal(obj: any) {
+    this.selectedNews = obj;
   }
 }

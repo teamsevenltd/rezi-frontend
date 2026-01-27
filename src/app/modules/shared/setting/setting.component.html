@@ -55,9 +55,9 @@
                 {{'app.availability' | translate}}
               </button>
 
-              <button #twoFATabButton class="nav-link d-flex align-items-center" id="v-pills-two-fa-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-two-fa" type="button" role="tab" aria-controls="v-pills-two-fa"
-                aria-selected="true">
+              <button #twoFATabButton class="nav-link d-flex align-items-center" id="v-pills-two-fa-tab"
+                data-bs-toggle="pill" data-bs-target="#v-pills-two-fa" type="button" role="tab"
+                aria-controls="v-pills-two-fa" aria-selected="true">
                 <i class="ri-shield-keyhole-line mx-3 fs-16"></i>
                 {{'app.two_factor_authentication' | translate}}
               </button>
@@ -161,25 +161,30 @@
               <div class="profile-form">
                 <form class="row">
                   <div class="col-12">
-                    <div class="mb-3">Please enter your SendGrid to send emails</div>
+                    <div class="mb-3">{{ 'app.sendgrid_instructions' | translate }}</div>
                   </div>
+
                   <div class="col-12 mb-2">
-                    <label for="" class="form-label">SendGrid Email</label>
+                    <label for="" class="form-label">{{ 'app.sendgrid_email_label' | translate }}</label>
                     <input type="text" class="form-control" [(ngModel)]="sendgrid_mail"
                       [ngModelOptions]="{standalone: true}">
                   </div>
+
                   <div class="col-12 mb-2">
-                    <label for="" class="form-label">API Key</label>
+                    <label for="" class="form-label">{{ 'app.sendgrid_api_key_label' | translate }}</label>
                     <input type="text" class="form-control" [(ngModel)]="sendgrid_key"
                       [ngModelOptions]="{standalone: true}">
                   </div>
+
                   <div class="col-12">
-                    <div class="mb-3">Please enter your Stripe for payments</div>
+                    <div class="mb-3">{{ 'app.stripe_instructions' | translate }}</div>
                   </div>
+
                   <div class="col-12 mb-2">
-                    <label for="" class="form-label">Stripe Key</label>
+                    <label for="" class="form-label">{{ 'app.stripe_key_label' | translate }}</label>
                     <input type="text" class="form-control" [(ngModel)]="stripe_key"
                       [ngModelOptions]="{standalone: true}">
+
                   </div>
                 </form>
               </div>
@@ -435,9 +440,11 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addAvailabilityLabel">{{'app.new' | translate}} {{'app.availability' | translate}}
+        <h5 class="modal-title" id="addAvailabilityLabel">{{'app.new' | translate}} {{'app.availability' |
+          translate}}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAvailability aria-label="Close"> </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" #closeAvailability aria-label="Close">
+        </button>
       </div>
       <div class="modal-body">
         <form [formGroup]="addAvailability" (ngSubmit)="submitAvailability()">
@@ -522,7 +529,8 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editAvailabilityLabel">{{'app.edit' | translate}} {{'app.availability' | translate}}
+        <h5 class="modal-title" id="editAvailabilityLabel">{{'app.edit' | translate}} {{'app.availability' |
+          translate}}
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" #closeEditAvailable aria-label="Close">
         </button>

@@ -291,9 +291,10 @@
                                     <input type="file" #fileDropRef class="drop-input" id="fileDropRef" accept="image/*"
                                         (change)="handleAnswer($event, 'upload', i)">
                                     <i class='ri-arrow-down-line drop-img mb-2 fs-1'></i>
-                                    <h5>Drag and Drop file here</h5>
-                                    <small class="d-block fw-bold text-muted mb-2">OR</small>
-                                    <button for="fileDropRef" class="btn btn-sm btn-dark rounded">Browse For File
+                                    <h5>{{'app.drag_and_drop' | translate}}</h5>
+                                    <small class="d-block fw-bold text-muted mb-2">{{'app.or' | translate}}</small>
+                                    <button for="fileDropRef"
+                                        class="btn btn-sm btn-dark rounded">{{'app.browse_for_file' | translate}}
                                     </button>
                                 </div>
                                 }
@@ -319,12 +320,12 @@
                                 </div>
                                 }
                                 }
-                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type ===
-                                'external_link') {
+                                @else if (steps_arr[counter - 1]?.step_meta?.junction_type === 'external_link') {
                                 <div class="text-center mb-3">
                                     <a class="btn btn-dark no-underline"
                                         [href]="steps_arr[counter - 1]?.step_meta?.media" target="_blank">
-                                        {{ steps_arr[counter - 1]?.step_description }}
+                                        {{ (steps_arr[counter - 1]?.step_description?.trim() || '') ? steps_arr[counter
+                                        - 1]?.step_description : ('junctionTypes.external_link' | translate) }}
                                     </a>
                                 </div>
                                 }
@@ -374,7 +375,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="d-flex justify-content-between align-items-center">
-                            @if (counter > 1) {
+                            @if ((counter > 1 && steps_arr[counter - 1]?.step_meta?.junction_type !== 'external_link')
+                            || (counter >= 1 && steps_arr[0]?.step_type === 'custom')) {
                             <button type="button"
                                 class="btn btn-dark d-flex align-items-center gap-2 material-shadow-none border-start"
                                 (click)="toPrevious()">
@@ -418,7 +420,8 @@
                             : (
                             steps_arr[counter - 1]?.step_meta?.junction_type !== 'answers' &&
                             steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_emotion' &&
-                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_consent'
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'slider_consent' &&
+                            steps_arr[counter - 1]?.step_meta?.junction_type !== 'external_link'
                             )
                             ) {
                             <button type="button"
@@ -536,8 +539,9 @@
     <app-chat></app-chat>
     }
     @else if (tab_name == 'info') {
-    <app-info [steps]="steps_arr" [counter]="counter" [allowAutoSkip]="allowInfoAutoSkip"
-        (updateTab)="onUpdateTab($event)"></app-info>
+    <app-info [steps]="steps_arr" [counter]="counter" [allowAutoSkip]="allowInfoAutoSkip" [isLastStep]="isLastStep()"
+        (updateTab)="onUpdateTab($event)">
+    </app-info>
     }
     @else if (tab_name == 'news') {
     <app-news></app-news>

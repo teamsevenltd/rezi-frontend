@@ -29,8 +29,6 @@ export class ClicktypeStepComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.step_details);
-
     this.clickForm = this.fb.group({
       id: [''],
       service_id: [''],
@@ -49,7 +47,7 @@ export class ClicktypeStepComponent implements OnInit {
     this.auth.post('step', this.clickForm.value).subscribe({
       next: (res: any) => {
         if (res.status == 201) {
-          console.log(res);
+          // console.log(res);
 
         }
       },

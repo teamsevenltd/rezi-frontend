@@ -106,7 +106,7 @@ export class AppHeaderComponent implements OnInit, AfterViewChecked {
       }
     }
     catch (error) {
-      console.error('An error occurred:', error);
+      // console.error('An error occurred:', error);
     }
   }
 

@@ -382,8 +382,6 @@ export class CalendarComponent implements OnInit {
     this.addAppointmentForm.patchValue({ location_id: this.location_id });
     this.loading = true;
     this.submitted = true;
-    console.log(this.addAppointmentForm.value);
-    
     if (this.addAppointmentForm.invalid) {
       this.loading = false;
     }

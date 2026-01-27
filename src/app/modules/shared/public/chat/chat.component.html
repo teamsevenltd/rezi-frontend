@@ -481,7 +481,7 @@
                                         <div class="links-list-item">
                                             <button type="submit"
                                                 class="btn btn-success chat-send waves-effect waves-light"
-                                                [disabled]="chatForm.invalid || submitted">
+                                                [disabled]="!this.url[2]?.path || submitted">
                                                 <i class="ri-send-plane-2-fill align-bottom"></i>
                                             </button>
                                         </div>

@@ -68,8 +68,8 @@ export class GeneralServiceService {
     this.stepChangeSource.next(data);
   }
 
-  getTab(name: any) {
-    this.tabsRouteSubject.next(name);
+  getTab(name: any, options?: { goToService?: boolean }) {
+    this.tabsRouteSubject.next({ name, options });
   }
 
   updateLocation(location: any): void {

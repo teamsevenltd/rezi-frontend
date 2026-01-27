@@ -153,13 +153,13 @@
                         <label for="first_name" class="form-label">{{'app.first' | translate}} {{'app.name' |
                             translate}} </label>
                         <input type="text" class="form-control" formControlName="first_name"
-                            placeholder="Enter First Name">
+                            [placeholder]="'app.placeholder_enter_first_name' | translate">
                     </div>
                     <div class="col-md-6 col-12 mb-3">
                         <label for="last_name" class="form-label">{{'app.last' | translate}} {{'app.name' | translate}}
                         </label>
                         <input type="text" class="form-control" formControlName="last_name"
-                            placeholder="Enter Last Name">
+                            [placeholder]="'app.placeholder_enter_last_name' | translate">
                     </div>
                     <div class="col-md-6 col-12 mb-3">
                         <label for="date_of_birth" class="form-label">{{'app.date_of_birth' | translate}} </label>
@@ -168,19 +168,21 @@
                     <div class="col-md-6 col-12 mb-3">
                         <label for="phone" class="form-label">{{'app.phone' | translate}}<sup
                                 class="text-danger">*</sup></label>
-                        <input type="tel" class="form-control" formControlName="phone" placeholder="Enter Phone Number">
+                        <input type="tel" class="form-control" formControlName="phone"
+                            [placeholder]="'app.placeholder_enter_phone_number' | translate">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">{{'app.email' | translate}} <sup
                                 class="text-danger">*</sup></label>
-                        <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
+                        <input type="email" class="form-control" formControlName="email"
+                            [placeholder]="'app.placeholder_enter_email' | translate">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="insurance" class="form-label">{{'app.insurance' | translate}}<sup
                                 class="text-danger">*</sup>
                         </label>
                         <select class="form-select" formControlName="insurance">
-                            <option value="" selected>Select a value</option>
+                            <option value="" selected>{{'app.select_a_value' | translate}}</option>
                             <option value="public">{{'app.state_insurance' | translate}}</option>
                             <option value="private">{{'app.private_insurance' | translate}}</option>
                             <option value="self-payer">{{'app.self_payer_insurance' | translate}}</option>
@@ -223,13 +225,13 @@
                         <label for="first_name" class="form-label">{{'app.first' | translate}} {{'app.name' |
                             translate}}</label>
                         <input type="text" class="form-control" formControlName="first_name"
-                            placeholder="Enter First Name">
+                            [placeholder]="'app.placeholder_enter_first_name' | translate">
                     </div>
                     <div class="col-md-6 col-12 mb-3">
                         <label for="last_name" class="form-label">{{'app.last' | translate}} {{'app.name' |
                             translate}}</label>
                         <input type="text" class="form-control" formControlName="last_name"
-                            placeholder="Enter Last Name">
+                            [placeholder]="'app.placeholder_enter_last_name' | translate">
                     </div>
                     <div class="col-md-6 col-12 mb-3">
                         <label for="date_of_birth" class="form-label">{{'app.date_of_birth' | translate}}</label>
@@ -238,19 +240,21 @@
                     <div class="col-md-6 col-12 mb-3">
                         <label for="phone" class="form-label">{{'app.phone' | translate}}<sup
                                 class="text-danger">*</sup></label>
-                        <input type="tel" class="form-control" formControlName="phone" placeholder="Enter Phone Number">
+                        <input type="tel" class="form-control" formControlName="phone"
+                            [placeholder]="'app.placeholder_enter_phone_number' | translate">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">{{'app.email' | translate}}<sup
                                 class="text-danger">*</sup></label>
-                        <input type="email" class="form-control" formControlName="email" placeholder="Enter Email">
+                        <input type="email" class="form-control" formControlName="email"
+                            [placeholder]="'app.placeholder_enter_email' | translate">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="insurance" class="form-label">{{'app.insurance' | translate}}<sup
                                 class="text-danger">*</sup>
                         </label>
                         <select class="form-select" formControlName="insurance">
-                            <option value="">Select a value</option>
+                            <option value="">{{'app.select_a_value' | translate}}</option>
                             <option value="public">{{'app.state_insurance' | translate}}</option>
                             <option value="private">{{'app.private_insurance' | translate}}</option>
                             <option value="self-payer">{{'app.self_payer_insurance' | translate}}</option>

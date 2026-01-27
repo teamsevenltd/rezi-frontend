@@ -3,8 +3,12 @@
     <div class="col-xl-4 col-md-6 col-12 mb-3">
         <div class="card sameheight shadow">
             <div class="card-header">{{news?.title}}</div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <div [innerHTML]="news?.news" class="text-length"></div>
+                <a href="javascript:void(0)" class="mt-1 underline" (click)="openNewsModal(news)" data-bs-toggle="modal"
+                    data-bs-target="#newsModal">
+                    {{ 'public.read_more' | translate }}
+                </a>
             </div>
         </div>
     </div>
@@ -13,10 +17,25 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-center text-danger">
-                    <small>No news found</small>
+                    <small>{{ 'public.no_news_found' | translate }}</small>
                 </div>
             </div>
         </div>
     </div>
     }
+</div>
+
+<!-- News Modal -->
+<div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newsModalLabel">{{selectedNews?.title}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div [innerHTML]="selectedNews?.news"></div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -21,12 +21,14 @@ export class InfoComponent implements OnInit {
   @Input() steps: any[] = [];
   @Input() counter: number = 1;
   @Input() allowAutoSkip = false;
+  @Input() isLastStep = false;
   @Output() updateTab = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder, private shared: GeneralServiceService) { }
 
   ngOnInit(): void {
     let client_info = JSON.parse(localStorage.getItem('info') || '{}');
+
     this.infoForm = this.fb.group({
       first_name: [client_info?.first_name],
       last_name: [client_info?.last_name],
@@ -35,19 +37,30 @@ export class InfoComponent implements OnInit {
       email: [client_info?.email, [Validators.required, Validators.email]],
     });
 
-    // If client info already exists AND auto-skip is allowed, skip the info step and go to next
-    // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
-    if (this.allowAutoSkip && this.hasCompleteClientInfo(client_info)) {
+    const hasCompleteInfo = this.hasCompleteClientInfo(client_info);
+
+    //Info already filled - auto-skip
+    if (this.allowAutoSkip && hasCompleteInfo) {
       setTimeout(() => {
         const isExternalLink = this.checkIfNextStepIsExternalLink();
-        this.shared.updateStep({
-          previous: 'Service',
-          next: 'Steps',
-          isExternalLink: isExternalLink,
-        });
-        this.updateTab.emit(true);
-        if (isExternalLink) {
+
+        if (this.isLastStep && isExternalLink) {
           this.openExternalLink();
+          this.shared.updateStep({
+            previous: 'Departments',
+            next: 'Service'
+          });
+          this.shared.getTab('menu', { goToService: true });
+        } else {
+          this.shared.updateStep({
+            previous: 'Service',
+            next: 'Steps',
+            isExternalLink: isExternalLink,
+          });
+          this.updateTab.emit({ shouldIncrementCounter: !this.isLastStep && isExternalLink });
+          if (isExternalLink) {
+            this.openExternalLink();
+          }
         }
       });
     }
@@ -58,7 +71,6 @@ export class InfoComponent implements OnInit {
   }
 
   checkIfNextStepIsExternalLink(): boolean {
-    // Check if the first step (counter - 1 = 0) is an external link
     if (this.steps && this.steps.length > 0) {
       const firstStep = this.steps[this.counter - 1];
       return (
@@ -92,15 +104,25 @@ export class InfoComponent implements OnInit {
       return;
     } else {
       localStorage.setItem('info', JSON.stringify(this.infoForm.value));
+
       const isExternalLink = this.checkIfNextStepIsExternalLink();
-      this.shared.updateStep({
-        previous: 'Service',
-        next: 'Steps',
-        isExternalLink: isExternalLink,
-      });
-      this.updateTab.emit(true);
-      if (isExternalLink) {
+      if (this.isLastStep && isExternalLink) {
         this.openExternalLink();
+        this.shared.updateStep({
+          previous: 'Departments',
+          next: 'Service'
+        });
+        this.shared.getTab('menu', { goToService: true });
+      } else {
+        this.shared.updateStep({
+          previous: 'Service',
+          next: 'Steps',
+          isExternalLink: isExternalLink,
+        });
+        this.updateTab.emit({ shouldIncrementCounter: !this.isLastStep && isExternalLink });
+        if (isExternalLink) {
+          this.openExternalLink();
+        }
       }
     }
   }

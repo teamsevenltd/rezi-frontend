@@ -35,8 +35,6 @@ export class ConfiguartionComponent implements OnInit {
   ngOnInit(): void {
     const urlString = window.location.href;
     this.url = new URL(urlString);
-    console.log(this.url);
-    
     this.configurationForm = this.fb.group({
       action: [''],
       title: [''],

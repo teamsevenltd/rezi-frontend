@@ -226,13 +226,12 @@
                     <div class="col-12 mb-3">
                         <label for="secondary_email" class="form-label">{{'app.secondary_email' | translate}}</label>
                         <input type="email" class="form-control" formControlName="secondary_email"
-                            placeholder="Enter Secondary Email">
+                            [placeholder]="'app.secondary_email' | translate">
                     </div>
                     }
 
                     <div class="col-12 mb-3">
-                        <label class="form-label">{{'app.address' | translate}}<sup
-                                class="text-danger">*</sup></label>
+                        <label class="form-label">{{'app.address' | translate}}<sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control mb-2"
                             [placeholder]="'app.placeholder_enter_address' | translate" formControlName="address"
                             (input)="OnInputChange($event)">
@@ -386,18 +385,17 @@
                     <div class="col-12 mb-3">
                         <label for="secondary_email" class="form-label">{{'app.secondary_email' | translate}}</label>
                         <input type="email" class="form-control" formControlName="secondary_email"
-                            placeholder="enter secondary email">
+                            [placeholder]="'app.secondary_email' | translate">
                     </div>
                     }
 
                     <div class="col-12 mb-3">
-                        <label class="form-label">{{'app.address' | translate}}<sup
-                                class="text-danger">*</sup></label>
+                        <label class="form-label">{{'app.address' | translate}}<sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control mb-2"
                             [placeholder]="'app.placeholder_enter_address' | translate" formControlName="address"
                             (input)="OnInputChange($event)">
                         @if (suggestionlist?.length>0) {
-                        <small class="text-danger">Select location from options<sup>*</sup></small>
+                        <small class="text-danger">{{'app.select_location_from_options' | translate}}<sup>*</sup></small>
                         <select class="form-control form-select" (click)="getPlacedetails($event, 'edit')">
                             @for (item of suggestionlist; track item) {
                             <option [value]="item?.place_id">{{item?.description}}

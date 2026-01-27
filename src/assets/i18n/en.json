@@ -172,14 +172,16 @@
         "bg_aktiv": "BG Active",
         "holidays_calendar": "Show holidays in calendar",
         "do_not_display_appointments": "Do not display appointments on public holidays",
-        "secondary_email": "Secondary Email Notifications",
+        "secondary_email": "Secondary Email",
         "secondary_email_notification": "Secondary Email Notifications",
+        "select_location_from_options": "Select location from options",
 
         "department": "Department",
         "departments": "Departments",
         "treatment": "Treatment",
         "action": "Action",
         "duration": "Duration(in minutes)",
+        "enter_department_name": "Enter Department Name",
 
         "patient": "Patient",
         "patients": "Patients",
@@ -192,6 +194,9 @@
         "state_insurance": "State Insurance",
         "private_insurance": "Private Insurance",
         "self_payer_insurance": "Self Payer",
+        "placeholder_enter_first_name": "Enter First Name",
+        "placeholder_enter_last_name": "Enter Last Name",
+        "placeholder_enter_phone_number": "Enter Phone Number",
 
         "requests": "Requests",
 
@@ -227,6 +232,8 @@
         "personal_details": "Personal Details",
         "request_details": "Request Info",
         "no_chat_found": "No Chat found",
+        "muted": "Muted",
+        "archive": "Archive",
 
         "configuration": "Configuration",
         "site": "Site",
@@ -246,6 +253,7 @@
         "text_placeholder": "Enter text here",
 
         "feedback": "Feedback",
+        "enter_feedback": "Enter Feedback",
         "rating": "Rating",
 
         "subscription_plans": "Subscription Plans",
@@ -314,6 +322,12 @@
         "starting_hours": "Starting Hours",
         "ending_hours": "Ending Hours",
 
+        "sendgrid_instructions": "Please enter your SendGrid to send emails",
+        "sendgrid_email_label": "SendGrid Email",
+        "sendgrid_api_key_label": "API Key",
+        "stripe_instructions": "Please enter your Stripe for payments",
+        "stripe_key_label": "Stripe Key",
+
         "log_out": "Log Out"
     },
 
@@ -363,7 +377,21 @@
     "consent_download_file": "I give consent to download the file",
     "download": "Download",
     "consent_text": "I give consent to the text",
-    "signature": "Signature"
+    "signature": "Signature",
+
+    "name_label": "Name",
+    "phone_label": "Phone No.",
+    "email_label": "Email",
+    "rating_label": "Rating",
+    "feedback_label": "Feedback",
+    "placeholder_enter_name": "Enter Name",
+    "placeholder_enter_phone": "Enter Phone No.",
+    "placeholder_enter_email": "Enter Email",
+    "placeholder_enter_feedback": "Enter Feedback",
+    "save_changes": "Save Changes",
+
+    "read_more": "Read More",
+    "no_news_found": "No news found"
   },
 
   "sweet_alert": {

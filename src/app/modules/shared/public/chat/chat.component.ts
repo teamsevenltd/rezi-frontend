@@ -61,6 +61,9 @@ export class ChatComponent implements OnInit {
     })
     this.url = this.route.snapshot?.url;
 
+    console.log(this.url[2]?.path);
+    
+
     this.patient_id = this.route.snapshot?.queryParams['patient_id'];
     let info = JSON.parse(localStorage.getItem('info') || '{}');
     if (this.patient_id || Object.keys(info).length > 0) {
