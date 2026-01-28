@@ -5,7 +5,7 @@
             <div class="card-header">{{news?.title}}</div>
             <div class="card-body pb-0">
                 <div [innerHTML]="news?.news" class="text-length"></div>
-                <a href="javascript:void(0)" class="mt-1 underline" (click)="openNewsModal(news)" data-bs-toggle="modal"
+                <a href="javascript:void(0)" class="mt-1 link-custom" (click)="openNewsModal(news)" data-bs-toggle="modal"
                     data-bs-target="#newsModal">
                     {{ 'public.read_more' | translate }}
                 </a>
