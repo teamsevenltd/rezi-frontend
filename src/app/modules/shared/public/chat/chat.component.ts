@@ -38,6 +38,15 @@ export class ChatComponent implements OnInit {
     termin: {
       en: 'Appointment Service',
       de: 'Termin Standardeinstellung'
+    },
+
+    "meine Termine": {
+      en: 'My Appointments',
+      de: 'Meine Termine',
+      description: {
+        en: 'My appointments service',
+        de: 'Meine Termine Service'
+      }
     }
   };
 
@@ -60,9 +69,6 @@ export class ChatComponent implements OnInit {
       message: ['', Validators.required],
     })
     this.url = this.route.snapshot?.url;
-
-    console.log(this.url[2]?.path);
-    
 
     this.patient_id = this.route.snapshot?.queryParams['patient_id'];
     let info = JSON.parse(localStorage.getItem('info') || '{}');

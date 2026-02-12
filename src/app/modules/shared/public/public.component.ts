@@ -61,6 +61,7 @@ export class PublicComponent implements OnInit {
   isMenuDepartment = false;
   isMenuService = false;
   isMenuSteps = false;
+  isMenuAppointments = false;
   isChat = false;
   isNews = false;
   isInfo = false;
@@ -89,6 +90,15 @@ export class PublicComponent implements OnInit {
       en: 'Appointment Service',
       de: 'Termin Standardeinstellung',
     },
+
+    "meine Termine": {
+      en: 'My Appointments',
+      de: 'Meine Termine',
+      description: {
+        en: 'My appointments service',
+        de: 'Meine Termine Service'
+      }
+    }
   };
 
   @ViewChild('customer_signature') customer_signature!: SignaturePadComponent;
@@ -116,10 +126,12 @@ export class PublicComponent implements OnInit {
     backgroundColor: 'white',
   };
 
+  appointments_arr: any = [];
+
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private shared: GeneralServiceService,
+    public shared: GeneralServiceService,
     private fb: FormBuilder,
     private router: Router,
     private sanitizer: DomSanitizer,
@@ -152,12 +164,14 @@ export class PublicComponent implements OnInit {
       this.isMenuDepartment = false;
       this.isMenuService = true;
       this.isMenuSteps = false;
+      this.isMenuAppointments = false;
     } else {
       // Complete reset - show location selection
       this.isMenuLocation = true;
       this.isMenuDepartment = false;
       this.isMenuService = false;
       this.isMenuSteps = false;
+      this.isMenuAppointments = false;
     }
 
     // Reset counter to start from beginning
@@ -235,10 +249,35 @@ export class PublicComponent implements OnInit {
     // }
   }
 
+  // checking if twilio is verified for a facility
+  isPhoneVerifiedForCurrentFacility(): boolean {
+    const info = JSON.parse(localStorage.getItem('info') || '{}');
+    const myKey = JSON.parse(localStorage.getItem('myKey') || '{}');
+    const facilityId = myKey.facilityId || '';
+
+    if (!info.phone || !facilityId) {
+      return false;
+    }
+
+    const verifiedFacilities = JSON.parse(localStorage.getItem('twilio_verified_facilities') || '{}');
+    return verifiedFacilities[info.phone] && verifiedFacilities[info.phone].includes(facilityId);
+  }
+
   onUpdateTab(event: any) {
     if (event == true || event?.shouldIncrementCounter !== undefined) {
-      // After info submission, show the steps instead of going back to menu
-      this.isMenuSteps = true;
+      let service = localStorage.getItem('service_name');
+      if (service === 'meine Termine' || service === 'Meine Termine') {
+        if (this.isPhoneVerifiedForCurrentFacility()) {
+          this.isMenuAppointments = true;
+          this.getAppointments();
+        } else {
+          this.tab_name = 'info';
+          this.shared.updateStep({ previous: 'Service', next: 'Info' });
+          return;
+        }
+      } else {
+        this.isMenuSteps = true;
+      }
       this.tab_name = 'menu';
 
       if (event?.shouldIncrementCounter === true) {
@@ -474,41 +513,142 @@ export class PublicComponent implements OnInit {
 
   customStepCounter = 0;
   service_name: any;
+  // getStepsbyServiceId(id: any, name: any) {
+  //   this.service_name = name;
+  //   this.isMenuService = false;
+
+  //   let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
+  //   storedData['serviceId'] = id;
+  //   localStorage.setItem('myKey', JSON.stringify(storedData));
+  //   localStorage.setItem('service_name', name);
+
+  //   let info = localStorage.getItem('info');
+  //   if (!info) {
+  //     localStorage.setItem('info', '{}');
+  //   }
+
+  //   this.allowInfoAutoSkip = true;
+  //   this.tab_name = 'info';
+  //   this.shared.updateStep({ previous: 'Service', next: 'Info' });
+
+  //   if (this.service_name === 'meine Termine' || this.service_name === 'Meine Termine') {
+  //     setTimeout(() => {
+  //       this.isMenuSteps = false;
+  //       this.isMenuAppointments = true;
+  //       this.getAppointments();
+  //     }, 500);
+  //     return;
+  //   } else {
+  //     this.auth.get('step/public/service/' + id).subscribe({
+  //       next: (res: any) => {
+  //         if (res.status == 200) {
+  //           this.isMenuSteps = true;
+  //           // let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
+  //           // storedData['serviceId'] = id;
+  //           // localStorage.setItem('myKey', JSON.stringify(storedData));
+  //           // let info = localStorage.getItem('info');
+  //           // if (!info) {
+  //           //   localStorage.setItem('info', '{}');
+  //           // }
+  //           // // Allow auto-skip when coming from service selection flow
+  //           // this.allowInfoAutoSkip = true;
+  //           // this.tab_name = 'info';
+  //           // this.shared.updateStep({ previous: 'Service', next: 'Info' });
+  //           this.steps_arr = res.data?.data;
+
+  //           this.initialiseAppointmentForm();
+  //           this.initializeCustomFormArray();
+  //           if (this.steps_arr[0]?.step_type == 'click') {
+  //             if (this.steps_arr[0].step_meta.action_type == 'next-step') {
+  //               this.counter++;
+  //             }
+  //           }
+  //         }
+  //       },
+  //       error: (err) => {
+  //         this.isMenuService = true;
+  //         this.isMenuSteps = false;
+  //         this.shared.showAlert('error', 'Error', err.error.message);
+  //       },
+  //     });
+  //   }
+  // }
   getStepsbyServiceId(id: any, name: any) {
     this.service_name = name;
     this.isMenuService = false;
-    this.isMenuSteps = true;
-    this.auth.get('step/public/service/' + id).subscribe({
-      next: (res: any) => {
-        if (res.status == 200) {
-          let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
-          storedData['serviceId'] = id;
-          localStorage.setItem('myKey', JSON.stringify(storedData));
-          let info = localStorage.getItem('info');
-          if (!info) {
-            localStorage.setItem('info', '{}');
-          }
-          // Allow auto-skip when coming from service selection flow
-          this.allowInfoAutoSkip = true;
-          this.tab_name = 'info';
-          this.shared.updateStep({ previous: 'Service', next: 'Info' });
-          this.steps_arr = res.data?.data;
 
-          this.initialiseAppointmentForm();
-          this.initializeCustomFormArray();
-          if (this.steps_arr[0]?.step_type == 'click') {
-            if (this.steps_arr[0].step_meta.action_type == 'next-step') {
-              this.counter++;
+    let storedData = JSON.parse(localStorage.getItem('myKey') || '{}');
+    storedData['serviceId'] = id;
+    localStorage.setItem('myKey', JSON.stringify(storedData));
+    localStorage.setItem('service_name', name);
+
+    let info = localStorage.getItem('info');
+    if (!info) {
+      localStorage.setItem('info', '{}');
+    }
+
+    if (this.service_name === 'meine Termine' || this.service_name === 'Meine Termine') {
+      if (this.isPhoneVerifiedForCurrentFacility()) {
+        setTimeout(() => {
+          this.isMenuSteps = false;
+          this.isMenuAppointments = true;
+          this.getAppointments();
+        }, 500);
+      } else {
+        this.allowInfoAutoSkip = true;
+        this.tab_name = 'info';
+        this.shared.updateStep({ previous: 'Service', next: 'Info' });
+      }
+      return;
+    } else {
+      this.allowInfoAutoSkip = true;
+      this.tab_name = 'info';
+      this.shared.updateStep({ previous: 'Service', next: 'Info' });
+
+      this.auth.get('step/public/service/' + id).subscribe({
+        next: (res: any) => {
+          if (res.status == 200) {
+            this.isMenuSteps = true;
+            this.steps_arr = res.data?.data;
+
+            this.initialiseAppointmentForm();
+            this.initializeCustomFormArray();
+            if (this.steps_arr[0]?.step_type == 'click') {
+              if (this.steps_arr[0].step_meta.action_type == 'next-step') {
+                this.counter++;
+              }
             }
           }
+        },
+        error: (err) => {
+          this.isMenuService = true;
+          this.isMenuSteps = false;
+          this.shared.showAlert('error', 'Error', err.error.message);
+        },
+      });
+    }
+  }
+
+  getAppointments() {
+    const myKey = JSON.parse(localStorage.getItem('myKey') || '{}');
+    const facilityId = myKey.facilityId || '';
+    const locationId = myKey.locationId || '';
+
+    const info = JSON.parse(localStorage.getItem('info') || '{}');
+    const phone = info.phone ? encodeURIComponent(info.phone) : '';
+
+    this.auth.get('appointment/public?facility_id=' + facilityId + '&location_id=' + locationId + '&phone=' + phone).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          this.appointments_arr = res.data?.data;
         }
       },
       error: (err) => {
-        this.isMenuService = true;
-        this.isMenuSteps = false;
-        this.shared.showAlert('error', 'Error', err.error.message);
-      },
-    });
+        // this.isMenuService = true;
+        // this.isMenuAppointments = false;
+        this.appointments_arr = [];
+      }
+    })
   }
 
   get customArray(): FormArray {

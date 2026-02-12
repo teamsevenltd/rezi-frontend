@@ -68,7 +68,8 @@ export class HeaderComponent implements OnInit {
       'Service': 'app.service',
       'Department': 'app.department',
       'Info': 'app.info',
-      'Steps': 'app.steps'
+      'Steps': 'app.steps',
+      'Appointments': 'app.appointment'
     };
 
     return {

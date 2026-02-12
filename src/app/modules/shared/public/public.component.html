@@ -78,7 +78,7 @@
         @for (service of service_arr; track service) {
         <div class="col-lg-4 col-md-6 col-12">
             <div class="card" role="button" (click)="getStepsbyServiceId(service?._id, service?.service_name)">
-                <div class="card-body d-flex align-items-center gap-4">
+                <div class="card-body d-flex align-items-center gap-3">
                     <i class="rounded-pill icon-round fs-18 bg-success-subtle"
                         [ngClass]="service?.icon_class ? service?.icon_class : 'ri-first-aid-kit-line'"
                         [style.color]="service?.icon_color ? service?.icon_color : '#000'"></i>
@@ -531,6 +531,69 @@
                 }
             </div>
         </div>
+    </div>
+    }
+
+    @if (!isMenuService && isMenuAppointments) {
+    <div class="row">
+        @if (getLoader) {
+        @for (item of skeleton_arr; track $index) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card">
+                <div class="card-body d-flex align-items-center gap-2">
+                    <i class="ri-calendar-2-line rounded-pill icon-round me-2 fs-18 bg-success-subtle"></i>
+                    <div class="skeleton-card">Lorem, ipsum dolor.</div>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        @if (!getLoader) {
+        @for (appointment of appointments_arr; track appointment._id) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card h-100">
+                <div class="card-body pb-0">
+                    <div class="d-grid gap-1">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="ri-calendar-line"></i>
+                            {{appointment?.start_date | date : "dd.MM.yy"}}
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="ri-time-line fs-5"></i>
+                            {{shared.getTimefromDate(appointment?.start_date) }} -
+                            {{shared.getTimefromDate(appointment?.end_date) }}
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="ri-virus-line fs-5"></i>
+                            {{getServiceName(appointment?.service_data)}}
+                        </div>
+                        @if (appointment.treatment_data.length > 0) {
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="ri-capsule-line fs-5"></i>
+                            @for (treatment of appointment.treatment_data; track treatment._id; let last = $last) {
+                            {{ treatment?.name }}@if (!last) { - }
+                            }
+                        </div>
+                        }
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="ri-information-line fs-5"></i>
+                            <div class="badge"
+                                [ngClass]="{'bg-dark': appointment.status === 'pending', 'bg-danger': appointment.status === 'rejected', 'bg-success': appointment.status === 'approved'}">
+                                {{appointment.status | titlecase}}</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        }@empty {
+        <div class="col-12">
+            <div class="text-danger text-center" style="margin-top: 11rem;">
+                {{'public.no_appointment_found_against_phone_number' | translate}}
+            </div>
+        </div>
+        }
+        }
     </div>
     }
     }

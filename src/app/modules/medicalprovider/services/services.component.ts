@@ -425,8 +425,18 @@ export class ServicesComponent {
         en: 'Predefined appointment service',
         de: 'Vordefinierter Terminservice'
       }
+    },
+
+    "meine Termine": {
+      en: 'My Appointments',
+      de: 'Meine Termine',
+      description: {
+        en: 'My appointments service',
+        de: 'Meine Termine Service'
+      }
     }
   };
+
 
   constructor(private fb: FormBuilder, private auth: AuthService, private shared: GeneralServiceService, private router: Router, private translate: TranslateService, private cdr: ChangeDetectorRef) {
     this.shared.language$.subscribe((lang: string) => {
@@ -622,6 +632,11 @@ export class ServicesComponent {
     }
     return item?.service_description;
   }
+
+  shouldShowDropdown(item: any): boolean {
+    return !(item?.is_predefined && item?.service_name === 'meine Termine');
+  }
+
 
   resetsearch() {
     this.no = 0;

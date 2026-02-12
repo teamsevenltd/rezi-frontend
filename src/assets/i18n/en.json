@@ -327,6 +327,10 @@
         "sendgrid_api_key_label": "API Key",
         "stripe_instructions": "Please enter your Stripe for payments",
         "stripe_key_label": "Stripe Key",
+        "twilio_instructions": "Configure your Twilio settings for SMS and verification services",
+        "twilio_sid_label": "Twilio Account SID",
+        "twilio_auth_token_label": "Twilio Auth Token",
+        "twilio_verify_service_sid_label": "Twilio Verify Service SID",
 
         "log_out": "Log Out"
     },
@@ -391,7 +395,13 @@
     "save_changes": "Save Changes",
 
     "read_more": "Read More",
-    "no_news_found": "No news found"
+    "no_news_found": "No news found",
+
+    "verify_otp_code": "Verify OTP Code",
+    "code_sent_on_mobile": "A code has been sent on given mobile number. Please enter the 4-digts code",
+    "verify": "Verify",
+
+    "no_appointment_found_against_phone_number": "No appointment found against entered phone number"
   },
 
   "sweet_alert": {
@@ -462,6 +472,11 @@
     "patient_does_not_exist": "Patient does not exist",
     "service_not_found": "Service not found",
 
-    "please_select_location": "Please select the location first"
+    "please_select_location": "Please select the location first",
+
+    "verification_code_sent_successfully": "Verification code sent successfully",
+    "failed_to_send_verification_code": "Failed to send verification code",
+    "phone_number_verified_successfully": "Phone number verified successfully",
+    "cannot_verify_the_code": "Cannot verify the code"
   }
 }

@@ -30,12 +30,8 @@ export class SettingComponent implements OnInit, AfterViewInit {
   picture: any;
   file: any = []
 
-  stripe_key: any;
-  sendgrid_mail: any;
-  sendgrid_key: any;
-
   createProfile!: FormGroup;
-  createAppSetting!: FormGroup;
+  appSettingsForm!: FormGroup;
 
   role: string = '';
   gallery_arr: any = [];
@@ -98,6 +94,14 @@ export class SettingComponent implements OnInit, AfterViewInit {
       old_password: [''],
       new_password: ['']
     });
+    this.appSettingsForm = this.fb.group({
+      sendgridemail: [''],
+      sendgridkey: [''],
+      stripekey: [''],
+      twilio_sid: [''],
+      twilio_auth_token: [''],
+      twilio_verify_service_sid: ['']
+    });
     this.addAvailability = this.fb.group({
       location_id: ['', Validators.required],
       weekday: ['', Validators.required],
@@ -110,10 +114,6 @@ export class SettingComponent implements OnInit, AfterViewInit {
       weekday: ['', Validators.required],
       working_hours: this.fb.array([]),
       status: ['']
-    })
-    this.createAppSetting = this.fb.group({
-      key: [''],
-      value: ['']
     })
     this.getProfile();
     if (this.role === 'superadmin') {
@@ -171,9 +171,19 @@ export class SettingComponent implements OnInit, AfterViewInit {
       next: (res: any) => {
         if (res.status == 200) {
           this.loading = false;
-          this.sendgrid_mail = res?.data[0].value;
-          this.sendgrid_key = res?.data[1].value;
-          this.stripe_key = res?.data[2].value;
+          const settingsMap = res.data.reduce((acc: any, item: any) => {
+            acc[item.key] = item.value || '';
+            return acc;
+          }, {});
+
+          this.appSettingsForm.patchValue({
+            sendgridemail: settingsMap['sendgridemail'] || '',
+            sendgridkey: settingsMap['sendgridkey'] || '',
+            stripekey: settingsMap['stripekey'] || '',
+            twilio_sid: settingsMap['twilio_sid'] || '',
+            twilio_auth_token: settingsMap['twilio_auth_token'] || '',
+            twilio_verify_service_sid: settingsMap['twilio_verify_service_sid'] || ''
+          });
         }
       },
       error: (err) => {
@@ -264,10 +274,29 @@ export class SettingComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onCreateAppSetting(): void {
+  updateAppSettings() {
+    this.loading = true;
+    const formValues = this.appSettingsForm.value;
 
+    const dataArray = Object.keys(formValues).map(key => ({
+      key: key,
+      value: formValues[key]
+    }));
+
+    this.auth.patch('appsettings', dataArray).subscribe({
+      next: (res: any) => {
+        if (res.status == 200) {
+          this.loading = false;
+          this.shared.showAlert('success', 'Successful', res.message);
+          this.getAppSettings();
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        this.shared.showAlert('success', 'Successful', err.error.message);
+      }
+    });
   }
-
   chooseOption() {
     Swal.fire({
       title: this.translate.instant("app.avatar_question"),

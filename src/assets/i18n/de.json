@@ -328,6 +328,10 @@
         "sendgrid_api_key_label": "API-Schlüssel",
         "stripe_instructions": "Bitte geben Sie Ihre Stripe-Daten für Zahlungen ein",
         "stripe_key_label": "Stripe-Schlüssel",
+        "twilio_instructions": "Konfigurieren Sie Ihre Twilio-Einstellungen für SMS- und Verifizierungsdienste",
+        "twilio_sid_label": "Twilio Konto-SID",
+        "twilio_auth_token_label": "Twilio Auth-Token",
+        "twilio_verify_service_sid_label": "Twilio Verify Service-SID",
 
         "log_out": "Abmelden"
     },
@@ -392,7 +396,14 @@
     "save_changes": "Änderungen speichern",
 
     "read_more": "Mehr lesen",
-    "no_news_found": "Keine Neuigkeiten gefunden"
+    "no_news_found": "Keine Neuigkeiten gefunden",
+
+    "verify_otp_code": "OTP-Code verifizieren",
+    "code_sent_on_mobile": "Ein Code wurde an Ihre angegebene Mobilnummer gesendet. Bitte geben Sie den 4-stelligen Code ein",
+    "verify": "Verifizieren",
+    "no_appointment_found_against_phone_number": "Kein Termin für die eingegebene Telefonnummer gefunden"
+
+
   },
 
   "sweet_alert": {
@@ -456,7 +467,12 @@
     "two_factor_enabled_success": "Zwei-Faktor-Authentifizierung erfolgreich eingerichtet",
     "invalid_otp_error": "Ungültiger OTP",
 
-    "please_select_location": "Bitte wählen sie zuerst den standort aus"
+    "please_select_location": "Bitte wählen sie zuerst den standort aus",
+
+    "verification_code_sent_successfully": "Bestätigungscode erfolgreich gesendet",
+    "failed_to_send_verification_code": "Bestätigungscode konnte nicht gesendet werden",
+    "phone_number_verified_successfully": "Telefonnummer erfolgreich verifiziert",
+    "cannot_verify_the_code": "Der Code konnte nicht verifiziert werden"
   }
 
 }

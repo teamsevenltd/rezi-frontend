@@ -75,7 +75,17 @@ export class CalendarComponent implements OnInit {
     termin: {
       en: 'Appointment Service',
       de: 'Termin Standardeinstellung'
+    },
+
+    "meine Termine": {
+      en: 'My Appointments',
+      de: 'Meine Termine',
+      description: {
+        en: 'My appointments service',
+        de: 'Meine Termine Service'
+      }
     }
+    
   };
 
   weekdays = [

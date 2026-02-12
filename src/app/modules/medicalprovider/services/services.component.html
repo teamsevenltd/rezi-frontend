@@ -78,9 +78,11 @@
 
                         <div class="flex-shrink-0">
                             <div class="dropdown card-header-dropdown">
+                                @if (shouldShowDropdown(item)) {
                                 <a class="text-reset dropdown-btn" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <span class="fs-18"><i class="ri-more-2-fill"></i></span>
                                 </a>
+                                }
 
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item d-flex align-items-center gap-2" role="button"
@@ -96,7 +98,8 @@
 
                                     @if (!item?.is_predefined) {
                                     <a class="dropdown-item d-flex align-items-center gap-2" role="button"
-                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(item)">
+                                        data-bs-toggle="modal" data-bs-target="#editService"
+                                        (click)="editService(item)">
                                         <i class="ri-edit-line text-secondary"></i>{{ 'app.edit' | translate }}
                                     </a>
 
@@ -170,7 +173,8 @@
 
                                     @if (!item?.is_predefined) {
                                     <a class="dropdown-item d-flex align-items-center gap-2" role="button"
-                                        data-bs-toggle="modal" data-bs-target="#editService" (click)="editService(item)">
+                                        data-bs-toggle="modal" data-bs-target="#editService"
+                                        (click)="editService(item)">
                                         <i class="ri-edit-line text-secondary"></i>{{ 'app.edit' | translate }}
                                     </a>
 
